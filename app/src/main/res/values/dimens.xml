@@ -1,0 +1,25 @@
+<resources>
+    <dimen name="m0.125">1dp</dimen>
+    <dimen name="m0.5">4dp</dimen>
+    <dimen name="m1">8dp</dimen>
+    <dimen name="m2">16dp</dimen>
+    <dimen name="m4">32dp</dimen>
+    <dimen name="m6">48dp</dimen>
+    <dimen name="m8">64dp</dimen>
+    <dimen name="m10">80dp</dimen>
+    <dimen name="m13">104dp</dimen>
+
+    <dimen name="one_dp">@dimen/m0.125</dimen>
+    <dimen name="radius">@dimen/m0.5</dimen>
+
+    <!-- Font -->
+    <dimen name="material_button">14sp</dimen>
+    <dimen name="material_subheading">16sp</dimen>
+
+
+    <!-- Primary Button -->
+    <dimen name="primary_button_height">@dimen/m6</dimen>
+    <dimen name="primary_button_padding">@dimen/m1</dimen>
+    <dimen name="primary_button_margin">@dimen/m2</dimen>
+
+</resources>

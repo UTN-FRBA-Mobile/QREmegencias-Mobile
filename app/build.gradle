@@ -1,0 +1,102 @@
+apply plugin: 'com.android.application'
+
+version "1.0.0-dev"
+group 'com.qre'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 10000
+        versionName project.version
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    signingConfigs {
+        debug {
+            storeFile file(QRE_DEBUG_KEYSTORE)
+            storePassword QRE_DEBUG_KEYSTORE_PASSWORD
+            keyAlias QRE_DEBUG_ALIAS
+            keyPassword QRE_DEBUG_KEY_PASSWORD
+        }
+
+        release {
+            storeFile file(QRE_RELEASE_KEYSTORE)
+            storePassword QRE_RELEASE_KEYSTORE_PASSWORD
+            keyAlias QRE_RELEASE_ALIAS
+            keyPassword QRE_RELEASE_KEY_PASSWORD
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+ext {
+    androidSupportVersion = "25.2.0"
+    googlePlayServicesVersion = "10.0.1"
+    multidexVersion = "1.0.1"
+    butterknifeVersion = "8.4.0"
+    retrofitVersion = "2.0.2"
+    okhttpLoginInterceptor = "3.2.0"
+    okhttpVersion = "3.2.0"
+    gsonVersion = "2.8.0"
+    gsonRetrofitConverter = "2.0.1"
+    daggerVersion = "2.8"
+    javaxAnnotationVersion = "1.0"
+
+    junitVersion = "4.12"
+    espressoVersion = "2.2.2"
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Android
+    compile "com.android.support:appcompat-v7:$androidSupportVersion"
+    compile "com.android.support:support-v4:$androidSupportVersion"
+    compile "com.android.support:design:$androidSupportVersion"
+    compile "com.google.android.gms:play-services:$googlePlayServicesVersion"
+    compile "com.android.support:multidex:$multidexVersion"
+
+    // Butterknife
+    compile "com.jakewharton:butterknife:$butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
+
+    //Retrofit
+    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
+
+    //OkHttp
+    compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    compile "com.squareup.okhttp3:logging-interceptor:$okhttpLoginInterceptor"
+
+    //Gson
+    compile "com.google.code.gson:gson:$gsonVersion"
+    compile "com.squareup.retrofit2:converter-gson:$gsonRetrofitConverter"
+
+    // Dagger
+    compile "com.google.dagger:dagger:$daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+    provided "javax.annotation:jsr250-api:$javaxAnnotationVersion"
+
+    // Unit Test
+    testCompile "junit:junit:$junitVersion"
+
+    // Integration Test
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$espressoVersion", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+}

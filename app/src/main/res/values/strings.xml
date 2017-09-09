@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">QRE</string>
+    <string name="login">Loguearse</string>
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+</resources>
