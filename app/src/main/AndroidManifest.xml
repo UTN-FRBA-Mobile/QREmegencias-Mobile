@@ -23,6 +23,10 @@
         <activity android:name="com.qre.ui.activities.HomeActivity"
             android:theme="@style/AppTheme"/>
 
+        <activity android:name="com.qre.ui.activities.ScanActivity" />
+
+        <activity android:name="com.qre.ui.activities.EmergencyDataActivity" />
+
     </application>
 
 </manifest>

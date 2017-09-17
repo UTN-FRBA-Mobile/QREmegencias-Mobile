@@ -49,5 +49,6 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
 		Log.v(TAG, rawResult.getText());
 		Log.v(TAG, rawResult.getBarcodeFormat().toString());
 		mScannerView.resumeCameraPreview(this);
+		startActivity(EmergencyDataActivity.getIntent(this));
 	}
 }

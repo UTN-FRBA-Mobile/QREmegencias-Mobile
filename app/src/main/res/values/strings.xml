@@ -5,4 +5,7 @@
     <string name="password">Contraseña</string>
     <string name="forgot_password">¿Olvidaste tu contraseña?</string>
     <string name="scan">Escanear</string>
+    <string name="see_more">Ver más</string>
+    <string name="emergency_data_title">Datos de Emergencia</string>
+
 </resources>
