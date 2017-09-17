@@ -1,5 +1,6 @@
 package com.qre.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -20,6 +21,7 @@ import butterknife.OnClick;
 public class LoginActivity extends AppCompatActivity {
 
 	private static final String TAG = LoginActivity.class.getSimpleName();
+	public static final String LOGGED_USER = "LoggedUser";
 
 	@Inject
 	NetworkService networkService;
@@ -46,7 +48,9 @@ public class LoginActivity extends AppCompatActivity {
 		networkService.login(vEmail.getText().toString(), vPassword.getText().toString(), new NetCallback<LoginUserDTO>() {
 			@Override
 			public void onSuccess(LoginUserDTO response) {
-				Log.i(TAG, response.getName());
+				final Intent intent = HomeActivity.getIntent(LoginActivity.this);
+				intent.putExtra(LOGGED_USER, response.getName());
+				startActivity(intent);
 			}
 
 			@Override
@@ -54,6 +58,11 @@ public class LoginActivity extends AppCompatActivity {
 				Log.e(TAG, "Error en el login", exception);
 			}
 		});
+	}
+
+	@OnClick(R.id.btn_scan)
+	public void scan() {
+		startActivity(ScanActivity.getIntent(this));
 	}
 
 	@OnClick(R.id.link_forgot_password)

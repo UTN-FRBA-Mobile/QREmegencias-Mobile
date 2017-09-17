@@ -4,4 +4,5 @@
     <string name="email">Email</string>
     <string name="password">Contraseña</string>
     <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="scan">Escanear</string>
 </resources>

@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
-public class HomeActivity extends AppCompatActivity{
+public class HomeActivity extends AppCompatActivity {
 
 	@Inject
 	NetworkService networkService;
