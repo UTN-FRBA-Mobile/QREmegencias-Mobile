@@ -1,7 +1,7 @@
 package com.qre.services.networking;
 
-import com.qre.models.networking.LoginRequest;
-import com.qre.models.networking.LoginResponse;
+import com.qre.client.api.UserFrontControllerApi;
+import com.qre.models.LoginUserDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -9,15 +9,16 @@ import retrofit2.Response;
 
 public class RetrofitNetworkService implements NetworkService {
 
-	private final RestApi restApi;
+	private final UserFrontControllerApi userFrontControllerApi;
 
-	public RetrofitNetworkService(final RestApi restApi) {
-		this.restApi = restApi;
+	public RetrofitNetworkService(final UserFrontControllerApi userFrontControllerApi) {
+		this.userFrontControllerApi = userFrontControllerApi;
 	}
 
 	@Override
-	public void login(final LoginRequest request, final NetCallback<LoginResponse> callback) {
-		final Call<LoginResponse> call = restApi.login(request);
+	public void login(final String username, final String password,
+					  final NetCallback<LoginUserDTO> callback) {
+		final Call<LoginUserDTO> call = userFrontControllerApi.loginUsingPOST(username, password, "");
 		enqueue(call, callback);
 	}
 

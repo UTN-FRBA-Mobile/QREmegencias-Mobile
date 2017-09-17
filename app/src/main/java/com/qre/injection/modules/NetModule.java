@@ -4,8 +4,9 @@ import android.app.Application;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.qre.client.ApiClient;
+import com.qre.client.api.UserFrontControllerApi;
 import com.qre.services.networking.NetworkService;
-import com.qre.services.networking.RestApi;
 import com.qre.services.networking.RetrofitNetworkService;
 
 import javax.inject.Singleton;
@@ -15,8 +16,6 @@ import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetModule {
@@ -55,24 +54,20 @@ public class NetModule {
     }
 
     @Provides
-    @Singleton
-    Retrofit provideRetrofit(final Gson gson, final OkHttpClient okHttpClient) {
-        return new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(mBaseUrl)
-                .client(okHttpClient)
-                .build();
+    ApiClient provideApiClient(final OkHttpClient okHttpClient) {
+        final ApiClient apiClient = new ApiClient();
+        apiClient.configureFromOkclient(okHttpClient);
+        return apiClient;
+    }
+
+    @Provides
+    UserFrontControllerApi provideUserFrontControllerApi(final ApiClient apiClient) {
+        return apiClient.createService(UserFrontControllerApi.class);
     }
 
     @Provides
     @Singleton
-    RestApi provideRestApi(final Retrofit retrofit) {
-        return retrofit.create(RestApi.class);
-    }
-
-    @Provides
-    @Singleton
-    NetworkService provideNetworkService(final RestApi restApi) {
+    NetworkService provideNetworkService(final UserFrontControllerApi restApi) {
         return new RetrofitNetworkService(restApi);
     }
 }

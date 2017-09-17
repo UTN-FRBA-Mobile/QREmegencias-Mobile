@@ -7,6 +7,8 @@ import android.widget.EditText;
 
 import com.qre.R;
 import com.qre.injection.Injector;
+import com.qre.models.LoginUserDTO;
+import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
 
 import javax.inject.Inject;
@@ -41,6 +43,17 @@ public class LoginActivity extends AppCompatActivity {
 	@OnClick(R.id.btn_login)
 	public void login() {
 		Log.i(TAG, "Login with email " + vEmail.getText().toString() + " and password " + vPassword.getText().toString());
+		networkService.login(vEmail.getText().toString(), vPassword.getText().toString(), new NetCallback<LoginUserDTO>() {
+			@Override
+			public void onSuccess(LoginUserDTO response) {
+				Log.i(TAG, response.getName());
+			}
+
+			@Override
+			public void onFailure(Throwable exception) {
+				Log.e(TAG, "Error en el login", exception);
+			}
+		});
 	}
 
 	@OnClick(R.id.link_forgot_password)
