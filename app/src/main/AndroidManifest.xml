@@ -27,6 +27,9 @@
 
         <activity android:name="com.qre.ui.activities.EmergencyDataActivity" />
 
+        <activity android:name="com.qre.ui.activities.SeeMoreActivity" />
+
+
     </application>
 
 </manifest>

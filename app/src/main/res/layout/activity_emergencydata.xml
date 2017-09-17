@@ -19,7 +19,20 @@
     <TextView android:id="@+id/emergency_data_blood_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:text="- FJ+"
+        android:gravity="start"
+        android:textSize="16sp"/>
+
+    <TextView android:id="@+id/emergency_data_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- FJ+"
+        android:gravity="start"
+        android:textSize="16sp"/>
+
+    <TextView android:id="@+id/emergency_data_sex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="- FJ+"
         android:gravity="start"
         android:textSize="16sp"/>
@@ -27,7 +40,6 @@
     <TextView android:id="@+id/emergency_data_allergies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
         android:text="- Alergias: Chips; Android"
         android:gravity="start"
         android:textSize="16sp"/>
@@ -35,11 +47,17 @@
     <TextView android:id="@+id/emergency_data_pathologies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
         android:text="- Patologías: Insuficiencia Renal"
         android:gravity="start"
         android:textSize="16sp"/>
-    
+
+    <TextView android:id="@+id/emergency_data_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- Patologías: Insuficiencia Renal"
+        android:gravity="start"
+        android:textSize="16sp"/>
+
     <Button
         android:id="@+id/btn_see_more"
         android:layout_width="match_parent"
