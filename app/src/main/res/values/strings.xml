@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QRE</string>
+    <string name="app_name">QR Emergencias</string>
     <string name="login">Loguearse</string>
     <string name="email">Email</string>
     <string name="password">Contraseña</string>
