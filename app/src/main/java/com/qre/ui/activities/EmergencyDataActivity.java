@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.qre.R;
 import com.qre.utils.CryptoUtils;
+import com.qre.utils.QRUtils;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -39,6 +40,8 @@ public class EmergencyDataActivity extends AppCompatActivity {
 	@BindView(R.id.emergency_data_contacts)
 	TextView emergency_data_contacts;
 
+	private String url;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,7 +54,9 @@ public class EmergencyDataActivity extends AppCompatActivity {
 		final InputStream key = getResources().openRawResource(R.raw.privatekey);
 		try {
 			final byte[] bytes = CryptoUtils.decryptText(result, key);
-			emergency_data_blood_type.setText(new String(Arrays.copyOfRange(bytes,0,2),"ISO-8859-1"));
+			final QRUtils.DTO dto = QRUtils.parseQR(bytes);
+			this.url = dto.getUrl();
+			emergency_data_blood_type.setText(dto.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,7 +66,7 @@ public class EmergencyDataActivity extends AppCompatActivity {
 	public void seeMore() {
 		Log.v(TAG, "Querés ver más, lo sabemos..");
 		final Intent intent = SeeMoreActivity.getIntent(this);
-		intent.putExtra("url","https://www.example.org");
+		intent.putExtra("url", this.url);
 		startActivity(intent);
 
 	}
