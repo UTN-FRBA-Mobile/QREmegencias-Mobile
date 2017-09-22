@@ -8,11 +8,11 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.qre.R;
+import com.qre.models.EmergencyData;
 import com.qre.utils.CryptoUtils;
 import com.qre.utils.QRUtils;
 
 import java.io.InputStream;
-import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,22 +23,22 @@ public class EmergencyDataActivity extends AppCompatActivity {
 	private static final String TAG = EmergencyDataActivity.class.getSimpleName();
 
 	@BindView(R.id.emergency_data_blood_type)
-	TextView emergency_data_blood_type;
+	TextView emergencyDataBloodType;
 
 	@BindView(R.id.emergency_data_age)
-	TextView emergency_data_age;
+	TextView emergencyDataAge;
 
 	@BindView(R.id.emergency_data_sex)
-	TextView emergency_data_sex;
+	TextView emergencyDataSex;
 
 	@BindView(R.id.emergency_data_allergies)
-	TextView emergency_data_allergies;
+	TextView emergencyDataAllergies;
 
 	@BindView(R.id.emergency_data_pathologies)
-	TextView emergency_data_pathologies;
+	TextView emergencyDataPathologies;
 
 	@BindView(R.id.emergency_data_contacts)
-	TextView emergency_data_contacts;
+	TextView emergencyDataContacts;
 
 	private String url;
 
@@ -54,11 +54,18 @@ public class EmergencyDataActivity extends AppCompatActivity {
 		final InputStream key = getResources().openRawResource(R.raw.privatekey);
 		try {
 			final byte[] bytes = CryptoUtils.decryptText(result, key);
-			final QRUtils.DTO dto = QRUtils.parseQR(bytes);
-			this.url = dto.getUrl();
-			emergency_data_blood_type.setText(dto.toString());
-		} catch (Exception e) {
-			e.printStackTrace();
+			final EmergencyData emergencyData = QRUtils.parseQR(bytes);
+			this.url = emergencyData.getUrl();
+			emergencyDataAge.setText("Edad: " + String.valueOf(emergencyData.getAge()));
+			emergencyDataAllergies.setText("Alergias: " + emergencyData.getAllergies().toString());
+			emergencyDataPathologies.setText("Patologias: " + emergencyData.getPathologies().toString());
+			emergencyDataBloodType.setText("Tipo de Sangre: " + emergencyData.getBloodType());
+			emergencyDataSex.setText("Sexo: " + emergencyData.getSex());
+			if (emergencyData.getContactName() != null) {
+				emergencyDataContacts.setText("Contacto: " + emergencyData.getContactName() + " " + emergencyData.getContactPhone());
+			}
+		} catch (final Exception e) {
+			Log.e(TAG, "Error leyendo QR", e);
 		}
 	}
 
