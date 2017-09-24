@@ -9,12 +9,12 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.qre.R;
 import com.qre.injection.Injector;
 import com.qre.services.networking.NetworkService;
+import com.qre.services.preference.impl.UserPreferenceService;
 import com.qre.ui.fragments.ProfileFragment;
 import com.qre.ui.fragments.medical.MedicalEditUserFragment;
 import com.qre.ui.fragments.medical.MedicalEmergencyDataFragment;
@@ -32,6 +32,9 @@ public class HomeActivity extends AppCompatActivity{
 	private static final String TAG = HomeActivity.class.getSimpleName();
 
 	@Inject
+	UserPreferenceService userPreferenceService;
+
+	@Inject
 	NetworkService networkService;
 
 	@BindView(R.id.drawer_layout)
@@ -44,7 +47,9 @@ public class HomeActivity extends AppCompatActivity{
 	Toolbar toolbar;
 
 	public static Intent getIntent(final Context context) {
-		return new Intent(context, HomeActivity.class);
+		Intent intent = new Intent(context, HomeActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		return intent;
 	}
 
 	@Override
@@ -102,7 +107,8 @@ public class HomeActivity extends AppCompatActivity{
 								fragmentTransaction = true;
 								break;
 							case R.id.menu_logout:
-								Log.i(TAG, "Logout user");
+								userPreferenceService.delete();
+								startActivity(LoginActivity.getIntent(HomeActivity.this));
 								break;
 						}
 
