@@ -9,6 +9,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.qre.R;
@@ -30,6 +32,9 @@ import butterknife.ButterKnife;
 public class HomeActivity extends AppCompatActivity{
 
 	private static final String TAG = HomeActivity.class.getSimpleName();
+
+	private static final String ROLE_MEDICAL = "ROLE_MEDICO";
+	private static final String ROLE_USER = "ROLE_PACIENTE";
 
 	@Inject
 	UserPreferenceService userPreferenceService;
@@ -69,6 +74,12 @@ public class HomeActivity extends AppCompatActivity{
 	}
 
 	private void initDrawer() {
+
+		String role = userPreferenceService.getRole();
+		Log.i(TAG, "Prepare menu for user with role " + role);
+		vNavigationView.getMenu().setGroupVisible(R.id.menu_medical, role.equals(ROLE_MEDICAL));
+		vNavigationView.getMenu().setGroupVisible(R.id.menu_user, role.equals(ROLE_USER));
+
 		vNavigationView.setNavigationItemSelectedListener(
 				new NavigationView.OnNavigationItemSelectedListener() {
 					@Override

@@ -34,7 +34,7 @@ public class UserPreferenceService extends PreferencesService {
     }
 
     public String getRole() {
-        return getString(Key.USER_USERNAME, null);
+        return getString(Key.USER_ROLE, null);
     }
 
     public void delete() {
