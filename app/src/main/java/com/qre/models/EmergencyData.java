@@ -13,7 +13,7 @@ public class EmergencyData {
     private int age;
     private List<String> allergies = new ArrayList<>();
     private List<String> pathologies = new ArrayList<>();
-    private String url;
+    private String uuid;
     private String contactName;
     private String contactPhone;
 
@@ -49,12 +49,12 @@ public class EmergencyData {
         return pathologies;
     }
 
-    public String getUrl() {
-        return url;
+    public String getUUID() {
+        return uuid;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUUID(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getContactName() {

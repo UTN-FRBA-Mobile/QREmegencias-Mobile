@@ -148,7 +148,6 @@ public class SeeMoreActivity extends AppCompatActivity {
                 conn.disconnect();
             }
 
-
         }
 
         @Override
@@ -225,38 +224,6 @@ public class SeeMoreActivity extends AppCompatActivity {
             catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            /*
-            List<DataFish> data = new ArrayList<>();
-
-            pdLoading.dismiss();
-            try {
-
-                JSONArray jArray = new JSONArray(result);
-
-                // Extract data from json and store into ArrayList as class objects
-                for (int i = 0; i < jArray.length(); i++) {
-                    JSONObject json_data = jArray.getJSONObject(i);
-                    DataFish fishData = new DataFish();
-                    fishData.fishImage = json_data.getString("fish_img");
-                    fishData.fishName = json_data.getString("fish_name");
-                    fishData.catName = json_data.getString("cat_name");
-                    fishData.sizeName = json_data.getString("size_name");
-                    fishData.price = json_data.getInt("price");
-                    data.add(fishData);
-                }
-
-                // Setup and Handover data to recyclerview
-                mRVFishPrice = (RecyclerView) findViewById(R.id.fishPriceList);
-                mAdapter = new AdapterFish(MainActivity.this, data);
-                mRVFishPrice.setAdapter(mAdapter);
-                mRVFishPrice.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-
-            } catch (JSONException e) {
-                Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_LONG).show();
-            }
-*/
         }
     }
-
 }

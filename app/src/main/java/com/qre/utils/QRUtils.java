@@ -28,7 +28,7 @@ public class QRUtils {
         setAllergiesAndPathologies(bytes, emergencyData);
 
         byte urlLength = bytes[3];
-        emergencyData.setUrl(new String(bytes, 4, urlLength, CHARSET_NAME));
+        emergencyData.setUUID(new String(bytes, 4, urlLength, CHARSET_NAME));
 
         int urlEnd = 3 + urlLength;
         if (bytes.length > urlEnd) {

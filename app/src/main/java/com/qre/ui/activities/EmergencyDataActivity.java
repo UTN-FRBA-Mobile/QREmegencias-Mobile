@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.google.gson.JsonParser;
 import com.qre.R;
 import com.qre.models.EmergencyData;
 import com.qre.utils.CryptoUtils;
@@ -57,8 +56,8 @@ public class EmergencyDataActivity extends AppCompatActivity {
 		try {
 			final byte[] bytes = CryptoUtils.decryptText(result, key);
 			final EmergencyData emergencyData = QRUtils.parseQR(bytes);
-			this.url = "http://172.16.21.139:8082/qremergencias/api/emergencyData/" + emergencyData.getUrl();
-			this.uuid = emergencyData.getUrl();
+			this.url = "https://qr.rrramundo.com.ar/qremergencias/api/emergencyData/" + emergencyData.getUUID();
+			this.uuid = emergencyData.getUUID();
 			emergencyDataAge.setText("Edad: " + String.valueOf(emergencyData.getAge()));
 			emergencyDataAllergies.setText("Alergias: " + emergencyData.getAllergies().toString());
 			emergencyDataPathologies.setText("Patologias: " + emergencyData.getPathologies().toString());
@@ -74,12 +73,10 @@ public class EmergencyDataActivity extends AppCompatActivity {
 
 	@OnClick(R.id.btn_see_more)
 	public void seeMore() {
-		Log.v(TAG, "Querés ver más, lo sabemos..");
 		final Intent intent = SeeMoreActivity.getIntent(this);
 		intent.putExtra("url", this.url);
 		intent.putExtra("uuid", this.uuid);
 		startActivity(intent);
-
 	}
 
 	public static Intent getIntent(final Context context) {
