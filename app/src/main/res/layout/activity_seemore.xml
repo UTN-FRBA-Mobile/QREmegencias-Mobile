@@ -8,10 +8,11 @@
     android:paddingRight="24dp"
     android:gravity="top">
 
-    <WebView
-        android:id="@+id/webview_see_more"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </WebView>
+        android:layout_height="match_parent"
+        android:id="@+id/textview_see_more"
+        android:scrollbars="vertical"
+        android:maxLines="1000"/>
 
 </LinearLayout>

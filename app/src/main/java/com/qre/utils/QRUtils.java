@@ -30,11 +30,11 @@ public class QRUtils {
         byte urlLength = bytes[3];
         emergencyData.setUrl(new String(bytes, 4, urlLength, CHARSET_NAME));
 
-        int urlEnd = 4 + urlLength;
+        int urlEnd = 3 + urlLength;
         if (bytes.length > urlEnd) {
             byte nameLength = bytes[urlEnd + 1];
             emergencyData.setContactName(new String(bytes, urlEnd + 2, nameLength, CHARSET_NAME));
-            int nameEnd = urlEnd + 2 + nameLength;
+            int nameEnd = urlEnd + 1 + nameLength;
 
             byte phoneLength = bytes[nameEnd + 1];
             emergencyData.setContactPhone(new String(bytes, nameEnd + 2, phoneLength, CHARSET_NAME));

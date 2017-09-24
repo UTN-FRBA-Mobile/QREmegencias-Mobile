@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.google.gson.JsonParser;
 import com.qre.R;
 import com.qre.models.EmergencyData;
 import com.qre.utils.CryptoUtils;
@@ -41,6 +42,7 @@ public class EmergencyDataActivity extends AppCompatActivity {
 	TextView emergencyDataContacts;
 
 	private String url;
+	private String uuid;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,8 @@ public class EmergencyDataActivity extends AppCompatActivity {
 		try {
 			final byte[] bytes = CryptoUtils.decryptText(result, key);
 			final EmergencyData emergencyData = QRUtils.parseQR(bytes);
-			this.url = emergencyData.getUrl();
+			this.url = "http://172.16.21.139:8082/qremergencias/api/emergencyData/" + emergencyData.getUrl();
+			this.uuid = emergencyData.getUrl();
 			emergencyDataAge.setText("Edad: " + String.valueOf(emergencyData.getAge()));
 			emergencyDataAllergies.setText("Alergias: " + emergencyData.getAllergies().toString());
 			emergencyDataPathologies.setText("Patologias: " + emergencyData.getPathologies().toString());
@@ -74,6 +77,7 @@ public class EmergencyDataActivity extends AppCompatActivity {
 		Log.v(TAG, "Querés ver más, lo sabemos..");
 		final Intent intent = SeeMoreActivity.getIntent(this);
 		intent.putExtra("url", this.url);
+		intent.putExtra("uuid", this.uuid);
 		startActivity(intent);
 
 	}

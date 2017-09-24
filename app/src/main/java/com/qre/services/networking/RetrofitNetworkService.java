@@ -1,6 +1,9 @@
 package com.qre.services.networking;
 
+import com.qre.client.api.EmergencyDataControllerApi;
 import com.qre.client.api.UserFrontControllerApi;
+import com.qre.models.EmergencyData;
+import com.qre.models.EmergencyDataDTO;
 import com.qre.models.LoginUserDTO;
 
 import retrofit2.Call;
@@ -11,14 +14,24 @@ public class RetrofitNetworkService implements NetworkService {
 
 	private final UserFrontControllerApi userFrontControllerApi;
 
-	public RetrofitNetworkService(final UserFrontControllerApi userFrontControllerApi) {
+	public RetrofitNetworkService(final UserFrontControllerApi userFrontControllerApi, EmergencyDataControllerApi emergencyDataControllerApi) {
 		this.userFrontControllerApi = userFrontControllerApi;
+		this.emergencyDataControllerApi = emergencyDataControllerApi;
 	}
+
+	private final EmergencyDataControllerApi emergencyDataControllerApi;
+
 
 	@Override
 	public void login(final String username, final String password,
 					  final NetCallback<LoginUserDTO> callback) {
 		final Call<LoginUserDTO> call = userFrontControllerApi.loginUsingPOST(username, password, "");
+		enqueue(call, callback);
+	}
+
+	@Override
+	public void getPublicEmergencyData(final String uuid, final NetCallback<EmergencyDataDTO> callback) {
+		final Call<EmergencyDataDTO> call = emergencyDataControllerApi.getPublicEmergencyDataUsingGET(uuid);
 		enqueue(call, callback);
 	}
 
