@@ -15,6 +15,9 @@ import android.widget.TextView;
 import com.qre.R;
 import com.qre.injection.Injector;
 import com.qre.models.EmergencyDataDTO;
+import com.qre.models.HospitalizationDTO;
+import com.qre.models.MedicationDTO;
+import com.qre.models.PathologyDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
 import com.qre.utils.CryptoUtils;
@@ -31,6 +34,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -39,9 +43,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SeeMoreActivity extends AppCompatActivity {
-
-    public static final int CONNECTION_TIMEOUT = 10000;
-    public static final int READ_TIMEOUT = 15000;
 
     private static final String TAG = SeeMoreActivity.class.getSimpleName();
 
@@ -64,11 +65,67 @@ public class SeeMoreActivity extends AppCompatActivity {
 
         Injector.getServiceComponent().inject(this);
 
-        // FALLA AL PARASEAR LAS FECHAS
-        // ERROR:  org.threeten.bp.format.DateTimeParseException: Text '2016-10-10T00:00:00' could not be parsed at index 19
+        final ProgressDialog pdLoading = new ProgressDialog(SeeMoreActivity.this);
+
+        pdLoading.setMessage("\tCargando...");
+        pdLoading.setCancelable(true);
+        pdLoading.show();
+
         networkService.getPublicEmergencyData(getIntent().getStringExtra("uuid"), new NetCallback<EmergencyDataDTO>() {
             @Override
             public void onSuccess(EmergencyDataDTO response) {
+
+                pdLoading.dismiss();
+
+                String text = "";
+
+                text += "- Último chequeo médico : " + response.getLastMedicalCheck() + "\n\n";
+                text += "- Tipo sangre : " + response.getGeneral().getBloodType() + "\n\n";
+                text += "- Donante de órganos : " +
+                        ((response.getGeneral().getOrganDonor()) ? "Sí" : "No") + "\n\n";
+
+                if (!response.getGeneral().getAllergies().isEmpty()) {
+                    text += "- Alergias: \n";
+                    for (String allergy : response.getGeneral().getAllergies()) {
+                        text += "\t + " + allergy + "\n";
+                    }
+                    text += "\n";
+                }
+
+                for(HospitalizationDTO surgery : response.getSurgeries()) {
+                    text += "- Operacion : \n";
+                    text += "\t" + "Institución : " + surgery.getInstitution() + "\n";
+                    text += "\t" + "Tipo : " + surgery.getType() + "\n";
+                    text += "\t" + "Fecha : " + surgery.getDate() + "\n";
+                    text += "\t" + "Motivo : " + surgery.getReason() + "\n\n";
+                }
+
+                for(HospitalizationDTO hospitalization : response.getHospitalizations()) {
+                    text += "- Operacion : \n";
+                    text += "\t" + "Institución : " + hospitalization.getInstitution() + "\n";
+                    text += "\t" + "Tipo : " + hospitalization.getType() + "\n";
+                    text += "\t" + "Fecha : " + hospitalization.getDate() + "\n";
+                    text += "\t" + "Motivo : " + hospitalization.getReason() + "\n\n";
+                }
+
+                for(PathologyDTO pathology : response.getPathologies()) {
+                    text += "- Patología : \n";
+                    text += "\t" + "Tipo : " + pathology.getType() + "\n";
+                    text += "\t" + "Descripción : " + pathology.getDescription() + "\n";
+                    text += "\t" + "Fecha : " + pathology.getDate() + "\n\n";
+                }
+
+                for(MedicationDTO medication : response.getMedications()) {
+
+                    text += "- Medicación : \n";
+                    text += "\t" + "Nombre : " + medication.getName() + "\n";
+                    text += "\t" + "Descripcion : " + medication.getDescription() + "\n";
+                    text += "\t" + "Cantidad : " + medication.getAmount() + "\n";
+                    text += "\t" + "Período : " + medication.getPeriod() + "\n\n";
+                }
+                textview_see_more.setText(text);
+                textview_see_more.setMovementMethod(new ScrollingMovementMethod());
+
                 getIntent().putExtra("response", response.toString());
                 Log.i(TAG, "JSON: " + response.toString() );
             }
@@ -79,151 +136,7 @@ public class SeeMoreActivity extends AppCompatActivity {
             }
         });
 
-        new AsyncFetch().execute();
-
 	}
 
-    private class AsyncFetch extends AsyncTask<String, String, String> {
-        ProgressDialog pdLoading = new ProgressDialog(SeeMoreActivity.this);
-        HttpURLConnection conn;
-        URL url = null;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            pdLoading.setMessage("\tCargando...");
-            pdLoading.setCancelable(true);
-            pdLoading.show();
-
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                url = new URL(getIntent().getStringExtra("url"));
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                return e.toString();
-            }
-            try {
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(READ_TIMEOUT);
-                conn.setConnectTimeout(CONNECTION_TIMEOUT);
-                conn.setRequestMethod("GET");
-            } catch (IOException e) {
-                e.printStackTrace();
-                return e.toString();
-            }
-
-            try {
-
-                int response_code = conn.getResponseCode();
-
-                // Check if successful connection made
-                if (response_code == HttpURLConnection.HTTP_OK) {
-
-                    // Read data sent from server
-                    InputStream input = conn.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                    StringBuilder result = new StringBuilder();
-                    String line;
-
-                    while ((line = reader.readLine()) != null) {
-                        result.append(line);
-                    }
-
-                    // Pass data to onPostExecute method
-                    return (result.toString());
-
-                } else {
-                    return ("unsuccessful");
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                return e.toString();
-            } finally {
-                conn.disconnect();
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            //this method will be running on UI thread
-
-            Log.i(TAG, result);
-
-            pdLoading.dismiss();
-
-            String text = "";
-
-            try {
-                JSONObject result_json = new JSONObject(result);
-                JSONObject general_json = result_json.getJSONObject("general");
-                JSONArray surgeries_json = result_json.getJSONArray("surgeries");
-                JSONArray hospitalizations_json = result_json.getJSONArray("hospitalizations");
-                JSONArray pathologies_json = result_json.getJSONArray("pathologies");
-                JSONArray medications_json = result_json.getJSONArray("medications");
-
-                text += "- Último chequeo médico : " + result_json.get("lastMedicalCheck").toString() + "\n\n";
-                text += "- Tipo sangre : " + result_json.getJSONObject("general").get("bloodType").toString() + "\n\n";
-                text += "- Donante de órganos : " +
-                        ((general_json.get("organDonor").toString().equals("true")) ? "Sí" : "No") + "\n\n";
-                for(int i=0;i<general_json.getJSONArray("allergies").length();i++) {
-                    text += "- Alergia : " + general_json.getJSONArray("allergies").get(i).toString() + "\n\n";
-                }
-                for(int i=0;i<surgeries_json.length();i++) {
-
-                    JSONObject operacion_json = surgeries_json.getJSONObject(i);
-
-                    text += "- Operacion : \n";
-                    text += "\t" + "Institución : " + operacion_json.get("institution") + "\n";
-                    text += "\t" + "Tipo : " + operacion_json.get("type") + "\n";
-                    text += "\t" + "Fecha : " + operacion_json.get("date") + "\n";
-                    text += "\t" + "Motivo : " + operacion_json.get("reason") + "\n\n";
-                }
-
-                for(int i=0;i<hospitalizations_json.length();i++) {
-
-                    JSONObject internaciones_json = hospitalizations_json.getJSONObject(i);
-
-                    text += "- Internación : \n";
-                    text += "\t" + "Institución : " + internaciones_json.get("institution") + "\n";
-                    text += "\t" + "Tipo : " + internaciones_json.get("type") + "\n";
-                    text += "\t" + "Fecha : " + internaciones_json.get("date") + "\n";
-                    text += "\t" + "Motivo : " + internaciones_json.get("reason") + "\n\n";
-                }
-
-                for(int i=0;i<pathologies_json.length();i++) {
-
-                    JSONObject patologias_json = pathologies_json.getJSONObject(i);
-
-                    text += "- Patología : \n";
-                    text += "\t" + "Tipo : " + patologias_json.get("type") + "\n";
-                    text += "\t" + "Descripción : " + patologias_json.get("description") + "\n";
-                    text += "\t" + "Fecha : " + patologias_json.get("date") + "\n\n";
-                }
-
-                for(int i=0;i<medications_json.length();i++) {
-
-                    JSONObject medicaciones_json = medications_json.getJSONObject(i);
-
-                    text += "- Medicación : \n";
-                    text += "\t" + "Nombre : " + medicaciones_json.get("name") + "\n";
-                    text += "\t" + "Descripcion : " + medicaciones_json.get("description") + "\n";
-                    text += "\t" + "Cantidad : " + medicaciones_json.get("amount") + "\n";
-                    text += "\t" + "Período : " + medicaciones_json.get("period") + "\n\n";
-                }
-                textview_see_more.setText(text);
-                textview_see_more.setMovementMethod(new ScrollingMovementMethod());
-            }
-            catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
+

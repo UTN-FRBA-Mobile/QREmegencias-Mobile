@@ -108,7 +108,7 @@ public class ApiClient {
 
     okBuilder = new OkHttpClient.Builder();
 
-    String baseUrl = "https://fj.rrramundo.com.ar/qremergencias/";
+    String baseUrl = "https://qr.rrramundo.com.ar/qremergencias/";
     if(!baseUrl.endsWith("/"))
       baseUrl = baseUrl + "/";
 
@@ -371,6 +371,11 @@ class OffsetDateTimeTypeAdapter extends TypeAdapter<OffsetDateTime> {
         if (date.endsWith("+0000")) {
             date = date.substring(0, date.length()-5) + "Z";
         }
+
+        if (!date.endsWith("Z")) {
+          date = date + "Z";
+        }
+
         return OffsetDateTime.parse(date, formatter);
     }
   }
