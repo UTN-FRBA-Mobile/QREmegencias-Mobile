@@ -1,6 +1,8 @@
 package com.qre.ui.activities;
 
 import android.content.Intent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,6 +13,9 @@ import com.qre.injection.Injector;
 import com.qre.models.LoginUserDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
+import com.qre.services.preference.PreferencesService;
+import com.qre.services.preference.impl.DefaultPreferenceService;
+import com.qre.services.preference.impl.UserPreferenceService;
 
 import javax.inject.Inject;
 
@@ -21,16 +26,24 @@ import butterknife.OnClick;
 public class LoginActivity extends AppCompatActivity {
 
 	private static final String TAG = LoginActivity.class.getSimpleName();
-	public static final String LOGGED_USER = "LoggedUser";
 
 	@Inject
 	NetworkService networkService;
+
+	@Inject
+	UserPreferenceService preferencesService;
 
 	@BindView(R.id.input_email)
 	EditText vEmail;
 
 	@BindView(R.id.input_password)
 	EditText vPassword;
+
+	public static Intent getIntent(final Context context) {
+		Intent intent = new Intent(context, LoginActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		return intent;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,22 +53,30 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Injector.getServiceComponent().inject(this);
+
+        if (preferencesService.getUsername() != null) {
+			Log.i(TAG, "User " + preferencesService.getUsername() + " is already logged");
+			startActivity(HomeActivity.getIntent(this));
+		}
     }
 
 	@OnClick(R.id.btn_login)
 	public void login() {
-		Log.i(TAG, "Login with email " + vEmail.getText().toString() + " and password " + vPassword.getText().toString());
-		networkService.login(vEmail.getText().toString(), vPassword.getText().toString(), new NetCallback<LoginUserDTO>() {
+		final String username = vEmail.getText().toString();
+		String password = vPassword.getText().toString();
+		Log.i(TAG, "Login with email " + username + " and password " + password);
+		networkService.login(username, password, new NetCallback<LoginUserDTO>() {
 			@Override
 			public void onSuccess(LoginUserDTO response) {
-				final Intent intent = HomeActivity.getIntent(LoginActivity.this);
-				intent.putExtra(LOGGED_USER, response.getName());
-				startActivity(intent);
+				Log.i(TAG, "User " + response.getName() + " " + response.getLastName() + " logged successfully");
+				preferencesService.putUsername(username);
+				preferencesService.putRole(response.getRoles().iterator().next());
+				startActivity(HomeActivity.getIntent(LoginActivity.this));
 			}
 
 			@Override
 			public void onFailure(Throwable exception) {
-				Log.e(TAG, "Error en el login", exception);
+				Log.e(TAG, "Cannot login with username " + vEmail.getText().toString(), exception);
 			}
 		});
 	}

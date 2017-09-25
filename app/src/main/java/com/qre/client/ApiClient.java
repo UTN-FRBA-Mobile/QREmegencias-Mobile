@@ -108,7 +108,7 @@ public class ApiClient {
 
     okBuilder = new OkHttpClient.Builder();
 
-    String baseUrl = "https://qr.rrramundo.com.ar/qremergencias/";
+    String baseUrl = "https://fj.rrramundo.com.ar/qremergencias/";
     if(!baseUrl.endsWith("/"))
       baseUrl = baseUrl + "/";
 

@@ -39,9 +39,12 @@ public class RetrofitNetworkService implements NetworkService {
 		call.enqueue(new Callback<T>() {
 			@Override
 			public void onResponse(final Call<T> call, final Response<T> response) {
-				if (response.isSuccessful()) {
-					if (callback != null) {
+				if (callback != null) {
+					if (response.isSuccessful()) {
 						callback.onSuccess(response.body());
+					} else {
+						String message = (response.message() != null && !response.message().isEmpty()) ? response.message() : response.code() + " error executing a network call";
+						callback.onFailure(new NetworkException(response.code(), message));
 					}
 				}
 			}
