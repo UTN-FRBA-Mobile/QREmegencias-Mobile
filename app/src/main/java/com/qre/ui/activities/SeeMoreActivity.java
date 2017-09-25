@@ -3,13 +3,10 @@ package com.qre.ui.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.qre.R;
@@ -20,27 +17,11 @@ import com.qre.models.MedicationDTO;
 import com.qre.models.PathologyDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
-import com.qre.utils.CryptoUtils;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class SeeMoreActivity extends AppCompatActivity {
 
