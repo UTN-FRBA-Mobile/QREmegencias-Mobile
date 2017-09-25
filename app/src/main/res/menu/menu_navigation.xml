@@ -1,0 +1,38 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/menu_medical" android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_medical_profile"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="@string/menu_medical_profile"/>
+        <item
+            android:id="@+id/menu_medical_emergency_data"
+            android:icon="@drawable/ic_local_hospital_black_24dp"
+            android:title="@string/menu_medical_emergency_data"/>
+        <item
+            android:id="@+id/menu_medical_edit_user"
+            android:icon="@drawable/ic_create_black_24dp"
+            android:title="@string/menu_medical_edit_user"/>
+    </group>
+    <group android:id="@+id/menu_user" android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_user_profile"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="@string/menu_user_profile"/>
+        <item
+            android:id="@+id/menu_user_manage_qr"
+            android:icon="@drawable/ic_crop_free_black_24dp"
+            android:title="@string/menu_user_manage_qr"/>
+        <item
+            android:id="@+id/menu_user_clinical_history"
+            android:icon="@drawable/ic_assignment_black_24dp"
+            android:title="@string/menu_user_clinical_history"/>
+        <item
+            android:id="@+id/menu_user_emergency_data"
+            android:icon="@drawable/ic_local_hospital_black_24dp"
+            android:title="@string/menu_user_emergency_data"/>
+    </group>
+    <item
+        android:id="@+id/menu_logout"
+        android:icon="@drawable/ic_exit_to_app_black_24dp"
+        android:title="@string/menu_logout"/>
+</menu>

@@ -54,4 +54,5 @@ public abstract class PreferencesService {
 		}
 		return gson.fromJson(json, clazz);
 	}
+
 }
