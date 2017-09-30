@@ -40,7 +40,6 @@ public class EmergencyDataActivity extends AppCompatActivity {
 	@BindView(R.id.emergency_data_contacts)
 	TextView emergencyDataContacts;
 
-	private String url;
 	private String uuid;
 
 	@Override
@@ -56,7 +55,6 @@ public class EmergencyDataActivity extends AppCompatActivity {
 		try {
 			final byte[] bytes = CryptoUtils.decryptText(result, key);
 			final EmergencyData emergencyData = QRUtils.parseQR(bytes);
-			this.url = "https://qr.rrramundo.com.ar/qremergencias/api/emergencyData/" + emergencyData.getUUID();
 			this.uuid = emergencyData.getUUID();
 			emergencyDataAge.setText("Edad: " + String.valueOf(emergencyData.getAge()));
 			emergencyDataAllergies.setText("Alergias: " + emergencyData.getAllergies().toString());
@@ -74,7 +72,6 @@ public class EmergencyDataActivity extends AppCompatActivity {
 	@OnClick(R.id.btn_see_more)
 	public void seeMore() {
 		final Intent intent = SeeMoreActivity.getIntent(this);
-		intent.putExtra("url", this.url);
 		intent.putExtra("uuid", this.uuid);
 		startActivity(intent);
 	}
