@@ -56,13 +56,25 @@ public class EmergencyDataActivity extends AppCompatActivity {
 			final byte[] bytes = CryptoUtils.decryptText(result, key);
 			final EmergencyData emergencyData = QRUtils.parseQR(bytes);
 			this.uuid = emergencyData.getUUID();
-			emergencyDataAge.setText("Edad: " + String.valueOf(emergencyData.getAge()));
-			emergencyDataAllergies.setText("Alergias: " + emergencyData.getAllergies().toString());
-			emergencyDataPathologies.setText("Patologias: " + emergencyData.getPathologies().toString());
-			emergencyDataBloodType.setText("Tipo de Sangre: " + emergencyData.getBloodType());
-			emergencyDataSex.setText("Sexo: " + emergencyData.getSex());
+			emergencyDataAge.setText("- Edad: " + String.valueOf(emergencyData.getAge()));
+			if (!emergencyData.getAllergies().isEmpty()) {
+				String allergies = "- Alergias: \n";
+				for (String allergy : emergencyData.getAllergies()) {
+					allergies += "\t + " + allergy + "\n";
+				}
+				emergencyDataAllergies.setText(allergies);
+			}
+			if (!emergencyData.getAllergies().isEmpty()) {
+				String pathologies = "- Patologias: \n";
+				for (String pathology : emergencyData.getPathologies()) {
+					pathologies += "\t + " + pathology + "\n";
+				}
+				emergencyDataPathologies.setText(pathologies);
+			}
+			emergencyDataBloodType.setText("- Tipo de Sangre: " + emergencyData.getBloodType());
+			emergencyDataSex.setText("- Sexo: " + emergencyData.getSex());
 			if (emergencyData.getContactName() != null) {
-				emergencyDataContacts.setText("Contacto: " + emergencyData.getContactName() + " " + emergencyData.getContactPhone());
+				emergencyDataContacts.setText("- Contacto: " + emergencyData.getContactName() + " " + emergencyData.getContactPhone());
 			}
 		} catch (final Exception e) {
 			Log.e(TAG, "Error leyendo QR", e);
