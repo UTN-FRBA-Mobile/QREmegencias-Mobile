@@ -44,11 +44,19 @@ public class MedicationDTO implements Parcelable {
    */
   @JsonAdapter(PeriodEnum.Adapter.class)
   public enum PeriodEnum {
+    /*
     DAILY("DAILY"),
     
     WEEKLY("WEEKLY"),
     
-    MONTHLY("MONTHLY");
+    MONTHLY("MONTHLY"),
+    */
+
+    diariamente("diariamente"),
+    semanalmente("semanalmente"),
+    mensualmente("mensualmente"),
+
+    ;
 
     private String value;
 

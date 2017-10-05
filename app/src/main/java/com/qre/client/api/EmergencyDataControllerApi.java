@@ -61,4 +61,13 @@ public interface EmergencyDataControllerApi {
           @Body EmergencyDataDTO emergencyDataDTO, @Query("userId") String userId
   );
 
+  @Headers({
+          "Content-Type:application/json"
+  })
+  @GET("api/emergencyData/{uuid}")
+  Call<EmergencyDataDTO> getPublicEmergencyDataUsingGET(
+          @Path("uuid") String uuid
+  );
+
+
 }

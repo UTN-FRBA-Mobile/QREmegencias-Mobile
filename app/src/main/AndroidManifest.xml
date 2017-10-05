@@ -3,6 +3,7 @@
           package="com.qre">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name="com.qre.QREApplication"
@@ -20,6 +21,13 @@
         </activity>
 
         <activity android:name="com.qre.ui.activities.HomeActivity"/>
+
+        <activity android:name="com.qre.ui.activities.ScanActivity" />
+
+        <activity android:name="com.qre.ui.activities.EmergencyDataActivity" />
+
+        <activity android:name="com.qre.ui.activities.SeeMoreActivity" />
+
 
     </application>
 

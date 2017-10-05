@@ -6,6 +6,7 @@ import com.qre.injection.modules.PreferencesModule;
 import com.qre.services.networking.RetrofitNetworkService;
 import com.qre.ui.activities.HomeActivity;
 import com.qre.ui.activities.LoginActivity;
+import com.qre.ui.activities.SeeMoreActivity;
 
 import javax.inject.Singleton;
 
@@ -20,5 +21,7 @@ public interface ServiceComponent {
 	void inject(final HomeActivity homeActivity);
 
     void inject(final LoginActivity loginActivity);
+
+    void inject(final SeeMoreActivity seeMoreActivity);
 
 }

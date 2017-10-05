@@ -45,9 +45,16 @@ public class HospitalizationDTO implements Parcelable {
    */
   @JsonAdapter(TypeEnum.Adapter.class)
   public enum TypeEnum {
+    /*
     SURGERY("SURGERY"),
     
-    ADMISSION("ADMISSION");
+    ADMISSION("ADMISSION"),
+    */
+
+    cirugia("cirugia"),
+    admision("admision"),
+
+    ;
 
     private String value;
 

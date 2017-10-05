@@ -42,13 +42,21 @@ public class PathologyDTO implements Parcelable {
    */
   @JsonAdapter(TypeEnum.Adapter.class)
   public enum TypeEnum {
+    /*
     ANATOMICAL("ANATOMICAL"),
-    
+
     CLINICAL("CLINICAL"),
-    
+
     MOLECULAR("MOLECULAR"),
-    
+
     ORAL("ORAL");
+    */
+    insuficiencia_suprarrenal("insuficiencia_suprarrenal"),
+    asma("asma"),
+    hipertension("hipertension"),
+    antecedentes_oncologicos("antecedentes_oncologicos"),
+    otro("otro"),
+    ;
 
     private String value;
 

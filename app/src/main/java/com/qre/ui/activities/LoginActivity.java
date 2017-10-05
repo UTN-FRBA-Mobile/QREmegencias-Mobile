@@ -1,5 +1,6 @@
 package com.qre.ui.activities;
 
+import android.content.Intent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -78,6 +79,11 @@ public class LoginActivity extends AppCompatActivity {
 				Log.e(TAG, "Cannot login with username " + vEmail.getText().toString(), exception);
 			}
 		});
+	}
+
+	@OnClick(R.id.btn_scan)
+	public void scan() {
+		startActivity(ScanActivity.getIntent(this));
 	}
 
 	@OnClick(R.id.link_forgot_password)
