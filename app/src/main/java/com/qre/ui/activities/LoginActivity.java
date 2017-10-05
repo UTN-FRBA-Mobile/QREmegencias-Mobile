@@ -2,7 +2,6 @@ package com.qre.ui.activities;
 
 import android.content.Intent;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,8 +12,6 @@ import com.qre.injection.Injector;
 import com.qre.models.LoginUserDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
-import com.qre.services.preference.PreferencesService;
-import com.qre.services.preference.impl.DefaultPreferenceService;
 import com.qre.services.preference.impl.UserPreferenceService;
 
 import javax.inject.Inject;
