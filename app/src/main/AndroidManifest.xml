@@ -21,11 +21,9 @@
         </activity>
 
         <activity android:name="com.qre.ui.activities.HomeActivity"/>
-
         <activity android:name="com.qre.ui.activities.ScanActivity" />
-
+        <activity android:name="com.qre.ui.activities.ScanForCodeActivity" />
         <activity android:name="com.qre.ui.activities.EmergencyDataActivity" />
-
         <activity android:name="com.qre.ui.activities.SeeMoreActivity" />
 
 

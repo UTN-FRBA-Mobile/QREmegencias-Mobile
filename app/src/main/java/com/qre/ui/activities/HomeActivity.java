@@ -73,11 +73,6 @@ public class HomeActivity extends AppCompatActivity {
 		initDrawer();
 	}
 
-	@OnClick(R.id.btn_scan)
-	public void scan() {
-		startActivity(ScanActivity.getIntent(this));
-	}
-
 	private void initDrawer() {
 
 		String role = userPreferenceService.getRole();

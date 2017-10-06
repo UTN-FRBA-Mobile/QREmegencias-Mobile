@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.qre.client.ApiClient;
 import com.qre.client.api.EmergencyDataControllerApi;
+import com.qre.client.api.MobileTestControllerApi;
 import com.qre.client.api.UserFrontControllerApi;
 import com.qre.services.networking.NetworkService;
 import com.qre.services.networking.RetrofitNetworkService;
@@ -48,7 +49,7 @@ public class NetModule {
     OkHttpClient provideOkhttpClient(final Cache cache) {
         final OkHttpClient.Builder client = new OkHttpClient.Builder();
         final HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
         client.cache(cache);
         client.addInterceptor(logging);
         return client.build();
@@ -72,8 +73,15 @@ public class NetModule {
     }
 
     @Provides
+    MobileTestControllerApi provideMobileTestControllerApi(final ApiClient apiClient) {
+        return apiClient.createService(MobileTestControllerApi.class);
+    }
+
+    @Provides
     @Singleton
-    NetworkService provideNetworkService(final UserFrontControllerApi restApi, final EmergencyDataControllerApi emergencyDataControllerApi) {
-        return new RetrofitNetworkService(restApi, emergencyDataControllerApi);
+    NetworkService provideNetworkService(final UserFrontControllerApi restApi,
+                                         final MobileTestControllerApi mobileTestControllerApi,
+                                         final EmergencyDataControllerApi emergencyDataControllerApi) {
+        return new RetrofitNetworkService(restApi, emergencyDataControllerApi, mobileTestControllerApi);
     }
 }
