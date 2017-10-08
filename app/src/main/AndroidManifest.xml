@@ -19,16 +19,15 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
+        <activity android:name=".ui.activities.EmergencyDataActivity"
+            android:label="@string/emergency_data_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.qre.ui.activities.HomeActivity"/>
-
         <activity android:name="com.qre.ui.activities.ScanActivity" />
-
-        <activity android:name="com.qre.ui.activities.EmergencyDataActivity" />
-
         <activity android:name="com.qre.ui.activities.SeeMoreActivity" />
-
-
     </application>
 
 </manifest>
