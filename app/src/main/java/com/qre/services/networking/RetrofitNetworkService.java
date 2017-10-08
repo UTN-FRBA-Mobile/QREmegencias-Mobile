@@ -30,8 +30,8 @@ public class RetrofitNetworkService implements NetworkService {
 	}
 
 	@Override
-	public void getPublicEmergencyData(final String uuid, final NetCallback<EmergencyDataDTO> callback) {
-		final Call<EmergencyDataDTO> call = emergencyDataControllerApi.getPublicEmergencyDataUsingGET(uuid);
+	public void getPublicEmergencyData(final String uuid, final NetCallback<String> callback) {
+		final Call<String> call = emergencyDataControllerApi.getPublicEmergencyDataUsingGET(uuid);
 		enqueue(call, callback);
 	}
 

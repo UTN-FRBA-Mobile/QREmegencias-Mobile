@@ -65,7 +65,7 @@ public interface EmergencyDataControllerApi {
           "Content-Type:application/json"
   })
   @GET("api/emergencyData/{uuid}")
-  Call<EmergencyDataDTO> getPublicEmergencyDataUsingGET(
+  Call<String> getPublicEmergencyDataUsingGET(
           @Path("uuid") String uuid
   );
 
