@@ -32,8 +32,7 @@ public class NetModule {
     @Singleton
     Cache provideHttpCache(final Application application) {
         final int cacheSize = 10 * 1024 * 1024;
-        final Cache cache = new Cache(application.getCacheDir(), cacheSize);
-        return cache;
+        return new Cache(application.getCacheDir(), cacheSize);
     }
 
     @Provides
@@ -59,6 +58,7 @@ public class NetModule {
     ApiClient provideApiClient(final OkHttpClient okHttpClient) {
         final ApiClient apiClient = new ApiClient();
         apiClient.configureFromOkclient(okHttpClient);
+        apiClient.getAdapterBuilder().baseUrl(mBaseUrl);
         return apiClient;
     }
 

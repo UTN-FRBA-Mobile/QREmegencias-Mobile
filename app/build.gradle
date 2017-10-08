@@ -73,6 +73,7 @@ ext {
     zxingVersion = "3.3.0"
     junitVersion = "4.12"
     espressoVersion = "2.2.2"
+    json_fire_version = "1.8.0"
 }
 
 dependencies {
@@ -103,6 +104,7 @@ dependencies {
 
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
     compile "com.squareup.retrofit2:converter-scalars:$gsonRetrofitConverter"
+    compile "io.gsonfire:gson-fire:$json_fire_version"
 
     // Dagger
     compile "com.google.dagger:dagger:$daggerVersion"

@@ -53,9 +53,9 @@ public class ScanForCodeActivity extends AppCompatActivity implements ZXingScann
 	public void handleResult(Result rawResult) {
 		Log.v(TAG, rawResult.getText());
 		//mScannerView.resumeCameraPreview(this);
-		networkService.getVerificationCode(rawResult.getText(), new NetCallback<Boolean>() {
+		networkService.getVerificationCode(rawResult.getText(), new NetCallback<Integer>() {
 			@Override
-			public void onSuccess(Boolean response) {
+			public void onSuccess(Integer response) {
 				Log.v(TAG, response.toString());
 			}
 

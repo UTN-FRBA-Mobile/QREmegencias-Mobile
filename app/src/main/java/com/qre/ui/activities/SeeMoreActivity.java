@@ -63,7 +63,7 @@ public class SeeMoreActivity extends AppCompatActivity {
                 text += "- Último chequeo médico : " + response.getLastMedicalCheck() + "\n\n";
                 text += "- Tipo sangre : " + response.getGeneral().getBloodType() + "\n\n";
                 text += "- Donante de órganos : " +
-                        ((response.getGeneral().getOrganDonor()) ? "Sí" : "No") + "\n\n";
+                        ((response.getGeneral().isOrganDonor()) ? "Sí" : "No") + "\n\n";
 
                 if (!response.getGeneral().getAllergies().isEmpty()) {
                     text += "- Alergias: \n";

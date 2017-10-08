@@ -5,6 +5,7 @@ import com.qre.client.api.MobileTestControllerApi;
 import com.qre.client.api.UserFrontControllerApi;
 import com.qre.models.EmergencyDataDTO;
 import com.qre.models.LoginUserDTO;
+import com.qre.models.VerificationDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,14 +35,22 @@ public class RetrofitNetworkService implements NetworkService {
 
 	@Override
 	public void getPublicEmergencyData(final String uuid, final NetCallback<EmergencyDataDTO> callback) {
-		final Call<EmergencyDataDTO> call = emergencyDataControllerApi.getPublicEmergencyDataUsingGET(uuid);
+		final Call<EmergencyDataDTO> call = emergencyDataControllerApi.getEmergencyDataByUuidUsingGET(uuid);
 		enqueue(call, callback);
 	}
 
 	@Override
-	public void getVerificationCode(final String text, final NetCallback<Boolean> callback) {
-		final Call<Boolean> call = mobileTestControllerApi.verifySignatureUsingPOST("PRUEBA", text);
+	public void getVerificationCode(final String text, final NetCallback<Integer> callback) {
+		final Call<Integer> call = mobileTestControllerApi.createTempCodeUsingPUT(text);
 		enqueue(call, callback);
+	}
+
+	private String getSignature(String text) {
+		return "";
+	}
+
+	private String getPlainText(String text) {
+		return "";
 	}
 
 	private <T> void enqueue(final Call<T> call, final NetCallback<T> callback) {
