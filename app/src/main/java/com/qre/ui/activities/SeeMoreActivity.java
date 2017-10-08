@@ -12,11 +12,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.qre.R;
 import com.qre.injection.Injector;
 import com.qre.models.EmergencyDataDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
+<<<<<<< HEAD
 import com.qre.ui.adapters.EmergencyDataAdapter;
 import com.qre.ui.components.DetailValueView;
 
@@ -24,11 +27,20 @@ import org.threeten.bp.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
+=======
+import com.qre.utils.CryptoUtils;
+
+import org.aaronhe.threetengson.ThreeTenGsonAdapter;
+
+import java.io.InputStream;
+>>>>>>> encripcion de la web
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static org.aaronhe.threetengson.ThreeTenGsonAdapter.*;
 
 public class SeeMoreActivity extends AppCompatActivity {
 
@@ -79,42 +91,48 @@ public class SeeMoreActivity extends AppCompatActivity {
 
         vLoader.setVisibility(View.VISIBLE);
 
-        networkService.getPublicEmergencyData(getIntent().getStringExtra("uuid"), new NetCallback<EmergencyDataDTO>() {
-
+        networkService.getPublicEmergencyData(getIntent().getStringExtra("uuid"), new NetCallback<String>() {
             @Override
-            public void onSuccess(EmergencyDataDTO response) {
+            public void onSuccess(String response) {
 
                 vLoader.setVisibility(View.GONE);
 
-                vLastMedicalCheck.setValue(response.getLastMedicalCheck().format(DATE_FORMATTER));
-                vBloodType.setValue(response.getGeneral().getBloodType());
-                vOrganDonor.setValue(response.getGeneral().isOrganDonor() ? getString(R.string.yes) : getString(R.string.no));
+                final InputStream key = getResources().openRawResource(R.raw.privatekey);
+                try {
+
+                    String decrypted = new String(CryptoUtils.decryptText(response, key),"ISO-8859-1").replaceAll("00:00:00","00:00:00Z");
+                    Gson gson = registerAll((new GsonBuilder())).create();
+                    EmergencyDataDTO emergencyDataDTO = gson.fromJson(decrypted,EmergencyDataDTO.class);
+
+                vLastMedicalCheck.setValue(emergencyDataDTO.getLastMedicalCheck().format(DATE_FORMATTER));
+                vBloodType.setValue(emergencyDataDTO.getGeneral().getBloodType());
+                vOrganDonor.setValue(emergencyDataDTO.getGeneral().isOrganDonor() ? getString(R.string.yes) : getString(R.string.no));
 
                 List<Object> collection = new ArrayList<>();
 
-                if (!response.getGeneral().getAllergies().isEmpty()) {
+                if (!emergencyDataDTO.getGeneral().getAllergies().isEmpty()) {
                     collection.add(R.string.allergies);
-                    collection.addAll(response.getGeneral().getAllergies());
+                    collection.addAll(emergencyDataDTO.getGeneral().getAllergies());
                 }
 
-                if (!response.getSurgeries().isEmpty()) {
+                if (!emergencyDataDTO.getSurgeries().isEmpty()) {
                     collection.add(R.string.surgeries);
-                    collection.addAll(response.getSurgeries());
+                    collection.addAll(emergencyDataDTO.getSurgeries());
                 }
 
-                if (!response.getHospitalizations().isEmpty()) {
+                if (!emergencyDataDTO.getHospitalizations().isEmpty()) {
                     collection.add(R.string.hospitalizations);
-                    collection.addAll(response.getHospitalizations());
+                    collection.addAll(emergencyDataDTO.getHospitalizations());
                 }
 
-                if (!response.getPathologies().isEmpty()) {
+                if (!emergencyDataDTO.getPathologies().isEmpty()) {
                     collection.add(R.string.pathologies);
-                    collection.addAll(response.getPathologies());
+                    collection.addAll(emergencyDataDTO.getPathologies());
                 }
 
-                if (!response.getMedications().isEmpty()) {
+                if (!emergencyDataDTO.getMedications().isEmpty()) {
                     collection.add(R.string.medications);
-                    collection.addAll(response.getMedications());
+                    collection.addAll(emergencyDataDTO.getMedications());
                 }
 
                 vCollection.setLayoutManager(new LinearLayoutManager(SeeMoreActivity.this));
@@ -122,9 +140,13 @@ public class SeeMoreActivity extends AppCompatActivity {
                 DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(vCollection.getContext(), DividerItemDecoration.VERTICAL);
                 vCollection.addItemDecoration(dividerItemDecoration);
 
-                getIntent().putExtra("response", response.toString());
+                getIntent().putExtra("response", emergencyDataDTO.toString());
 
-                Log.d(TAG, "JSON: " + response.toString() );
+                Log.d(TAG, "JSON: " + emergencyDataDTO.toString() );
+
+                } catch (final Exception e) {
+                    Log.e(TAG, "ERROR:  Error al desencriptar contenido web", e);
+                }
             }
 
             @Override
