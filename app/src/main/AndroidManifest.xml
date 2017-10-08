@@ -25,9 +25,14 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activities.SeeMoreActivity"
+            android:label="@string/see_more_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.qre.ui.activities.HomeActivity"/>
         <activity android:name="com.qre.ui.activities.ScanActivity" />
-        <activity android:name="com.qre.ui.activities.SeeMoreActivity" />
     </application>
 
 </manifest>

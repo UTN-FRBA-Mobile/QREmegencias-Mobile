@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,6 +30,10 @@ import butterknife.OnClick;
 public class EmergencyDataActivity extends AppCompatActivity {
 
 	private static final String TAG = EmergencyDataActivity.class.getSimpleName();
+
+	public static Intent getIntent(final Context context) {
+		return new Intent(context, EmergencyDataActivity.class);
+	}
 
 	@BindView(R.id.toolbar)
 	Toolbar vToolbar;
@@ -130,7 +135,7 @@ public class EmergencyDataActivity extends AppCompatActivity {
 			}
 
 		} catch (final Exception e) {
-			Log.e(TAG, "Error leyendo QR", e);
+			Log.e(TAG, "Cannot read QR", e);
 		}
 	}
 
@@ -141,8 +146,14 @@ public class EmergencyDataActivity extends AppCompatActivity {
 		startActivity(intent);
 	}
 
-	public static Intent getIntent(final Context context) {
-		return new Intent(context, EmergencyDataActivity.class);
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				finish();
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 }
