@@ -11,11 +11,18 @@ import com.qre.client.api.UserFrontControllerApi;
 import com.qre.services.networking.NetworkService;
 import com.qre.services.networking.RetrofitNetworkService;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -47,6 +54,24 @@ public class NetModule {
     @Singleton
     OkHttpClient provideOkhttpClient(final Cache cache) {
         final OkHttpClient.Builder client = new OkHttpClient.Builder();
+        client.cookieJar(new CookieJar() {
+            private Cookie session = null;
+
+            @Override
+            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                for (Cookie cookie: cookies) {
+                    if (cookie.name().equalsIgnoreCase("SESSION")) {
+                        session = cookie;
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public List<Cookie> loadForRequest(HttpUrl url) {
+                return session != null ? Collections.singletonList(session) : new ArrayList<Cookie>();
+            }
+        });
         final HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
         client.cache(cache);
