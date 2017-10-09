@@ -1,66 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="56dp"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:gravity="top">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <TextView android:id="@+id/emergency_data_title"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:text="@string/emergency_data_title"
-        android:gravity="center"
-        android:textSize="24sp"/>
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <TextView android:id="@+id/emergency_data_blood_type"
-        android:layout_width="match_parent"
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="start"
-        android:textSize="16sp"/>
+        android:fillViewport="true">
 
-    <TextView android:id="@+id/emergency_data_age"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:textSize="16sp"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="16dp">
 
-    <TextView android:id="@+id/emergency_data_sex"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:textSize="16sp"/>
+            <!-- Blood type -->
 
-    <TextView android:id="@+id/emergency_data_allergies"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:textSize="16sp"/>
+            <com.qre.ui.components.DetailValueView
+                android:id="@+id/blood_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_water_grey600_24dp"
+                app:title="@string/blood_type"
+                app:value="@string/app_name" />
 
-    <TextView android:id="@+id/emergency_data_pathologies"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:textSize="16sp"/>
+            <!-- Age -->
 
-    <TextView android:id="@+id/emergency_data_contacts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:textSize="16sp"/>
+            <com.qre.ui.components.DetailValueView
+                android:id="@+id/age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_cake_variant_grey600_24dp"
+                app:title="@string/age"
+                app:value="@string/app_name" />
 
-    <Button
-        android:id="@+id/btn_see_more"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:padding="12dp"
-        android:text="@string/see_more"
-        android:theme="@style/AppTheme.Button"/>
+            <!-- Sex -->
 
+            <com.qre.ui.components.DetailValueView
+                android:id="@+id/sex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_gender_male_female_grey600_24dp"
+                app:title="@string/sex"
+                app:value="@string/app_name" />
+
+            <!-- Allergies -->
+
+            <TextView
+                android:id="@+id/allergies_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/allergies"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:padding="16dp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/allergies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:scrollbars="none"/>
+
+            <!-- Pathologies -->
+
+            <TextView
+                android:id="@+id/pathologies_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pathologies"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:padding="16dp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/pathologies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:scrollbars="none"/>
+
+            <!-- Contact -->
+
+            <TextView
+                android:id="@+id/contact_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:padding="16dp"/>
+
+            <com.qre.ui.components.DetailValueView
+                android:id="@+id/contact_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_account_grey600_24dp"
+                app:title="@string/name"
+                app:value="@string/app_name" />
+
+            <com.qre.ui.components.DetailValueView
+                android:id="@+id/contact_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_phone_grey600_24dp"
+                app:title="@string/phone"
+                app:value="@string/app_name" />
+
+            <Button
+                android:id="@+id/btn_see_more"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/see_more"
+                android:theme="@style/AppTheme.Button"
+                android:layout_margin="16dp"/>
+
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
 </LinearLayout>
