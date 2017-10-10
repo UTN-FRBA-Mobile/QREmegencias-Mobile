@@ -100,11 +100,13 @@ dependencies {
     //Gson
     compile "com.google.code.gson:gson:$gsonVersion"
     compile "com.squareup.retrofit2:converter-gson:$gsonRetrofitConverter"
-
-
-    compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
-    compile "com.squareup.retrofit2:converter-scalars:$gsonRetrofitConverter"
     compile "io.gsonfire:gson-fire:$json_fire_version"
+
+    // JSR-310
+    compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
+
+    // Retrofit Scalars
+    compile "com.squareup.retrofit2:converter-scalars:$gsonRetrofitConverter"
 
     // Dagger
     compile "com.google.dagger:dagger:$daggerVersion"
