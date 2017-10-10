@@ -17,7 +17,7 @@ public class Injector {
 		serviceComponent = DaggerServiceComponent.builder()
 				.appModule(new AppModule(application))
 				.preferencesModule(new PreferencesModule())
-				.netModule(new NetModule("https://qr.rrramundo.com.ar/qremergencias/api/"))
+				.netModule(new NetModule("https://qr.rrramundo.com.ar/qremergencias/"))
 				.build();
 
 	}

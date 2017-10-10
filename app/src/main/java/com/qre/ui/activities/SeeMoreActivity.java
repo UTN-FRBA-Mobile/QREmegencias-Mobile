@@ -1,6 +1,5 @@
 package com.qre.ui.activities;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,30 +8,22 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.qre.R;
 import com.qre.injection.Injector;
 import com.qre.models.EmergencyDataDTO;
-import com.qre.models.HospitalizationDTO;
-import com.qre.models.MedicationDTO;
-import com.qre.models.PathologyDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
 import com.qre.ui.adapters.EmergencyDataAdapter;
-import com.qre.ui.adapters.EnumerationAdapter;
 import com.qre.ui.components.DetailValueView;
 
 import org.threeten.bp.format.DateTimeFormatter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -97,7 +88,7 @@ public class SeeMoreActivity extends AppCompatActivity {
 
                 vLastMedicalCheck.setValue(response.getLastMedicalCheck().format(DATE_FORMATTER));
                 vBloodType.setValue(response.getGeneral().getBloodType());
-                vOrganDonor.setValue(response.getGeneral().getOrganDonor() ? getString(R.string.yes) : getString(R.string.no));
+                vOrganDonor.setValue(response.getGeneral().isOrganDonor() ? getString(R.string.yes) : getString(R.string.no));
 
                 List<Object> collection = new ArrayList<>();
 

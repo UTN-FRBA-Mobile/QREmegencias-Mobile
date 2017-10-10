@@ -1,10 +1,11 @@
 package com.qre.services.networking;
 
 import com.qre.client.api.EmergencyDataControllerApi;
+import com.qre.client.api.MobileTestControllerApi;
 import com.qre.client.api.UserFrontControllerApi;
-import com.qre.models.EmergencyData;
 import com.qre.models.EmergencyDataDTO;
 import com.qre.models.LoginUserDTO;
+import com.qre.models.VerificationDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -13,13 +14,16 @@ import retrofit2.Response;
 public class RetrofitNetworkService implements NetworkService {
 
 	private final UserFrontControllerApi userFrontControllerApi;
+	private final EmergencyDataControllerApi emergencyDataControllerApi;
+	private final MobileTestControllerApi mobileTestControllerApi;
 
-	public RetrofitNetworkService(final UserFrontControllerApi userFrontControllerApi, EmergencyDataControllerApi emergencyDataControllerApi) {
+	public RetrofitNetworkService(final UserFrontControllerApi userFrontControllerApi,
+								  final EmergencyDataControllerApi emergencyDataControllerApi,
+								  final MobileTestControllerApi mobileTestControllerApi) {
 		this.userFrontControllerApi = userFrontControllerApi;
 		this.emergencyDataControllerApi = emergencyDataControllerApi;
+		this.mobileTestControllerApi = mobileTestControllerApi;
 	}
-
-	private final EmergencyDataControllerApi emergencyDataControllerApi;
 
 
 	@Override
@@ -31,8 +35,22 @@ public class RetrofitNetworkService implements NetworkService {
 
 	@Override
 	public void getPublicEmergencyData(final String uuid, final NetCallback<EmergencyDataDTO> callback) {
-		final Call<EmergencyDataDTO> call = emergencyDataControllerApi.getPublicEmergencyDataUsingGET(uuid);
+		final Call<EmergencyDataDTO> call = emergencyDataControllerApi.getEmergencyDataByUuidUsingGET(uuid);
 		enqueue(call, callback);
+	}
+
+	@Override
+	public void getVerificationCode(final String text, final NetCallback<Integer> callback) {
+		final Call<Integer> call = mobileTestControllerApi.createTempCodeUsingPUT(text);
+		enqueue(call, callback);
+	}
+
+	private String getSignature(String text) {
+		return "";
+	}
+
+	private String getPlainText(String text) {
+		return "";
 	}
 
 	private <T> void enqueue(final Call<T> call, final NetCallback<T> callback) {

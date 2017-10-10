@@ -1,7 +1,7 @@
 package com.qre.ui.activities;
 
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
 	@OnClick(R.id.btn_scan)
 	public void scan() {
-		startActivity(ScanActivity.getIntent(this));
+		startActivity(ScanEmergencyDataActivity.getIntent(this));
 	}
 
 	@OnClick(R.id.link_forgot_password)
