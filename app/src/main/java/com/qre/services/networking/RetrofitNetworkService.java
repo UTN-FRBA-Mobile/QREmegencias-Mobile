@@ -1,11 +1,9 @@
 package com.qre.services.networking;
 
 import com.qre.client.api.EmergencyDataControllerApi;
-import com.qre.client.api.MobileTestControllerApi;
+import com.qre.client.api.TempCodeControllerApi;
 import com.qre.client.api.UserFrontControllerApi;
-import com.qre.models.EmergencyDataDTO;
 import com.qre.models.LoginUserDTO;
-import com.qre.models.VerificationDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -15,11 +13,11 @@ public class RetrofitNetworkService implements NetworkService {
 
 	private final UserFrontControllerApi userFrontControllerApi;
 	private final EmergencyDataControllerApi emergencyDataControllerApi;
-	private final MobileTestControllerApi mobileTestControllerApi;
+	private final TempCodeControllerApi mobileTestControllerApi;
 
 	public RetrofitNetworkService(final UserFrontControllerApi userFrontControllerApi,
 								  final EmergencyDataControllerApi emergencyDataControllerApi,
-								  final MobileTestControllerApi mobileTestControllerApi) {
+								  final TempCodeControllerApi mobileTestControllerApi) {
 		this.userFrontControllerApi = userFrontControllerApi;
 		this.emergencyDataControllerApi = emergencyDataControllerApi;
 		this.mobileTestControllerApi = mobileTestControllerApi;
@@ -34,8 +32,8 @@ public class RetrofitNetworkService implements NetworkService {
 	}
 
 	@Override
-	public void getPublicEmergencyData(final String uuid, final NetCallback<EmergencyDataDTO> callback) {
-		final Call<EmergencyDataDTO> call = emergencyDataControllerApi.getEmergencyDataByUuidUsingGET(uuid);
+	public void getPublicEmergencyData(final String uuid, final NetCallback<String> callback) {
+		final Call<String> call = emergencyDataControllerApi.getEmergencyDataByUuidUsingGET(uuid);
 		enqueue(call, callback);
 	}
 

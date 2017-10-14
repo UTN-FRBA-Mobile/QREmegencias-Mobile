@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.qre.R;
 import com.qre.injection.Injector;
 import com.qre.models.EmergencyDataDTO;
@@ -19,9 +21,11 @@ import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
 import com.qre.ui.adapters.EmergencyDataAdapter;
 import com.qre.ui.components.DetailValueView;
+import com.qre.utils.CryptoUtils;
 
 import org.threeten.bp.format.DateTimeFormatter;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,15 +34,17 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static org.aaronhe.threetengson.ThreeTenGsonAdapter.registerAll;
+
 public class SeeMoreActivity extends AppCompatActivity {
 
     private static final String TAG = SeeMoreActivity.class.getSimpleName();
 
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm");
 
-	public static Intent getIntent(final Context context) {
-		return new Intent(context, SeeMoreActivity.class);
-	}
+    public static Intent getIntent(final Context context) {
+        return new Intent(context, SeeMoreActivity.class);
+    }
 
     @Inject
     NetworkService networkService;
@@ -65,11 +71,11 @@ public class SeeMoreActivity extends AppCompatActivity {
     RecyclerView vCollection;
 
     @Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_seemore);
-		ButterKnife.bind(this);
+        setContentView(R.layout.activity_seemore);
+        ButterKnife.bind(this);
 
         setSupportActionBar(vToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -79,63 +85,73 @@ public class SeeMoreActivity extends AppCompatActivity {
 
         vLoader.setVisibility(View.VISIBLE);
 
-        networkService.getPublicEmergencyData(getIntent().getStringExtra("uuid"), new NetCallback<EmergencyDataDTO>() {
-
+        networkService.getPublicEmergencyData(getIntent().getStringExtra("uuid"), new NetCallback<String>() {
             @Override
-            public void onSuccess(EmergencyDataDTO response) {
+            public void onSuccess(String response) {
 
                 vLoader.setVisibility(View.GONE);
 
-                vLastMedicalCheck.setValue(response.getLastMedicalCheck().format(DATE_FORMATTER));
-                vBloodType.setValue(response.getGeneral().getBloodType());
-                vOrganDonor.setValue(response.getGeneral().isOrganDonor() ? getString(R.string.yes) : getString(R.string.no));
+                final InputStream key = getResources().openRawResource(R.raw.privatekey);
+                try {
 
-                List<Object> collection = new ArrayList<>();
+                    String decrypted = new String(CryptoUtils.decryptText(response, key), "ISO-8859-1").replaceAll("00:00:00", "00:00:00Z");
+                    Gson gson = registerAll((new GsonBuilder())).create();
+                    EmergencyDataDTO emergencyDataDTO = gson.fromJson(decrypted, EmergencyDataDTO.class);
 
-                if (!response.getGeneral().getAllergies().isEmpty()) {
-                    collection.add(R.string.allergies);
-                    collection.addAll(response.getGeneral().getAllergies());
+                    vLastMedicalCheck.setValue(emergencyDataDTO.getLastMedicalCheck().format(DATE_FORMATTER));
+                    vBloodType.setValue(emergencyDataDTO.getGeneral().getBloodType());
+                    vOrganDonor.setValue(emergencyDataDTO.getGeneral().isOrganDonor() ? getString(R.string.yes) : getString(R.string.no));
+
+                    List<Object> collection = new ArrayList<>();
+
+                    if (!emergencyDataDTO.getGeneral().getAllergies().isEmpty()) {
+                        collection.add(R.string.allergies);
+                        collection.addAll(emergencyDataDTO.getGeneral().getAllergies());
+                    }
+
+                    if (!emergencyDataDTO.getSurgeries().isEmpty()) {
+                        collection.add(R.string.surgeries);
+                        collection.addAll(emergencyDataDTO.getSurgeries());
+                    }
+
+                    if (!emergencyDataDTO.getHospitalizations().isEmpty()) {
+                        collection.add(R.string.hospitalizations);
+                        collection.addAll(emergencyDataDTO.getHospitalizations());
+                    }
+
+                    if (!emergencyDataDTO.getPathologies().isEmpty()) {
+                        collection.add(R.string.pathologies);
+                        collection.addAll(emergencyDataDTO.getPathologies());
+                    }
+
+                    if (!emergencyDataDTO.getMedications().isEmpty()) {
+                        collection.add(R.string.medications);
+                        collection.addAll(emergencyDataDTO.getMedications());
+                    }
+
+                    vCollection.setLayoutManager(new LinearLayoutManager(SeeMoreActivity.this));
+                    vCollection.setAdapter(new EmergencyDataAdapter(SeeMoreActivity.this, collection));
+                    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(vCollection.getContext(), DividerItemDecoration.VERTICAL);
+                    vCollection.addItemDecoration(dividerItemDecoration);
+
+                    getIntent().putExtra("response", emergencyDataDTO.toString());
+
+                    Log.d(TAG, "JSON: " + emergencyDataDTO.toString());
+
+                } catch (final Exception e) {
+                    Log.e(TAG, "ERROR:  Error al desencriptar contenido web", e);
                 }
-
-                if (!response.getSurgeries().isEmpty()) {
-                    collection.add(R.string.surgeries);
-                    collection.addAll(response.getSurgeries());
-                }
-
-                if (!response.getHospitalizations().isEmpty()) {
-                    collection.add(R.string.hospitalizations);
-                    collection.addAll(response.getHospitalizations());
-                }
-
-                if (!response.getPathologies().isEmpty()) {
-                    collection.add(R.string.pathologies);
-                    collection.addAll(response.getPathologies());
-                }
-
-                if (!response.getMedications().isEmpty()) {
-                    collection.add(R.string.medications);
-                    collection.addAll(response.getMedications());
-                }
-
-                vCollection.setLayoutManager(new LinearLayoutManager(SeeMoreActivity.this));
-                vCollection.setAdapter(new EmergencyDataAdapter(SeeMoreActivity.this, collection));
-                DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(vCollection.getContext(), DividerItemDecoration.VERTICAL);
-                vCollection.addItemDecoration(dividerItemDecoration);
-
-                getIntent().putExtra("response", response.toString());
-
-                Log.d(TAG, "JSON: " + response.toString() );
             }
 
             @Override
             public void onFailure(Throwable exception) {
-                Log.i(TAG, "ERROR:  " + exception );
+                Log.i(TAG, "ERROR:  " + exception);
                 vLoader.setVisibility(View.GONE);
                 vException.setVisibility(View.VISIBLE);
             }
 
         });
-	}
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
