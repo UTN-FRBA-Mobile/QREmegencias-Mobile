@@ -15,7 +15,6 @@ public class ScanForCodeActivity extends ScanActivity {
 
 	@Override
 	public void handleResult(Result rawResult) {
-		resumeCameraPreview();
 		final Intent intent = TemporalCodeActivity.getIntent(ScanForCodeActivity.this);
 		intent.putExtra("tempCode", rawResult.getText());
 		startActivity(intent);

@@ -1,6 +1,10 @@
 package com.qre.ui.activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.zxing.BarcodeFormat;
@@ -23,6 +27,14 @@ public abstract class ScanActivity extends AppCompatActivity implements ZXingSca
 	@Override
 	public void onCreate(Bundle state) {
 		super.onCreate(state);
+
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+				!= PackageManager.PERMISSION_GRANTED) {
+
+			ActivityCompat.requestPermissions(this,
+					new String[]{Manifest.permission.CAMERA}, 1000);
+		}
+
 		mScannerView = new ZXingScannerView(this);
 
 		try {
@@ -52,7 +64,4 @@ public abstract class ScanActivity extends AppCompatActivity implements ZXingSca
 		mScannerView.stopCamera();
 	}
 
-	protected void resumeCameraPreview() {
-		mScannerView.resumeCameraPreview(this);
-	}
 }
