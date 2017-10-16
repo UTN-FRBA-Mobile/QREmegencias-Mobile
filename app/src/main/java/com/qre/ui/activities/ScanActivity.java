@@ -84,6 +84,8 @@ public abstract class ScanActivity extends AppCompatActivity implements ZXingSca
     @Override
     public void onResume() {
         super.onResume();
+        mScannerView.setResultHandler(this);
+        mScannerView.startCamera();
     }
 
     @Override

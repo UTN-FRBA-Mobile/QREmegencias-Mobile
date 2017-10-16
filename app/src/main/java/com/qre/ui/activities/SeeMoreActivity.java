@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -52,8 +53,11 @@ public class SeeMoreActivity extends AppCompatActivity {
     @BindView(R.id.loader)
     View vLoader;
 
-    @BindView(R.id.exception)
+    @BindView(R.id.exception_frame_seemore)
     View vException;
+
+    @BindView(R.id.exception_textview_seemore)
+    TextView tException;
 
     @BindView(R.id.toolbar)
     Toolbar vToolbar;
@@ -140,6 +144,7 @@ public class SeeMoreActivity extends AppCompatActivity {
 
                 } catch (final Exception e) {
                     Log.e(TAG, "ERROR:  Error al desencriptar contenido web", e);
+                    tException.setText("No se pudo cargar la información.\nAsegurate que el QR sea el actual.");
                     vLoader.setVisibility(View.GONE);
                     vException.setVisibility(View.VISIBLE);
                 }
@@ -148,6 +153,7 @@ public class SeeMoreActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable exception) {
                 Log.i(TAG, "ERROR:  " + exception);
+                tException.setText("No se pudo cargar la información.\nError al conectarse con el servidor.");
                 vLoader.setVisibility(View.GONE);
                 vException.setVisibility(View.VISIBLE);
             }

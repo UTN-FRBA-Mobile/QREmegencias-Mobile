@@ -24,4 +24,20 @@
         android:textSize="40sp"
         android:layout_height="wrap_content" />
 
+    <FrameLayout
+        android:id="@+id/exception_frame_tempcode"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/exception_textview_tempcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cannot_load_data"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
+
 </RelativeLayout>

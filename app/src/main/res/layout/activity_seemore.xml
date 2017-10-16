@@ -30,12 +30,13 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/exception"
+        android:id="@+id/exception_frame_seemore"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
 
         <TextView
+            android:id="@+id/exception_textview_seemore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cannot_load_data"
