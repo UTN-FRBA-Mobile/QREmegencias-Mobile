@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Throwable exception) {
                 Log.e(TAG, "Cannot login with username " + vEmail.getText().toString(), exception);
                 Context context = getApplicationContext();
-                CharSequence text = "Error al loguearse. No se pudo contactar al servidor.";
+                CharSequence text = exception.getMessage();
                 int duration = Toast.LENGTH_LONG;
 
                 Toast toast = Toast.makeText(context, text, duration);
