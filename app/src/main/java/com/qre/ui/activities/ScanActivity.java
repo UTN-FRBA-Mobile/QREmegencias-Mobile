@@ -23,6 +23,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public abstract class ScanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
     private static final String TAG = ScanActivity.class.getSimpleName();
+    private static final int CAMERA_PERMISSIONS = 1000;
 
     private ZXingScannerView mScannerView;
 
@@ -48,7 +49,7 @@ public abstract class ScanActivity extends AppCompatActivity implements ZXingSca
                 != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CAMERA}, 1000);
+                    new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSIONS);
         } else {
             mScannerView.setResultHandler(this);
             mScannerView.startCamera();
@@ -61,7 +62,7 @@ public abstract class ScanActivity extends AppCompatActivity implements ZXingSca
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case 1000: {
+            case CAMERA_PERMISSIONS: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mScannerView.setResultHandler(this);
@@ -74,6 +75,7 @@ public abstract class ScanActivity extends AppCompatActivity implements ZXingSca
 
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
+                    this.finish();
                 }
             }
         }

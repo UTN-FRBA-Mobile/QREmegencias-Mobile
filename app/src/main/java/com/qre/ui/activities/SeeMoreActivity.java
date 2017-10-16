@@ -98,7 +98,7 @@ public class SeeMoreActivity extends AppCompatActivity {
                     Gson gson = registerAll((new GsonBuilder())).create();
                     EmergencyDataDTO emergencyDataDTO = gson.fromJson(decrypted, EmergencyDataDTO.class);
 
-                    vLastMedicalCheck.setValue(emergencyDataDTO.getLastMedicalCheck().format(DATE_FORMATTER));
+                    vLastMedicalCheck.setValue(emergencyDataDTO.getGeneral().getLastMedicalCheck().format(DATE_FORMATTER));
                     vBloodType.setValue(emergencyDataDTO.getGeneral().getBloodType());
                     vOrganDonor.setValue(emergencyDataDTO.getGeneral().isOrganDonor() ? getString(R.string.yes) : getString(R.string.no));
 
@@ -140,6 +140,8 @@ public class SeeMoreActivity extends AppCompatActivity {
 
                 } catch (final Exception e) {
                     Log.e(TAG, "ERROR:  Error al desencriptar contenido web", e);
+                    vLoader.setVisibility(View.GONE);
+                    vException.setVisibility(View.VISIBLE);
                 }
             }
 
