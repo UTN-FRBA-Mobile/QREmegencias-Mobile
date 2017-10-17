@@ -70,7 +70,6 @@ public class TemporalCodeActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         final String qrContent = intent.getStringExtra("tempCode");
 
-        getTempCode();
         try {
             final InputStream key = getResources().openRawResource(R.raw.privatekey);
             final byte[] bytes = CryptoUtils.decryptText(qrContent, key);
