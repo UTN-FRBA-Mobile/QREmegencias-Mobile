@@ -111,7 +111,7 @@ public class TemporalCodeActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable exception) {
                 Log.e(TAG, "ERROR: ", exception);
-                tException.setText("No se pudo cargar la información.\nError al conectarse con el servidor.");
+                tException.setText(exception.getMessage());
                 vException.setVisibility(View.VISIBLE);
             }
         });
