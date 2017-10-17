@@ -85,7 +85,7 @@ public class RetrofitNetworkService implements NetworkService {
             @Override
             public void onFailure(final Call<T> call, final Throwable t) {
                 if (callback != null) {
-                    callback.onFailure(new Exception("Error al loguearse. No se pudo contactar al servidor."));
+                    callback.onFailure(new Exception("Error de red. No se pudo contactar al servidor."));
                 }
             }
         });
