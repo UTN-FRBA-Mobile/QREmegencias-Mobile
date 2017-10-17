@@ -5,7 +5,6 @@ import com.qre.client.api.MobileTestControllerApi;
 import com.qre.client.api.UserFrontControllerApi;
 import com.qre.models.EmergencyDataDTO;
 import com.qre.models.LoginUserDTO;
-import com.qre.models.VerificationDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;

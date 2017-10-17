@@ -1,11 +1,11 @@
 package com.qre.utils;
 
+import com.qre.exception.InvalidQRException;
 import com.qre.models.EmergencyData;
 
 import org.threeten.bp.LocalDate;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
 import java.util.BitSet;
 
 public class QRUtils {
@@ -15,9 +15,14 @@ public class QRUtils {
     public static EmergencyData parseQR(final byte[] bytes)
             throws UnsupportedEncodingException {
 
-        byte sex = (byte) ((bytes[0] & 0b00001100) >> 2);
-        byte bloodType = (byte) ((bytes[0] & 0b11110000) >> 4);
+        byte crc = (byte) ((bytes[0] & 0b11000000) >> 6);
 
+        if (crc != 1) {
+            throw new InvalidQRException("El QR no pertenece a la aplicacion");
+        }
+
+        byte sex = (byte) (bytes[0] & 0b00000011);
+        byte bloodType = (byte) ((bytes[0] & 0b00111100) >> 2);
         short bithdateYear = (short) (bytes[1] + 1900);
 
         final EmergencyData emergencyData = new EmergencyData();
