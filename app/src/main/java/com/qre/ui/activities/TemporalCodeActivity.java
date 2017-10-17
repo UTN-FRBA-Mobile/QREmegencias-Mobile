@@ -21,16 +21,9 @@ import com.qre.ui.components.TimerView;
 import com.qre.utils.CryptoUtils;
 import com.qre.utils.QRUtils;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -55,6 +48,15 @@ public class TemporalCodeActivity extends AppCompatActivity {
     @BindView(R.id.timer)
     TimerView mTimerView;
 
+    @BindView(R.id.exception_frame_tempcode)
+    View vException;
+
+    @BindView(R.id.exception_textview_tempcode)
+    TextView tException;
+
+    @BindView(R.id.loader_temp_code)
+    View vLoader;
+
     private String uuid;
 
     @Override
@@ -68,6 +70,7 @@ public class TemporalCodeActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         final String qrContent = intent.getStringExtra("tempCode");
 
+        getTempCode();
         try {
             final InputStream key = getResources().openRawResource(R.raw.privatekey);
             final byte[] bytes = CryptoUtils.decryptText(qrContent, key);
@@ -94,12 +97,14 @@ public class TemporalCodeActivity extends AppCompatActivity {
         });
         getTempCode();
 
-    }
+	}
 
     private void getTempCode() {
+        vLoader.setVisibility(View.VISIBLE);
         networkService.getVerificationCode(this.uuid, new NetCallback<Integer>() {
             @Override
             public void onSuccess(Integer response) {
+                vLoader.setVisibility(View.GONE);
                 vTempCode.setText(response.toString());
                 mTimerView.start(60, new TimerView.AnimationCallback() {
                     @Override
@@ -111,7 +116,10 @@ public class TemporalCodeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable exception) {
-                Log.e(TAG, "ERROR", exception);
+                Log.e(TAG, "ERROR: ", exception);
+                vLoader.setVisibility(View.GONE);
+                tException.setText(exception.getMessage());
+                vException.setVisibility(View.VISIBLE);
             }
         });
     }

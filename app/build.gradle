@@ -119,6 +119,11 @@ dependencies {
     // ZXing Lib
     compile group: 'me.dm7.barcodescanner', name: 'zxing', version: '1.9.8'
 
+    // Deserialize
+    //compile('org.aaronhe:threetenbp-gson-adapter:1.0.2') {
+    //        exclude module: 'threetenbp'
+    //}
+
     // Unit Test
     testCompile "junit:junit:$junitVersion"
 

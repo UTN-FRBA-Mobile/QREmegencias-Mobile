@@ -18,7 +18,6 @@ public class ScanEmergencyDataActivity extends ScanActivity {
 	public void handleResult(Result rawResult) {
 		Log.v(TAG, rawResult.getText());
 		Log.v(TAG, rawResult.getBarcodeFormat().toString());
-		resumeCameraPreview();
 		final Intent intent = EmergencyDataActivity.getIntent(this);
 		intent.putExtra("result",rawResult.getText());
 		startActivity(intent);
