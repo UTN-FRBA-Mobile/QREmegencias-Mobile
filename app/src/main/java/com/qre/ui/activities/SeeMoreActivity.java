@@ -50,7 +50,7 @@ public class SeeMoreActivity extends AppCompatActivity {
     @Inject
     NetworkService networkService;
 
-    @BindView(R.id.loader)
+    @BindView(R.id.loader_seemore)
     View vLoader;
 
     @BindView(R.id.exception_frame_seemore)
