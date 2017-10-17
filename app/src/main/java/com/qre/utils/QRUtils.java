@@ -1,11 +1,11 @@
 package com.qre.utils;
 
+import com.qre.exception.InvalidQRException;
 import com.qre.models.EmergencyData;
 
 import org.threeten.bp.LocalDate;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
 import java.util.BitSet;
 
 public class QRUtils {
@@ -15,11 +15,15 @@ public class QRUtils {
     public static EmergencyData parseQR(final byte[] bytes)
             throws UnsupportedEncodingException {
 
-        final ByteBuffer yearSexBloodBuffer = ByteBuffer.allocate(2).put(bytes, 0, 2);
-        byte sex = (byte) ((yearSexBloodBuffer.get(0) & 0b00011000) >> 3);
-        byte bloodType = (byte) ((yearSexBloodBuffer.get(0) & 0b11100000) >> 5);
-        yearSexBloodBuffer.rewind();
-        short bithdateYear = (short) (yearSexBloodBuffer.getShort() & 0b0000011111111111);
+        byte crc = (byte) ((bytes[0] & 0b11000000) >> 6);
+
+        if (crc != 1) {
+            throw new InvalidQRException();
+        }
+
+        byte sex = (byte) (bytes[0] & 0b00000011);
+        byte bloodType = (byte) ((bytes[0] & 0b00111100) >> 2);
+        short bithdateYear = (short) (bytes[1] + 1900);
 
         final EmergencyData emergencyData = new EmergencyData();
         emergencyData.setSex(getSex(sex));
@@ -76,22 +80,24 @@ public class QRUtils {
 
     private static String getBlood(final byte blood) {
         switch (blood) {
-            case 0b000:
+            case 0b0000:
                 return "0-";
-            case 0b001:
+            case 0b0001:
                 return "0+";
-            case 0b010:
+            case 0b0010:
                 return "A-";
-            case 0b011:
+            case 0b0011:
                 return "A+";
-            case 0b100:
+            case 0b0100:
                 return "B-";
-            case 0b101:
+            case 0b0101:
                 return "B+";
-            case 0b110:
+            case 0b0110:
                 return "AB-";
-            case 0b111:
+            case 0b0111:
                 return "AB+";
+            case 0b1000:
+                return "No cargado";
             default:
                 return "";
         }
