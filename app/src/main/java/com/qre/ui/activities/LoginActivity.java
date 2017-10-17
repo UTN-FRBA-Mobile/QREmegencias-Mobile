@@ -25,6 +25,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
 
+    private static final String ROLE_PACIENTE = "ROLE_PACIENTE";
+
     @Inject
     NetworkService networkService;
 
@@ -69,7 +71,15 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i(TAG, "User " + response.getName() + " " + response.getLastName() + " logged successfully");
                 preferencesService.putUsername(username);
                 preferencesService.putRole(response.getRoles().iterator().next());
-                startActivity(HomeActivity.getIntent(LoginActivity.this));
+                if (preferencesService.getRole().equals(ROLE_PACIENTE)) {
+                    Context context = getApplicationContext();
+                    CharSequence text = "Login solo habilitado para médicos.";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                } else {
+                    startActivity(HomeActivity.getIntent(LoginActivity.this));
+                }
             }
 
             @Override

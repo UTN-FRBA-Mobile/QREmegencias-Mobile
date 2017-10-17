@@ -32,7 +32,7 @@
     <string name="no">No</string>
 
     <string name="menu_medical_profile">Perfil</string>
-    <string name="menu_medical_emergency_data">Leer Datos de Emergencia</string>
+    <string name="menu_medical_emergency_data">Generar Token de Edición</string>
     <string name="menu_medical_edit_user">Editar Paciente</string>
     <string name="menu_user_profile">Perfil</string>
     <string name="menu_user_manage_qr">Gestionar QR</string>
@@ -44,5 +44,7 @@
     <string name="emergency_data_title">Datos de Emergencia</string>
     <string name="see_more_title">Más información</string>
     <string name="cannot_load_data">No se pudo cargar la información</string>
+    <string name="medical_home">Seleccioná la opción deseada desde el menú</string>
+    <string name="medical_welcome">Bienvenido</string>
 
 </resources>
