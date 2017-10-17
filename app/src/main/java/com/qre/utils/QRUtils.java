@@ -18,7 +18,7 @@ public class QRUtils {
         byte crc = (byte) ((bytes[0] & 0b11000000) >> 6);
 
         if (crc != 1) {
-            throw new InvalidQRException("El QR no pertenece a la aplicacion");
+            throw new InvalidQRException();
         }
 
         byte sex = (byte) (bytes[0] & 0b00000011);

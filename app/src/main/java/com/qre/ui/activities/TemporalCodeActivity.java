@@ -23,6 +23,8 @@ import com.qre.utils.QRUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -71,14 +73,14 @@ public class TemporalCodeActivity extends AppCompatActivity {
             final byte[] bytes = CryptoUtils.decryptText(qrContent, key);
             final EmergencyData data = QRUtils.parseQR(bytes);
             this.uuid = data.getUUID();
-        } catch (final InvalidQRException exception) {
+        } catch (final GeneralSecurityException | InvalidQRException exception) {
             Log.e(TAG, "QR Invalido", exception);
-            Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "El QR no pertenece a la aplicacion", Toast.LENGTH_LONG).show();
             finish();
-        } catch (InvalidKeyException | IOException | BadPaddingException |
-                IllegalBlockSizeException | InvalidAlgorithmParameterException |
-                NoSuchAlgorithmException e) {
-            Log.e(TAG, "Error parsing QR");
+        } catch (final Exception e) {
+            Log.e(TAG, "Cannot read QR", e);
+            Toast.makeText(this, "Error al leer QR", Toast.LENGTH_LONG).show();
+            finish();
         }
         vTempCode.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

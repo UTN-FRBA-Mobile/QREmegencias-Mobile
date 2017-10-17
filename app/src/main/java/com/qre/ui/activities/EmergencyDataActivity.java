@@ -22,6 +22,7 @@ import com.qre.utils.CryptoUtils;
 import com.qre.utils.QRUtils;
 
 import java.io.InputStream;
+import java.security.GeneralSecurityException;
 import java.text.MessageFormat;
 
 import butterknife.BindView;
@@ -135,12 +136,14 @@ public class EmergencyDataActivity extends AppCompatActivity {
                 vContactPhone.setVisibility(View.GONE);
             }
 
-        } catch (final InvalidQRException exception) {
+        } catch (final GeneralSecurityException | InvalidQRException exception) {
             Log.e(TAG, "QR Invalido", exception);
-            Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "El QR no pertenece a la aplicacion", Toast.LENGTH_LONG).show();
             finish();
         } catch (final Exception e) {
             Log.e(TAG, "Cannot read QR", e);
+            Toast.makeText(this, "Error al leer QR", Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 
