@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qre.R;
+import com.qre.exception.InvalidQRException;
 import com.qre.injection.Injector;
 import com.qre.models.EmergencyData;
 import com.qre.services.networking.NetCallback;
@@ -20,14 +21,9 @@ import com.qre.ui.components.TimerView;
 import com.qre.utils.CryptoUtils;
 import com.qre.utils.QRUtils;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.security.GeneralSecurityException;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -79,10 +75,14 @@ public class TemporalCodeActivity extends AppCompatActivity {
             final byte[] bytes = CryptoUtils.decryptText(qrContent, key);
             final EmergencyData data = QRUtils.parseQR(bytes);
             this.uuid = data.getUUID();
-        } catch (InvalidKeyException | IOException | BadPaddingException |
-                IllegalBlockSizeException | InvalidAlgorithmParameterException |
-                NoSuchAlgorithmException e) {
-            Log.e(TAG, "Error parsing QR");
+        } catch (final GeneralSecurityException | InvalidQRException exception) {
+            Log.e(TAG, "QR Invalido", exception);
+            Toast.makeText(this, "El QR no pertenece a la aplicacion", Toast.LENGTH_LONG).show();
+            finish();
+        } catch (final Exception e) {
+            Log.e(TAG, "Cannot read QR", e);
+            Toast.makeText(this, "Error al leer QR", Toast.LENGTH_LONG).show();
+            finish();
         }
         vTempCode.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -96,7 +96,7 @@ public class TemporalCodeActivity extends AppCompatActivity {
         });
         getTempCode();
 
-    }
+	}
 
     private void getTempCode() {
         vLoader.setVisibility(View.VISIBLE);
