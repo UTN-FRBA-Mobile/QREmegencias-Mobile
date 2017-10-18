@@ -102,33 +102,36 @@ public class SeeMoreActivity extends AppCompatActivity {
                     Gson gson = registerAll((new GsonBuilder())).create();
                     EmergencyDataDTO emergencyDataDTO = gson.fromJson(decrypted, EmergencyDataDTO.class);
 
-                    vLastMedicalCheck.setValue(emergencyDataDTO.getGeneral().getLastMedicalCheck().format(DATE_FORMATTER));
-                    vBloodType.setValue(emergencyDataDTO.getGeneral().getBloodType());
-                    vOrganDonor.setValue(emergencyDataDTO.getGeneral().isOrganDonor() ? getString(R.string.yes) : getString(R.string.no));
-
                     List<Object> collection = new ArrayList<>();
 
-                    if (!emergencyDataDTO.getGeneral().getAllergies().isEmpty()) {
-                        collection.add(R.string.allergies);
-                        collection.addAll(emergencyDataDTO.getGeneral().getAllergies());
+                    if (emergencyDataDTO.getGeneral() != null) {
+
+                        vLastMedicalCheck.setValue(emergencyDataDTO.getGeneral().getLastMedicalCheck().format(DATE_FORMATTER));
+                        vBloodType.setValue(emergencyDataDTO.getGeneral().getBloodType());
+                        vOrganDonor.setValue(emergencyDataDTO.getGeneral().isOrganDonor() ? getString(R.string.yes) : getString(R.string.no));
+
+                        if (!emergencyDataDTO.getGeneral().getAllergies().isEmpty()) {
+                            collection.add(R.string.allergies);
+                            collection.addAll(emergencyDataDTO.getGeneral().getAllergies());
+                        }
                     }
 
-                    if (!emergencyDataDTO.getSurgeries().isEmpty()) {
+                    if (emergencyDataDTO.getSurgeries() != null && !emergencyDataDTO.getSurgeries().isEmpty()) {
                         collection.add(R.string.surgeries);
                         collection.addAll(emergencyDataDTO.getSurgeries());
                     }
 
-                    if (!emergencyDataDTO.getHospitalizations().isEmpty()) {
+                    if (emergencyDataDTO.getHospitalizations() != null && !emergencyDataDTO.getHospitalizations().isEmpty()) {
                         collection.add(R.string.hospitalizations);
                         collection.addAll(emergencyDataDTO.getHospitalizations());
                     }
 
-                    if (!emergencyDataDTO.getPathologies().isEmpty()) {
+                    if (emergencyDataDTO.getPathologies() != null && !emergencyDataDTO.getPathologies().isEmpty()) {
                         collection.add(R.string.pathologies);
                         collection.addAll(emergencyDataDTO.getPathologies());
                     }
 
-                    if (!emergencyDataDTO.getMedications().isEmpty()) {
+                    if (emergencyDataDTO.getMedications() != null && !emergencyDataDTO.getMedications().isEmpty()) {
                         collection.add(R.string.medications);
                         collection.addAll(emergencyDataDTO.getMedications());
                     }
