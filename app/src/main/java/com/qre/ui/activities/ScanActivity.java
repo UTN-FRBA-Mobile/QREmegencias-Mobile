@@ -51,8 +51,6 @@ public abstract class ScanActivity extends AppCompatActivity implements ZXingSca
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSIONS);
         } else {
-            mScannerView.setResultHandler(this);
-            mScannerView.startCamera();
             setContentView(mScannerView);
         }
 
@@ -65,8 +63,6 @@ public abstract class ScanActivity extends AppCompatActivity implements ZXingSca
             case CAMERA_PERMISSIONS: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mScannerView.setResultHandler(this);
-                    mScannerView.startCamera();
                     setContentView(mScannerView);
                 } else {
                     Context context = getApplicationContext();
