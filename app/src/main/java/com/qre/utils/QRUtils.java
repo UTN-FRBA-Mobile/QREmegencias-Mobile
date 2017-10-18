@@ -35,7 +35,7 @@ public class QRUtils {
         emergencyData.setUUID(new String(bytes, 4, urlLength, CHARSET_NAME));
 
         int urlEnd = 3 + urlLength;
-        if (bytes.length > urlEnd) {
+        if ((bytes.length - 1) > urlEnd) {
             byte nameLength = bytes[urlEnd + 1];
             emergencyData.setContactName(new String(bytes, urlEnd + 2, nameLength, CHARSET_NAME));
             int nameEnd = urlEnd + 1 + nameLength;
