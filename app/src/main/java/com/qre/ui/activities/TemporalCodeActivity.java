@@ -109,7 +109,7 @@ public class TemporalCodeActivity extends AppCompatActivity {
                 mTimerView.start(60, new TimerView.AnimationCallback() {
                     @Override
                     public void call() {
-                        getTempCode();
+                        //getTempCode();
                     }
                 });
             }
