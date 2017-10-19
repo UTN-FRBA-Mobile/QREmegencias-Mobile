@@ -8,10 +8,10 @@
             android:id="@+id/menu_medical_emergency_data"
             android:icon="@drawable/ic_local_hospital_black_24dp"
             android:title="@string/menu_medical_emergency_data"/>
-        <!--item
+        <item
             android:id="@+id/menu_medical_edit_user"
             android:icon="@drawable/ic_create_black_24dp"
-            android:title="@string/menu_medical_edit_user"/-->
+            android:title="@string/menu_medical_edit_user"/>
     </group>
     <group android:id="@+id/menu_user" android:checkableBehavior="single">
         <item

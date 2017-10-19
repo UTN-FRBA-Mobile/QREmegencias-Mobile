@@ -102,10 +102,10 @@ public class HomeActivity extends AppCompatActivity {
                                 fragment = new MedicalEmergencyDataFragment();
                                 fragmentTransaction = true;
                                 break;
-//							case R.id.menu_medical_edit_user:
-//								fragment = new MedicalEditUserFragment();
-//								fragmentTransaction = true;
-//								break;
+							case R.id.menu_medical_edit_user:
+								fragment = new MedicalEditUserFragment();
+								fragmentTransaction = true;
+								break;
                             case R.id.menu_user_profile:
                                 fragment = new ProfileFragment();
                                 fragmentTransaction = true;
