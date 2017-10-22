@@ -37,6 +37,7 @@
         <activity android:name="com.qre.ui.activities.ScanEmergencyDataActivity" />
         <activity android:name="com.qre.ui.activities.ScanForCodeActivity" />
         <activity android:name="com.qre.ui.activities.TemporalCodeActivity" />
+        <activity android:name="com.qre.ui.activities.VerifySignatureActivity" />
     </application>
 
 </manifest>
