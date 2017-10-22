@@ -50,7 +50,7 @@ public class VerifySignatureActivity extends AppCompatActivity {
 
         final Duration duration = Duration.between(getTimestamp(qrContent), Instant.now());
 
-        if (duration.toHours() < 30) {
+        if (duration.toMinutes() < 5) {
             networkService.getPublicKey(getUser(qrContent), new NetCallback<VerificationDTO>() {
 
                 @Override

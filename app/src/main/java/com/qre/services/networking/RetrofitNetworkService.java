@@ -1,5 +1,6 @@
 package com.qre.services.networking;
 
+import android.util.Base64;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -9,6 +10,7 @@ import com.qre.client.api.TempCodeControllerApi;
 import com.qre.client.api.UserFrontControllerApi;
 import com.qre.models.ApiError;
 import com.qre.models.LoginUserDTO;
+import com.qre.models.PublicKeyDTO;
 import com.qre.models.VerificationDTO;
 
 import retrofit2.Call;
@@ -50,6 +52,13 @@ public class RetrofitNetworkService implements NetworkService {
     @Override
     public void getPublicKey(final String user, final NetCallback<VerificationDTO> callback) {
         final Call<VerificationDTO> call = mobileTestControllerApi.getPublicKeyUsingGET(user);
+        enqueue(call, callback);
+    }
+
+    @Override
+    public void uploadPublicKey(final byte[] pk, final NetCallback<Void> callback) {
+        final PublicKeyDTO publicKeyDTO = new PublicKeyDTO().publicKey(Base64.encodeToString(pk, Base64.DEFAULT));
+        final Call<Void> call = mobileTestControllerApi.uploadPublicKeyUsingPUT(publicKeyDTO);
         enqueue(call, callback);
     }
 

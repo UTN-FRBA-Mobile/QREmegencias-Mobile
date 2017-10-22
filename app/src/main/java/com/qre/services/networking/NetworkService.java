@@ -9,5 +9,5 @@ public interface NetworkService {
     void getVerificationCode(final String text, final NetCallback<Integer> callback);
 	void getPublicEmergencyData(final String uuid, final NetCallback<String> callback);
 	void getPublicKey(final String user, final NetCallback<VerificationDTO> callback);
-
+    void uploadPublicKey(final byte[] pk, final NetCallback<Void> callback);
 }
