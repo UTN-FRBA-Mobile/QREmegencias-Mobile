@@ -71,10 +71,14 @@ public class TemporalCodeActivity extends AppCompatActivity {
         final String qrContent = intent.getStringExtra("tempCode");
 
         try {
-            final InputStream key = getResources().openRawResource(R.raw.privatekey);
-            final byte[] bytes = CryptoUtils.decryptText(qrContent, key);
-            final EmergencyData data = QRUtils.parseQR(bytes);
-            this.uuid = data.getUUID();
+            if (intent.getExtras().containsKey("uuid")) {
+                this.uuid = intent.getStringExtra("uuid");
+            } else {
+                final InputStream key = getResources().openRawResource(R.raw.privatekey);
+                final byte[] bytes = CryptoUtils.decryptText(qrContent, key);
+                final EmergencyData data = QRUtils.parseQR(bytes);
+                this.uuid = data.getUUID();
+            }
         } catch (final GeneralSecurityException | InvalidQRException exception) {
             Log.e(TAG, "QR Invalido", exception);
             Toast.makeText(this, "El QR no pertenece a la aplicacion", Toast.LENGTH_LONG).show();

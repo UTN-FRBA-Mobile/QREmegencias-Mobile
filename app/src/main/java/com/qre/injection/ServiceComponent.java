@@ -8,6 +8,8 @@ import com.qre.ui.activities.HomeActivity;
 import com.qre.ui.activities.LoginActivity;
 import com.qre.ui.activities.SeeMoreActivity;
 import com.qre.ui.activities.TemporalCodeActivity;
+import com.qre.ui.activities.VerifySignatureActivity;
+import com.qre.ui.fragments.user.UserManageQRFragment;
 
 import javax.inject.Singleton;
 
@@ -26,5 +28,9 @@ public interface ServiceComponent {
     void inject(final SeeMoreActivity seeMoreActivity);
 
     void inject(final TemporalCodeActivity temporalCodeActivity);
+
+    void inject(final VerifySignatureActivity verifySignatureActivity);
+
+    void inject(final UserManageQRFragment userManageQRFragment);
 
 }

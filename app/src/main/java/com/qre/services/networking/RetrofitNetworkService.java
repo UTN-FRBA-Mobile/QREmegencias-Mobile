@@ -1,8 +1,8 @@
 package com.qre.services.networking;
 
+import android.util.Base64;
 import android.util.Log;
 
-import com.google.android.gms.common.api.Api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.qre.client.api.EmergencyDataControllerApi;
@@ -10,6 +10,8 @@ import com.qre.client.api.TempCodeControllerApi;
 import com.qre.client.api.UserFrontControllerApi;
 import com.qre.models.ApiError;
 import com.qre.models.LoginUserDTO;
+import com.qre.models.PublicKeyDTO;
+import com.qre.models.VerificationDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,17 +50,22 @@ public class RetrofitNetworkService implements NetworkService {
     }
 
     @Override
-    public void getVerificationCode(final String text, final NetCallback<Integer> callback) {
-        final Call<Integer> call = mobileTestControllerApi.createTempCodeUsingPUT(text);
+    public void getPublicKey(final String user, final NetCallback<VerificationDTO> callback) {
+        final Call<VerificationDTO> call = mobileTestControllerApi.getPublicKeyUsingGET(user);
         enqueue(call, callback);
     }
 
-    private String getSignature(String text) {
-        return "";
+    @Override
+    public void uploadPublicKey(final byte[] pk, final NetCallback<Void> callback) {
+        final PublicKeyDTO publicKeyDTO = new PublicKeyDTO().publicKey(Base64.encodeToString(pk, Base64.DEFAULT));
+        final Call<Void> call = mobileTestControllerApi.uploadPublicKeyUsingPUT(publicKeyDTO);
+        enqueue(call, callback);
     }
 
-    private String getPlainText(String text) {
-        return "";
+    @Override
+    public void getVerificationCode(final String text, final NetCallback<Integer> callback) {
+        final Call<Integer> call = mobileTestControllerApi.createTempCodeUsingPUT(text);
+        enqueue(call, callback);
     }
 
     private <T> void enqueue(final Call<T> call, final NetCallback<T> callback) {
