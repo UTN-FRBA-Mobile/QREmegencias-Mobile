@@ -19,6 +19,7 @@ import com.qre.R;
 import com.qre.injection.Injector;
 import com.qre.models.EmergencyDataDTO;
 import com.qre.services.networking.NetCallback;
+import com.qre.services.networking.NetworkException;
 import com.qre.services.networking.NetworkService;
 import com.qre.ui.adapters.EmergencyDataAdapter;
 import com.qre.ui.components.DetailValueView;
@@ -156,7 +157,11 @@ public class SeeMoreActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable exception) {
                 Log.i(TAG, "ERROR:  " + exception);
-                tException.setText("No se pudo cargar la información.\nError al conectarse con el servidor.");
+                if (exception instanceof NetworkException) {
+                    tException.setText(exception.getMessage());
+                } else {
+                    tException.setText("No se pudo cargar la información.\nError al conectarse con el servidor.");
+                }
                 vLoader.setVisibility(View.GONE);
                 vException.setVisibility(View.VISIBLE);
             }
