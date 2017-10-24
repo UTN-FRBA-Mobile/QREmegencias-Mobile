@@ -41,10 +41,19 @@ public class UserPreferenceService extends PreferencesService {
         sharedPreferences.edit().clear().apply();
     }
 
+    public String getAccessToken() {
+        return getString(Key.USER_ACCESS_TOKEN, null);
+    }
+
+    public void putAccessToken(String accessToken) {
+        putString(Key.USER_ACCESS_TOKEN, accessToken);
+    }
+
     private static final class Key {
 
         private static final String USER_USERNAME = "user.username";
         private static final String USER_ROLE = "user.role";
+        private static final String USER_ACCESS_TOKEN = "user.accessToken";
 
     }
 

@@ -6,4 +6,6 @@ public final class Constants {
 		throw new IllegalAccessError("This is an utility class");
 	}
 
+	public static final String API_AUTHORIZATION = "oauth2";
+
 }

@@ -5,24 +5,18 @@ import android.app.Application;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.qre.client.ApiClient;
-import com.qre.client.api.EmergencyDataControllerApi;
-import com.qre.client.api.TempCodeControllerApi;
-import com.qre.client.api.UserFrontControllerApi;
+import com.qre.client.auth.OAuth;
+import com.qre.client.auth.OAuthFlow;
 import com.qre.services.networking.NetworkService;
 import com.qre.services.networking.RetrofitNetworkService;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.qre.services.preference.impl.UserPreferenceService;
+import com.qre.utils.Constants;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -30,9 +24,16 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public class NetModule {
 
     private final String mBaseUrl;
+    private final String mClientId;
+    private final String mClientSecret;
+    private final String mScopes;
 
-    public NetModule(final String mBaseUrl) {
+    public NetModule(final String mBaseUrl, final String mClientId, final String mClientSecret,
+                     final String mScopes) {
         this.mBaseUrl = mBaseUrl;
+        this.mClientId = mClientId;
+        this.mClientSecret = mClientSecret;
+        this.mScopes = mScopes;
     }
 
     @Provides
@@ -54,24 +55,6 @@ public class NetModule {
     @Singleton
     OkHttpClient provideOkhttpClient(final Cache cache) {
         final OkHttpClient.Builder client = new OkHttpClient.Builder();
-        client.cookieJar(new CookieJar() {
-            private Cookie session = null;
-
-            @Override
-            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-                for (Cookie cookie: cookies) {
-                    if (cookie.name().equalsIgnoreCase("SESSION")) {
-                        session = cookie;
-                        return;
-                    }
-                }
-            }
-
-            @Override
-            public List<Cookie> loadForRequest(HttpUrl url) {
-                return session != null ? Collections.singletonList(session) : new ArrayList<Cookie>();
-            }
-        });
         final HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
         client.cache(cache);
@@ -80,33 +63,25 @@ public class NetModule {
     }
 
     @Provides
-    ApiClient provideApiClient(final OkHttpClient okHttpClient) {
+    ApiClient provideApiClient(final OkHttpClient okHttpClient, final UserPreferenceService userPreferenceService) {
+        final OAuth read = new OAuth(OAuthFlow.password, mBaseUrl + "oauth/authorize",
+                mBaseUrl + "oauth/token", mScopes);
+        final String accessToken = userPreferenceService.getAccessToken();
+        if (accessToken != null) {
+            read.setAccessToken(accessToken);
+        }
+
         final ApiClient apiClient = new ApiClient();
+        apiClient.addAuthorization(Constants.API_AUTHORIZATION, read);
+        apiClient.configureAuthorizationFlow(mClientId, mClientSecret, "");
         apiClient.configureFromOkclient(okHttpClient);
         apiClient.getAdapterBuilder().baseUrl(mBaseUrl);
         return apiClient;
     }
 
     @Provides
-    UserFrontControllerApi provideUserFrontControllerApi(final ApiClient apiClient) {
-        return apiClient.createService(UserFrontControllerApi.class);
-    }
-
-    @Provides
-    EmergencyDataControllerApi provideEmergencyDataControllerApi(final ApiClient apiClient) {
-        return apiClient.createService(EmergencyDataControllerApi.class);
-    }
-
-    @Provides
-    TempCodeControllerApi provideMobileTestControllerApi(final ApiClient apiClient) {
-        return apiClient.createService(TempCodeControllerApi.class);
-    }
-
-    @Provides
     @Singleton
-    NetworkService provideNetworkService(final UserFrontControllerApi restApi,
-                                         final TempCodeControllerApi mobileTestControllerApi,
-                                         final EmergencyDataControllerApi emergencyDataControllerApi) {
-        return new RetrofitNetworkService(restApi, emergencyDataControllerApi, mobileTestControllerApi);
+    NetworkService provideNetworkService(final ApiClient apiClient, final UserPreferenceService userPreferenceService) {
+        return new RetrofitNetworkService(apiClient, userPreferenceService);
     }
 }
