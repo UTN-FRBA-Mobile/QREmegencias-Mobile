@@ -14,10 +14,13 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.BadPaddingException;
@@ -89,6 +92,16 @@ public final class CryptoUtils {
             Log.e("CryptoUtils", "Algoritmo invalido", e);
         }
         return null;
+    }
+
+    public static PrivateKey getPrivateKey(byte[] bytes) {
+        try {
+            final KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            final KeySpec privateKeySpec = new PKCS8EncodedKeySpec(bytes);
+            return keyFactory.generatePrivate(privateKeySpec);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException("Error al generar privateKey", e);
+        }
     }
 
     public static boolean verifySignature(final String publicKey, final String data,

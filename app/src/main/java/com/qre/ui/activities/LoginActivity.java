@@ -14,12 +14,17 @@ import com.qre.models.LoginUserDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
 import com.qre.services.preference.impl.UserPreferenceService;
+import com.qre.utils.CryptoUtils;
+
+import java.security.KeyPair;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.qre.ui.activities.HomeActivity.ROLE_USER;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -68,8 +73,31 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginUserDTO response) {
                 Log.i(TAG, "User " + response.getName() + " " + response.getLastName() + " logged successfully");
                 preferencesService.putUsername(username);
-                preferencesService.putRole(response.getRoles().iterator().next());
-                startActivity(HomeActivity.getIntent(LoginActivity.this));
+                final String role = response.getRoles().iterator().next();
+                preferencesService.putRole(role);
+
+                if (ROLE_USER.equals(role)) {
+
+                    final KeyPair keyPair = CryptoUtils.generateKeyPair();
+                    networkService.uploadPublicKey(keyPair.getPublic(), new NetCallback<Void>() {
+                        @Override
+                        public void onSuccess(Void response) {
+                            preferencesService.putPrivateKey(keyPair.getPrivate());
+                            startActivity(HomeActivity.getIntent(LoginActivity.this));
+                        }
+
+                        @Override
+                        public void onFailure(Throwable exception) {
+                            Log.e(TAG, "Cannot upload key", exception);
+                            Context context = getApplicationContext();
+                            Toast.makeText(context, exception.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                } else {
+                    startActivity(HomeActivity.getIntent(LoginActivity.this));
+                }
+
             }
 
             @Override

@@ -7,6 +7,10 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.qre.services.preference.PreferencesService;
+import com.qre.utils.CryptoUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.security.PrivateKey;
 
 public class UserPreferenceService extends PreferencesService {
 
@@ -49,11 +53,29 @@ public class UserPreferenceService extends PreferencesService {
         putString(Key.USER_ACCESS_TOKEN, accessToken);
     }
 
+    public PrivateKey getPrivateKey() {
+        try {
+            byte[] bytes = getString(Key.USER_PRIVATE_KEY, "").getBytes("ISO-8859-1");
+            return CryptoUtils.getPrivateKey(bytes);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Error leyendo private key", e);
+        }
+    }
+
+    public void putPrivateKey(final PrivateKey privateKey) {
+        try {
+            putString(Key.USER_PRIVATE_KEY, new String(privateKey.getEncoded(), "ISO-8859-1"));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Error guardando private key", e);
+        }
+    }
+
     private static final class Key {
 
         private static final String USER_USERNAME = "user.username";
         private static final String USER_ROLE = "user.role";
         private static final String USER_ACCESS_TOKEN = "user.accessToken";
+        private static final String USER_PRIVATE_KEY = "user.privateKey";
 
     }
 

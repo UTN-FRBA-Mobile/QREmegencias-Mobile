@@ -12,6 +12,8 @@ import com.qre.services.networking.RetrofitNetworkService;
 import com.qre.services.preference.impl.UserPreferenceService;
 import com.qre.utils.Constants;
 
+import org.apache.oltu.oauth2.common.token.BasicOAuthToken;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -66,6 +68,14 @@ public class NetModule {
     ApiClient provideApiClient(final OkHttpClient okHttpClient, final UserPreferenceService userPreferenceService) {
         final OAuth read = new OAuth(OAuthFlow.password, mBaseUrl + "oauth/authorize",
                 mBaseUrl + "oauth/token", mScopes);
+
+        read.registerAccessTokenListener(new OAuth.AccessTokenListener() {
+            @Override
+            public void notify(BasicOAuthToken basicOAuthToken) {
+                userPreferenceService.putAccessToken(basicOAuthToken.getAccessToken());
+            }
+        });
+
         final String accessToken = userPreferenceService.getAccessToken();
         if (accessToken != null) {
             read.setAccessToken(accessToken);
@@ -81,7 +91,7 @@ public class NetModule {
 
     @Provides
     @Singleton
-    NetworkService provideNetworkService(final ApiClient apiClient, final UserPreferenceService userPreferenceService) {
-        return new RetrofitNetworkService(apiClient, userPreferenceService);
+    NetworkService provideNetworkService(final ApiClient apiClient) {
+        return new RetrofitNetworkService(apiClient);
     }
 }
