@@ -16,6 +16,7 @@ import com.qre.exception.InvalidQRException;
 import com.qre.injection.Injector;
 import com.qre.models.EmergencyData;
 import com.qre.services.networking.NetCallback;
+import com.qre.services.networking.NetworkException;
 import com.qre.services.networking.NetworkService;
 import com.qre.ui.components.TimerView;
 import com.qre.utils.CryptoUtils;
@@ -100,7 +101,7 @@ public class TemporalCodeActivity extends AppCompatActivity {
         });
         getTempCode();
 
-	}
+    }
 
     private void getTempCode() {
         vLoader.setVisibility(View.VISIBLE);
@@ -112,7 +113,7 @@ public class TemporalCodeActivity extends AppCompatActivity {
                 mTimerView.start(60, new TimerView.AnimationCallback() {
                     @Override
                     public void call() {
-                        getTempCode();
+                        //getTempCode();
                     }
                 });
             }
@@ -120,8 +121,12 @@ public class TemporalCodeActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable exception) {
                 Log.e(TAG, "ERROR: ", exception);
+                if (exception instanceof NetworkException) {
+                    tException.setText(exception.getMessage());
+                } else {
+                    tException.setText("No se pudo cargar la información.\nError al conectarse con el servidor.");
+                }
                 vLoader.setVisibility(View.GONE);
-                tException.setText(exception.getMessage());
                 vException.setVisibility(View.VISIBLE);
             }
         });

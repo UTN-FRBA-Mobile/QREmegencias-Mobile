@@ -2,9 +2,12 @@ package com.qre.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -12,6 +15,7 @@ import com.qre.R;
 import com.qre.injection.Injector;
 import com.qre.models.LoginUserDTO;
 import com.qre.services.networking.NetCallback;
+import com.qre.services.networking.NetworkException;
 import com.qre.services.networking.NetworkService;
 import com.qre.services.preference.impl.UserPreferenceService;
 import com.qre.utils.CryptoUtils;
@@ -42,6 +46,10 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.input_password)
     EditText vPassword;
 
+    @BindView(R.id.btn_login)
+    Button bLogin;
+
+
     public static Intent getIntent(final Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -67,6 +75,9 @@ public class LoginActivity extends AppCompatActivity {
     public void login() {
         final String username = vEmail.getText().toString();
         String password = vPassword.getText().toString();
+        bLogin.setEnabled(false);
+        final Drawable bLoginBackground = bLogin.getBackground();
+        bLogin.setBackgroundColor(Color.GRAY);
         Log.i(TAG, "Login with email " + username + " and password " + password);
         networkService.login(username, password, new NetCallback<LoginUserDTO>() {
             @Override
@@ -84,6 +95,8 @@ public class LoginActivity extends AppCompatActivity {
                         public void onSuccess(Void response) {
                             preferencesService.putPrivateKey(keyPair.getPrivate());
                             startActivity(HomeActivity.getIntent(LoginActivity.this));
+                            bLogin.setEnabled(true);
+                            bLogin.setBackground(bLoginBackground);
                         }
 
                         @Override
@@ -96,6 +109,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 } else {
                     startActivity(HomeActivity.getIntent(LoginActivity.this));
+                    bLogin.setEnabled(true);
+                    bLogin.setBackground(bLoginBackground);
                 }
 
             }
@@ -104,11 +119,20 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Throwable exception) {
                 Log.e(TAG, "Cannot login with username " + vEmail.getText().toString(), exception);
                 Context context = getApplicationContext();
-                CharSequence text = exception.getMessage();
+                CharSequence text;
+
+                if (exception instanceof NetworkException) {
+                    text = exception.getMessage();
+                } else {
+                    text = "No se pudo cargar la información.\nError al conectarse con el servidor.";
+                }
+
                 int duration = Toast.LENGTH_LONG;
 
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
+                bLogin.setEnabled(true);
+                bLogin.setBackground(bLoginBackground);
             }
         });
     }
