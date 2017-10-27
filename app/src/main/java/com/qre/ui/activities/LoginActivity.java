@@ -18,6 +18,9 @@ import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkException;
 import com.qre.services.networking.NetworkService;
 import com.qre.services.preference.impl.UserPreferenceService;
+import com.qre.utils.CryptoUtils;
+
+import java.security.KeyPair;
 
 import javax.inject.Inject;
 
@@ -25,11 +28,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.qre.ui.activities.HomeActivity.ROLE_USER;
+
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
-
-    private static final String ROLE_PACIENTE = "ROLE_PACIENTE";
 
     @Inject
     NetworkService networkService;
@@ -81,18 +84,35 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginUserDTO response) {
                 Log.i(TAG, "User " + response.getName() + " " + response.getLastName() + " logged successfully");
                 preferencesService.putUsername(username);
-                preferencesService.putRole(response.getRoles().iterator().next());
-                if (preferencesService.getRole().equals(ROLE_PACIENTE)) {
-                    Context context = getApplicationContext();
-                    CharSequence text = "Login solo habilitado para médicos.";
-                    int duration = Toast.LENGTH_LONG;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                final String role = response.getRoles().iterator().next();
+                preferencesService.putRole(role);
+
+                if (ROLE_USER.equals(role)) {
+
+                    final KeyPair keyPair = CryptoUtils.generateKeyPair();
+                    networkService.uploadPublicKey(keyPair.getPublic(), new NetCallback<Void>() {
+                        @Override
+                        public void onSuccess(Void response) {
+                            preferencesService.putPrivateKey(keyPair.getPrivate());
+                            startActivity(HomeActivity.getIntent(LoginActivity.this));
+                            bLogin.setEnabled(true);
+                            bLogin.setBackground(bLoginBackground);
+                        }
+
+                        @Override
+                        public void onFailure(Throwable exception) {
+                            Log.e(TAG, "Cannot upload key", exception);
+                            Context context = getApplicationContext();
+                            Toast.makeText(context, exception.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+
                 } else {
                     startActivity(HomeActivity.getIntent(LoginActivity.this));
+                    bLogin.setEnabled(true);
+                    bLogin.setBackground(bLoginBackground);
                 }
-                bLogin.setEnabled(true);
-                bLogin.setBackground(bLoginBackground);
+
             }
 
             @Override

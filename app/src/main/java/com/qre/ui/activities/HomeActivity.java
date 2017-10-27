@@ -32,8 +32,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
 
-    private static final String ROLE_MEDICAL = "ROLE_MEDICO";
-    private static final String ROLE_USER = "ROLE_PACIENTE";
+	private static final String ROLE_MEDICAL = "ROLE_MEDICO";
+	public static final String ROLE_USER = "ROLE_PACIENTE";
 
     @Inject
     UserPreferenceService userPreferenceService;
@@ -106,27 +106,28 @@ public class HomeActivity extends AppCompatActivity {
 								fragment = new MedicalEditUserFragment();
 								fragmentTransaction = true;
 								break;
-                            case R.id.menu_user_profile:
-                                fragment = new ProfileFragment();
-                                fragmentTransaction = true;
-                                break;
-                            case R.id.menu_user_clinical_history:
-                                fragment = new UserClinicalHistoryFragment();
-                                fragmentTransaction = true;
-                                break;
-                            case R.id.menu_user_emergency_data:
-                                fragment = new UserEmergencyDataFragment();
-                                fragmentTransaction = true;
-                                break;
-                            case R.id.menu_user_manage_qr:
-                                fragment = new UserManageQRFragment();
-                                fragmentTransaction = true;
-                                break;
-                            case R.id.menu_logout:
-                                userPreferenceService.delete();
-                                startActivity(LoginActivity.getIntent(HomeActivity.this));
-                                break;
-                        }
+							case R.id.menu_user_profile:
+								fragment = new ProfileFragment();
+								fragmentTransaction = true;
+								break;
+							case R.id.menu_user_clinical_history:
+								fragment = new UserClinicalHistoryFragment();
+								fragmentTransaction = true;
+								break;
+							case R.id.menu_user_emergency_data:
+								fragment = new UserEmergencyDataFragment();
+								fragmentTransaction = true;
+								break;
+							case R.id.menu_user_manage_qr:
+								fragment = new UserManageQRFragment();
+								fragmentTransaction = true;
+								break;
+							case R.id.menu_logout:
+								userPreferenceService.delete();
+								networkService.logout();
+								startActivity(LoginActivity.getIntent(HomeActivity.this));
+								break;
+						}
 
                         if (fragmentTransaction) {
                             getSupportFragmentManager().beginTransaction()
