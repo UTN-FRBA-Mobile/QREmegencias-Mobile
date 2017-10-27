@@ -33,6 +33,8 @@ public class UserManageQRFragment extends BaseFragment {
     private static final int WHITE = 0xFFFFFFFF;
     private static final int BLACK = 0xFF000000;
     private static final Map<EncodeHintType, Object> HINTS = new ConcurrentHashMap<>(2);
+    public static final String SEPARATOR = " ";
+
     static {
         HINTS.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
         HINTS.put(EncodeHintType.CHARACTER_SET, CHARSET_NAME);
@@ -72,30 +74,26 @@ public class UserManageQRFragment extends BaseFragment {
     @NonNull
     private Bitmap createBitmapQR(PrivateKey privateKey) {
         try {
-            final Signature dsa = Signature.getInstance("SHA256withRSA");
+            final Signature dsa = Signature.getInstance("SHA256withECDSA");
             dsa.initSign(privateKey);
+            long timestamp = System.currentTimeMillis();
             final String id = userPreferenceService.getUsername();
-            dsa.update(id.getBytes());
+            dsa.update((id+timestamp).getBytes());
             final byte[] sign = dsa.sign();
-            final String CHARSET_NAME = "ISO-8859-1";
             final String signature = new String(sign, CHARSET_NAME);
-
+            final String signatureSize = String.format("%03d", signature.length());
+            final String contents = signatureSize + signature + id + SEPARATOR + timestamp;
             final BitMatrix bitMatrix = new QRCodeWriter()
-                    .encode(signature + System.currentTimeMillis() + " " + id,
-                            BarcodeFormat.QR_CODE, WIDTH, HEIGHT, HINTS);
+                    .encode(contents, BarcodeFormat.QR_CODE, WIDTH, HEIGHT, HINTS);
 
             int width = bitMatrix.getWidth();
             int height = bitMatrix.getHeight();
-            int[] pixels = new int[width * height];
+            final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             for (int y = 0; y < height; y++) {
-                int offset = y * width;
                 for (int x = 0; x < width; x++) {
-                    pixels[offset + x] = bitMatrix.get(x, y) ? BLACK : WHITE;
+                    bitmap.setPixel(x, y,  bitMatrix.get(x, y) ? BLACK : WHITE);
                 }
             }
-
-            final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
             return bitmap;
         } catch (Exception e) {
             throw new RuntimeException("FALLO");

@@ -66,7 +66,7 @@ public class RetrofitNetworkService implements NetworkService {
 
     @Override
     public void uploadPublicKey(final PublicKey pk, final NetCallback<Void> callback) {
-        final PublicKeyDTO publicKeyDTO = new PublicKeyDTO().publicKey(Base64.encodeToString(pk.getEncoded(), Base64.DEFAULT));
+        final PublicKeyDTO publicKeyDTO = new PublicKeyDTO().publicKey(Base64.encodeToString(pk.getEncoded(), Base64.NO_WRAP));
         final Call<Void> call = getApi(MobileRestControllerApi.class).uploadPublicKeyUsingPUT(publicKeyDTO);
         enqueue(call, callback);
     }
