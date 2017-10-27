@@ -77,7 +77,7 @@ public class HomeActivity extends AppCompatActivity {
         String role = userPreferenceService.getRole();
         Log.i(TAG, "Prepare menu for user with role " + role);
         vNavigationView.getMenu().setGroupVisible(R.id.menu_medical, role.equals(ROLE_MEDICAL));
-        vNavigationView.getMenu().setGroupVisible(R.id.menu_user, role.equals(ROLE_USER));
+        //vNavigationView.getMenu().setGroupVisible(R.id.menu_user, role.equals(ROLE_USER));
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_frame, new MedicalEmergencyDataFragment())
                 .commit();
@@ -98,30 +98,30 @@ public class HomeActivity extends AppCompatActivity {
 //								fragment = new ProfileFragment();
 //								fragmentTransaction = true;
 //								break;
-                            case R.id.menu_medical_emergency_data:
-                                fragment = new MedicalEmergencyDataFragment();
-                                fragmentTransaction = true;
-                                break;
+//                          case R.id.menu_medical_emergency_data:
+//                              fragment = new MedicalEmergencyDataFragment();
+//                              fragmentTransaction = true;
+//                              break;
 							case R.id.menu_medical_edit_user:
 								fragment = new MedicalEditUserFragment();
 								fragmentTransaction = true;
 								break;
-							case R.id.menu_user_profile:
-								fragment = new ProfileFragment();
-								fragmentTransaction = true;
-								break;
-							case R.id.menu_user_clinical_history:
-								fragment = new UserClinicalHistoryFragment();
-								fragmentTransaction = true;
-								break;
-							case R.id.menu_user_emergency_data:
-								fragment = new UserEmergencyDataFragment();
-								fragmentTransaction = true;
-								break;
-							case R.id.menu_user_manage_qr:
-								fragment = new UserManageQRFragment();
-								fragmentTransaction = true;
-								break;
+//                          case R.id.menu_user_profile:
+//                              fragment = new ProfileFragment();
+//                              fragmentTransaction = true;
+//                              break;
+//                          case R.id.menu_user_clinical_history:
+//                              fragment = new UserClinicalHistoryFragment();
+//                              fragmentTransaction = true;
+//                              break;
+//                          case R.id.menu_user_emergency_data:
+//                              fragment = new UserEmergencyDataFragment();
+//                              fragmentTransaction = true;
+//                              break;
+//                          case R.id.menu_user_manage_qr:
+//                              fragment = new UserManageQRFragment();
+//                              fragmentTransaction = true;
+//                              break;
 							case R.id.menu_logout:
 								userPreferenceService.delete();
 								networkService.logout();

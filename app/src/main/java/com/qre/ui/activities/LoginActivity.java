@@ -18,9 +18,6 @@ import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkException;
 import com.qre.services.networking.NetworkService;
 import com.qre.services.preference.impl.UserPreferenceService;
-import com.qre.utils.CryptoUtils;
-
-import java.security.KeyPair;
 
 import javax.inject.Inject;
 
@@ -88,30 +85,15 @@ public class LoginActivity extends AppCompatActivity {
                 preferencesService.putRole(role);
 
                 if (ROLE_USER.equals(role)) {
-
-                    final KeyPair keyPair = CryptoUtils.generateKeyPair();
-                    networkService.uploadPublicKey(keyPair.getPublic(), new NetCallback<Void>() {
-                        @Override
-                        public void onSuccess(Void response) {
-                            preferencesService.putPrivateKey(keyPair.getPrivate());
-                            startActivity(HomeActivity.getIntent(LoginActivity.this));
-                            bLogin.setEnabled(true);
-                            bLogin.setBackground(bLoginBackground);
-                        }
-
-                        @Override
-                        public void onFailure(Throwable exception) {
-                            Log.e(TAG, "Cannot upload key", exception);
-                            Context context = getApplicationContext();
-                            Toast.makeText(context, exception.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
-
+                    Context context = getApplicationContext();
+                    CharSequence text = "Login solo habilitado para médicos.";
+                    Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+                    networkService.logout();
                 } else {
                     startActivity(HomeActivity.getIntent(LoginActivity.this));
-                    bLogin.setEnabled(true);
-                    bLogin.setBackground(bLoginBackground);
                 }
+                bLogin.setEnabled(true);
+                bLogin.setBackground(bLoginBackground);
 
             }
 
