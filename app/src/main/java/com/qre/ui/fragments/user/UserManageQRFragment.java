@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -14,13 +13,11 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.qre.R;
 import com.qre.injection.Injector;
-import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
 import com.qre.services.preference.impl.UserPreferenceService;
 import com.qre.ui.fragments.BaseFragment;
-import com.qre.utils.CryptoUtils;
 
-import java.security.KeyPair;
+import java.security.PrivateKey;
 import java.security.Signature;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,6 +32,15 @@ public class UserManageQRFragment extends BaseFragment {
     private static final String CHARSET_NAME = "ISO-8859-1";
     private static final int WHITE = 0xFFFFFFFF;
     private static final int BLACK = 0xFF000000;
+    private static final Map<EncodeHintType, Object> HINTS = new ConcurrentHashMap<>(2);
+    static {
+        HINTS.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+        HINTS.put(EncodeHintType.CHARACTER_SET, CHARSET_NAME);
+        HINTS.put(EncodeHintType.MARGIN, 0);
+    }
+
+    private static final int WIDTH = 360;
+    private static final int HEIGHT = 360;
 
     @Inject
     UserPreferenceService userPreferenceService;
@@ -58,35 +64,16 @@ public class UserManageQRFragment extends BaseFragment {
 
     @OnClick(R.id.btn_signed_qr)
     public void generateQR() {
-
-        final KeyPair keyPair = CryptoUtils.generateKeyPair();
-        networkService.uploadPublicKey(keyPair.getPublic().getEncoded(), new NetCallback<Void>() {
-            @Override
-            public void onSuccess(Void response) {
-                final Bitmap bitmap = createBitmapQR(keyPair);
-                imageView.setImageBitmap(bitmap);
-            }
-
-            @Override
-            public void onFailure(Throwable exception) {
-                Toast.makeText(getContext(), "Error al subir PK", Toast.LENGTH_LONG).show();
-            }
-        });
-
+        final PrivateKey privateKey = userPreferenceService.getPrivateKey();
+        final Bitmap bitmap = createBitmapQR(privateKey);
+        imageView.setImageBitmap(bitmap);
     }
 
     @NonNull
-    private Bitmap createBitmapQR(KeyPair keyPair) {
+    private Bitmap createBitmapQR(PrivateKey privateKey) {
         try {
-            final int WIDTH = 360;
-            final int HEIGHT = 360;
-            final Map<EncodeHintType, Object> hints = new ConcurrentHashMap<>(2);
-            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-            hints.put(EncodeHintType.CHARACTER_SET, CHARSET_NAME);
-            hints.put(EncodeHintType.MARGIN, 0);
-
             final Signature dsa = Signature.getInstance("SHA256withRSA");
-            dsa.initSign(keyPair.getPrivate());
+            dsa.initSign(privateKey);
             final String id = userPreferenceService.getUsername();
             dsa.update(id.getBytes());
             final byte[] sign = dsa.sign();
@@ -95,7 +82,7 @@ public class UserManageQRFragment extends BaseFragment {
 
             final BitMatrix bitMatrix = new QRCodeWriter()
                     .encode(signature + System.currentTimeMillis() + " " + id,
-                            BarcodeFormat.QR_CODE, WIDTH, HEIGHT, hints);
+                            BarcodeFormat.QR_CODE, WIDTH, HEIGHT, HINTS);
 
             int width = bitMatrix.getWidth();
             int height = bitMatrix.getHeight();

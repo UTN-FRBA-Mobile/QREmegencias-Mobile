@@ -33,7 +33,7 @@ public class HomeActivity extends AppCompatActivity {
 	private static final String TAG = HomeActivity.class.getSimpleName();
 
 	private static final String ROLE_MEDICAL = "ROLE_MEDICO";
-	private static final String ROLE_USER = "ROLE_PACIENTE";
+	public static final String ROLE_USER = "ROLE_PACIENTE";
 
 	@Inject
 	UserPreferenceService userPreferenceService;
@@ -118,6 +118,7 @@ public class HomeActivity extends AppCompatActivity {
 								break;
 							case R.id.menu_logout:
 								userPreferenceService.delete();
+								networkService.logout();
 								startActivity(LoginActivity.getIntent(HomeActivity.this));
 								break;
 						}

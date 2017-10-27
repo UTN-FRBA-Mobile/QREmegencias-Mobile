@@ -5,13 +5,17 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.qre.client.api.EmergencyDataControllerApi;
-import com.qre.client.api.TempCodeControllerApi;
-import com.qre.client.api.UserFrontControllerApi;
+import com.qre.client.ApiClient;
+import com.qre.client.api.MobileRestControllerApi;
 import com.qre.models.ApiError;
 import com.qre.models.LoginUserDTO;
 import com.qre.models.PublicKeyDTO;
 import com.qre.models.VerificationDTO;
+
+import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
+
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,50 +25,55 @@ import static org.aaronhe.threetengson.ThreeTenGsonAdapter.registerAll;
 
 public class RetrofitNetworkService implements NetworkService {
 
-    private final UserFrontControllerApi userFrontControllerApi;
-    private final EmergencyDataControllerApi emergencyDataControllerApi;
-    private final TempCodeControllerApi mobileTestControllerApi;
+    private final ApiClient apiClient;
 
     private static final String TAG = RetrofitNetworkService.class.getSimpleName();
 
-    public RetrofitNetworkService(final UserFrontControllerApi userFrontControllerApi,
-                                  final EmergencyDataControllerApi emergencyDataControllerApi,
-                                  final TempCodeControllerApi mobileTestControllerApi) {
-        this.userFrontControllerApi = userFrontControllerApi;
-        this.emergencyDataControllerApi = emergencyDataControllerApi;
-        this.mobileTestControllerApi = mobileTestControllerApi;
+    public RetrofitNetworkService(final ApiClient apiClient) {
+        this.apiClient = apiClient;
     }
-
 
     @Override
     public void login(final String username, final String password,
                       final NetCallback<LoginUserDTO> callback) {
-        final Call<LoginUserDTO> call = userFrontControllerApi.loginUsingPOST(username, password, "");
+        apiClient.getTokenEndPoint().setUsername(username).setPassword(password);
+        final Call<LoginUserDTO> call = getApi(MobileRestControllerApi.class).getUserInfoUsingGET();
         enqueue(call, callback);
     }
 
     @Override
+    public void logout() {
+        apiClient.setAccessToken(null);
+    }
+
+    private <T> T getApi(Class<T> service) {
+        return apiClient.createService(service);
+    }
+
+    @Override
     public void getPublicEmergencyData(final String uuid, final NetCallback<String> callback) {
-        final Call<String> call = emergencyDataControllerApi.getEmergencyDataByUuidUsingGET(uuid);
+        final Call<String> call = getApi(MobileRestControllerApi.class)
+                .getEmergencyDataByUuidUsingGET(uuid);
         enqueue(call, callback);
     }
 
     @Override
     public void getPublicKey(final String user, final NetCallback<VerificationDTO> callback) {
-        final Call<VerificationDTO> call = mobileTestControllerApi.getPublicKeyUsingGET(user);
+        final Call<VerificationDTO> call = getApi(MobileRestControllerApi.class)
+                .getPublicKeyUsingGET(user);
         enqueue(call, callback);
     }
 
     @Override
-    public void uploadPublicKey(final byte[] pk, final NetCallback<Void> callback) {
-        final PublicKeyDTO publicKeyDTO = new PublicKeyDTO().publicKey(Base64.encodeToString(pk, Base64.DEFAULT));
-        final Call<Void> call = mobileTestControllerApi.uploadPublicKeyUsingPUT(publicKeyDTO);
+    public void uploadPublicKey(final PublicKey pk, final NetCallback<Void> callback) {
+        final PublicKeyDTO publicKeyDTO = new PublicKeyDTO().publicKey(Base64.encodeToString(pk.getEncoded(), Base64.DEFAULT));
+        final Call<Void> call = getApi(MobileRestControllerApi.class).uploadPublicKeyUsingPUT(publicKeyDTO);
         enqueue(call, callback);
     }
 
     @Override
     public void getVerificationCode(final String text, final NetCallback<Integer> callback) {
-        final Call<Integer> call = mobileTestControllerApi.createTempCodeUsingPUT(text);
+        final Call<Integer> call = getApi(MobileRestControllerApi.class).createTempCodeUsingPUT(text);
         enqueue(call, callback);
     }
 
@@ -92,7 +101,11 @@ public class RetrofitNetworkService implements NetworkService {
             @Override
             public void onFailure(final Call<T> call, final Throwable t) {
                 if (callback != null) {
-                    callback.onFailure(new Exception("Error de red. No se pudo contactar al servidor."));
+                    // TODO Pasar a strings
+                    final String message = t.getCause() != null && t.getCause() instanceof OAuthProblemException ?
+                            "Usuario/Password incorrectos" :
+                            "Error de red. No se pudo contactar al servidor.";
+                    callback.onFailure(new Exception(message));
                 }
             }
         });
