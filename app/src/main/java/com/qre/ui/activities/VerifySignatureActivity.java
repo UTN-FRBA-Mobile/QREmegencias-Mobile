@@ -52,7 +52,7 @@ public class VerifySignatureActivity extends AppCompatActivity {
                     tempCodeIntent.putExtra("uuid", response.getUuid());
                     startActivity(tempCodeIntent);
                 } else {
-                    vVerifySign.setText(response.getPublicKey());
+                    vVerifySign.setText(response.getErrorMessage());
                 }
             }
 

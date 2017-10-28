@@ -60,7 +60,7 @@ public class RetrofitNetworkService implements NetworkService {
     @Override
     public void getPublicKey(final String user, final NetCallback<VerificationDTO> callback) {
         final Call<VerificationDTO> call = getApi(MobileRestControllerApi.class)
-                .getPublicKeyUsingGET(user);
+                .verifyQRSignatureUsingGET(user);
         enqueue(call, callback);
     }
 
