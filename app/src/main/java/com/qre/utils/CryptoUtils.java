@@ -1,6 +1,5 @@
 package com.qre.utils;
 
-import android.util.Base64;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -15,13 +14,9 @@ import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Signature;
-import java.security.SignatureException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -85,8 +80,8 @@ public final class CryptoUtils {
 
     public static KeyPair generateKeyPair() {
         try {
-            final KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-            keyGen.initialize(1024);
+            final KeyPairGenerator keyGen = KeyPairGenerator.getInstance("EC");
+            keyGen.initialize(256);
             return keyGen.generateKeyPair();
         } catch (final NoSuchAlgorithmException e) {
             Log.e("CryptoUtils", "Algoritmo invalido", e);
@@ -96,34 +91,12 @@ public final class CryptoUtils {
 
     public static PrivateKey getPrivateKey(byte[] bytes) {
         try {
-            final KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            final KeyFactory keyFactory = KeyFactory.getInstance("EC");
             final KeySpec privateKeySpec = new PKCS8EncodedKeySpec(bytes);
             return keyFactory.generatePrivate(privateKeySpec);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException("Error al generar privateKey", e);
         }
-    }
-
-    public static boolean verifySignature(final String publicKey, final String data,
-                                          final byte[] signature) {
-        try {
-            final Signature sig = Signature.getInstance("SHA256withRSA");
-            sig.initVerify(getPublicKey(publicKey));
-            sig.update(data.getBytes(CHARSET_NAME));
-            return sig.verify(signature);
-        } catch (final NoSuchAlgorithmException | UnsupportedEncodingException |
-                InvalidKeyException | SignatureException | InvalidKeySpecException e) {
-            return false;
-        }
-
-    }
-
-    private static PublicKey getPublicKey(final String key) throws InvalidKeySpecException,
-            NoSuchAlgorithmException, UnsupportedEncodingException {
-        final byte[] decode = Base64.decode(key, Base64.DEFAULT);
-        final X509EncodedKeySpec spec = new X509EncodedKeySpec(decode);
-        final KeyFactory kf = KeyFactory.getInstance("RSA");
-        return kf.generatePublic(spec);
     }
 
 }

@@ -11,12 +11,6 @@ import com.qre.injection.Injector;
 import com.qre.models.VerificationDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
-import com.qre.utils.CryptoUtils;
-
-import org.threeten.bp.Duration;
-import org.threeten.bp.Instant;
-
-import java.io.UnsupportedEncodingException;
 
 import javax.inject.Inject;
 
@@ -48,57 +42,26 @@ public class VerifySignatureActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         final String qrContent = intent.getStringExtra("tempCode");
 
-        final Duration duration = Duration.between(getTimestamp(qrContent), Instant.now());
+        networkService.getPublicKey(qrContent, new NetCallback<VerificationDTO>() {
 
-        if (duration.toMinutes() < 5) {
-            networkService.getPublicKey(getUser(qrContent), new NetCallback<VerificationDTO>() {
-
-                @Override
-                public void onSuccess(VerificationDTO response) {
-                    boolean verified = CryptoUtils.verifySignature(response.getPublicKey(),
-                            getUser(qrContent), getSignature(qrContent));
-
-                    if (verified) {
-                        final Intent tempCodeIntent = TemporalCodeActivity
-                                .getIntent(VerifySignatureActivity.this);
-                        tempCodeIntent.putExtra("uuid", response.getUuid());
-                        startActivity(tempCodeIntent);
-                    } else {
-                        vVerifySign.setText("No verificado");
-                    }
-
+            @Override
+            public void onSuccess(VerificationDTO response) {
+                if (response.getUuid() != null) {
+                    final Intent tempCodeIntent = TemporalCodeActivity
+                            .getIntent(VerifySignatureActivity.this);
+                    tempCodeIntent.putExtra("uuid", response.getUuid());
+                    startActivity(tempCodeIntent);
+                } else {
+                    vVerifySign.setText(response.getErrorMessage());
                 }
+            }
 
-                @Override
-                public void onFailure(Throwable exception) {
-                    vVerifySign.setText(exception.getMessage());
-                }
-            });
-        } else {
-            vVerifySign.setText("QR Expirado");
-        }
+            @Override
+            public void onFailure(Throwable exception) {
+                vVerifySign.setText(exception.getMessage());
+            }
+        });
 
-    }
-
-    private Instant getTimestamp(final String qr) {
-        final Long timestamp = Long.valueOf(getTimestampAndUser(qr)[0]);
-        return Instant.ofEpochMilli(timestamp);
-    }
-
-    private String getUser(final String qr) {
-        return getTimestampAndUser(qr)[1];
-    }
-
-    private byte[] getSignature(String qr) {
-        try {
-            return qr.substring(0, 128).getBytes("ISO-8859-1");
-        } catch (UnsupportedEncodingException e) {
-            return null;
-        }
-    }
-
-    private String[] getTimestampAndUser(String qr) {
-        return qr.substring(128).split(" ");
     }
 
 }
