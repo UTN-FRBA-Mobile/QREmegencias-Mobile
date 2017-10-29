@@ -4,10 +4,10 @@
             android:id="@+id/menu_medical_profile"
             android:icon="@drawable/ic_person_black_24dp"
             android:title="@string/menu_medical_profile"/-->
-        <!--item
+        <item
             android:id="@+id/menu_medical_emergency_data"
             android:icon="@drawable/ic_local_hospital_black_24dp"
-            android:title="@string/menu_medical_emergency_data"/-->
+            android:title="@string/menu_medical_emergency_data"/>
         <item
             android:id="@+id/menu_medical_edit_user"
             android:icon="@drawable/ic_create_black_24dp"

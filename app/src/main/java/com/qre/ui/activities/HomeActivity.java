@@ -32,8 +32,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
 
-	private static final String ROLE_MEDICAL = "ROLE_MEDICO";
-	public static final String ROLE_USER = "ROLE_PACIENTE";
+    private static final String ROLE_MEDICAL = "ROLE_MEDICO";
+    public static final String ROLE_USER = "ROLE_PACIENTE";
 
     @Inject
     UserPreferenceService userPreferenceService;
@@ -98,14 +98,14 @@ public class HomeActivity extends AppCompatActivity {
 //								fragment = new ProfileFragment();
 //								fragmentTransaction = true;
 //								break;
-//                          case R.id.menu_medical_emergency_data:
-//                              fragment = new MedicalEmergencyDataFragment();
-//                              fragmentTransaction = true;
-//                              break;
-							case R.id.menu_medical_edit_user:
-								fragment = new MedicalEditUserFragment();
-								fragmentTransaction = true;
-								break;
+                            case R.id.menu_medical_emergency_data:
+                                fragment = new MedicalEmergencyDataFragment();
+                                fragmentTransaction = true;
+                                break;
+                            case R.id.menu_medical_edit_user:
+                                fragment = new MedicalEditUserFragment();
+                                fragmentTransaction = true;
+                                break;
 //                          case R.id.menu_user_profile:
 //                              fragment = new ProfileFragment();
 //                              fragmentTransaction = true;
@@ -122,12 +122,12 @@ public class HomeActivity extends AppCompatActivity {
 //                              fragment = new UserManageQRFragment();
 //                              fragmentTransaction = true;
 //                              break;
-							case R.id.menu_logout:
-								userPreferenceService.delete();
-								networkService.logout();
-								startActivity(LoginActivity.getIntent(HomeActivity.this));
-								break;
-						}
+                            case R.id.menu_logout:
+                                userPreferenceService.delete();
+                                networkService.logout();
+                                startActivity(LoginActivity.getIntent(HomeActivity.this));
+                                break;
+                        }
 
                         if (fragmentTransaction) {
                             getSupportFragmentManager().beginTransaction()
