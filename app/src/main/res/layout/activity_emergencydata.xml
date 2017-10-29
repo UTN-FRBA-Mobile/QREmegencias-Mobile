@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_water_grey600_24dp"
                 app:title="@string/blood_type"
-                app:value="@string/app_name" />
+                app:value="@string/not_loaded" />
 
             <!-- Age -->
 
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_cake_variant_grey600_24dp"
                 app:title="@string/age"
-                app:value="@string/app_name" />
+                app:value="@string/not_loaded" />
 
             <!-- Sex -->
 
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_gender_male_female_grey600_24dp"
                 app:title="@string/sex"
-                app:value="@string/app_name" />
+                app:value="@string/not_loaded" />
 
             <!-- Allergies -->
 
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_account_grey600_24dp"
                 app:title="@string/name"
-                app:value="@string/app_name" />
+                app:value="@string/not_loaded" />
 
             <com.qre.ui.components.DetailValueView
                 android:id="@+id/contact_phone"
@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_phone_grey600_24dp"
                 app:title="@string/phone"
-                app:value="@string/app_name" />
+                app:value="@string/not_loaded" />
 
             <Button
                 android:id="@+id/btn_see_more"
