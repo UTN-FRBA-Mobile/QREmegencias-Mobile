@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 
 public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm");
+    private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd / MM / yyyy");
 
     private final static int TYPE_HEADER = 1;
     private final static int TYPE_ALLERGY = 2;
