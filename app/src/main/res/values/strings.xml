@@ -10,6 +10,7 @@
     <string name="pathologies">Patologías</string>
     <string name="sex">Sexo</string>
     <string name="contact">Contacto</string>
+    <string name="contacts">Contactos</string>
     <string name="name">Nombre</string>
     <string name="phone">Teléfono</string>
     <string name="last_medical_check">Último chequeo médico</string>

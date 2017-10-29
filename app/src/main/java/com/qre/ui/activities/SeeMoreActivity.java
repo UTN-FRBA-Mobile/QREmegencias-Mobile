@@ -18,6 +18,7 @@ import com.google.gson.GsonBuilder;
 import com.qre.R;
 import com.qre.injection.Injector;
 import com.qre.models.EmergencyDataDTO;
+import com.qre.models.UserContactDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkException;
 import com.qre.services.networking.NetworkService;
@@ -29,6 +30,7 @@ import org.threeten.bp.format.DateTimeFormatter;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -136,6 +138,12 @@ public class SeeMoreActivity extends AppCompatActivity {
                         collection.add(R.string.medications);
                         collection.addAll(emergencyDataDTO.getMedications());
                     }
+
+                    // TODO Deshardcodear
+                    List<UserContactDTO> userContactDTOS = Arrays.asList(new UserContactDTO().firstName("Federico").lastName("Jaite").phoneNumber("123213"),
+                            new UserContactDTO().firstName("Federicos").lastName("Jaites").phoneNumber("123124124"));
+                    collection.add(R.string.contacts);
+                    collection.addAll(userContactDTOS);
 
                     vCollection.setLayoutManager(new LinearLayoutManager(SeeMoreActivity.this));
                     vCollection.setAdapter(new EmergencyDataAdapter(SeeMoreActivity.this, collection));

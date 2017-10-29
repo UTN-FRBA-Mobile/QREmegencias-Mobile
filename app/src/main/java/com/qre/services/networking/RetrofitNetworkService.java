@@ -14,7 +14,6 @@ import com.qre.models.VerificationDTO;
 
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 
-import java.security.PrivateKey;
 import java.security.PublicKey;
 
 import retrofit2.Call;

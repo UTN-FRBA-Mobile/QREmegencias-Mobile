@@ -11,6 +11,7 @@ import com.qre.R;
 import com.qre.models.HospitalizationDTO;
 import com.qre.models.MedicationDTO;
 import com.qre.models.PathologyDTO;
+import com.qre.models.UserContactDTO;
 import com.qre.ui.components.DetailValueView;
 
 import org.threeten.bp.format.DateTimeFormatter;
@@ -30,6 +31,7 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
     private final static int TYPE_HOSPITALIZATION = 3;
     private final static int TYPE_MEDICATION = 4;
     private final static int TYPE_PATHOLOGY = 5;
+    private final static int TYPE_CONTACT = 6;
 
     private Context context;
     private LayoutInflater inflater;
@@ -49,6 +51,7 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
             case TYPE_HOSPITALIZATION: return new HospitalizationViewHolder(inflater.inflate(R.layout.item_hospitalization, parent, false));
             case TYPE_MEDICATION: return new MedicationViewHolder(inflater.inflate(R.layout.item_medication, parent, false));
             case TYPE_PATHOLOGY: return new PathologyViewHolder(inflater.inflate(R.layout.item_pathology, parent, false));
+            case TYPE_CONTACT: return new ContactViewHolder(inflater.inflate(R.layout.item_contact, parent, false));
         }
         throw new IllegalArgumentException("Invalid view type " + viewType);
     }
@@ -89,6 +92,12 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
                 pathologyViewHolder.description.setValue(pathologyDTO.getDescription());
                 pathologyViewHolder.date.setValue(pathologyDTO.getDate().format(DATE_FORMATTER));
                 break;
+            case TYPE_CONTACT:
+                UserContactDTO userContactDTO = (UserContactDTO) items.get(position);
+                ContactViewHolder contactViewHolder = (ContactViewHolder) holder;
+                contactViewHolder.name.setValue(userContactDTO.getFirstName() + " " + userContactDTO.getLastName());
+                contactViewHolder.phone.setValue(userContactDTO.getPhoneNumber());
+                break;
         }
     }
 
@@ -111,6 +120,9 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
         if (item instanceof PathologyDTO) {
             return TYPE_PATHOLOGY;
+        }
+        if (item instanceof UserContactDTO) {
+            return TYPE_CONTACT;
         }
         if (item instanceof Integer) {
             return TYPE_HEADER;
@@ -196,6 +208,21 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
         public DetailValueView date;
 
         public PathologyViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+    }
+
+    public class ContactViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.contact_name)
+        public DetailValueView name;
+
+        @BindView(R.id.contact_phone)
+        public DetailValueView phone;
+
+        public ContactViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
