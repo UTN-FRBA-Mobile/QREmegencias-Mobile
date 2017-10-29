@@ -42,7 +42,7 @@ public class SeeMoreActivity extends AppCompatActivity {
 
     private static final String TAG = SeeMoreActivity.class.getSimpleName();
 
-    private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm");
+    private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd / MM / yyyy");
 
     public static Intent getIntent(final Context context) {
         return new Intent(context, SeeMoreActivity.class);
