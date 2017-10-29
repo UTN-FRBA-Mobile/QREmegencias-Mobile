@@ -53,7 +53,7 @@ public class RetrofitNetworkService implements NetworkService {
     @Override
     public void getPublicEmergencyData(final String uuid, final NetCallback<String> callback) {
         final Call<String> call = getApi(MobileRestControllerApi.class)
-                .getEmergencyDataByUuidUsingGET(uuid);
+                .getEmergencyDataByUuidUsingGET(uuid, "yes");
         enqueue(call, callback);
     }
 
