@@ -47,5 +47,6 @@
     <string name="cannot_load_data">No se pudo cargar la información</string>
     <string name="medical_home">Seleccioná la opción deseada desde el menú</string>
     <string name="medical_welcome">Bienvenido</string>
+    <string name="not_loaded">No cargado</string>
 
 </resources>

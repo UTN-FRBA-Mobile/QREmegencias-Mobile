@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_calendar_check_grey600_24dp"
                 app:title="@string/last_medical_check"
-                app:value="@string/app_name" />
+                app:value="@string/not_loaded" />
 
             <!-- Blood Type -->
 
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_water_grey600_24dp"
                 app:title="@string/blood_type"
-                app:value="@string/app_name" />
+                app:value="@string/not_loaded" />
 
             <!-- Organ Donor -->
 
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_heart_grey600_24dp"
                 app:title="@string/organ_donor"
-                app:value="@string/app_name" />
+                app:value="@string/not_loaded" />
 
             <!-- Collection -->
 
