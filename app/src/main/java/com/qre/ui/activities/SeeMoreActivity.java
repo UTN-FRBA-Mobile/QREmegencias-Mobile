@@ -139,11 +139,10 @@ public class SeeMoreActivity extends AppCompatActivity {
                         collection.addAll(emergencyDataDTO.getMedications());
                     }
 
-                    // TODO Deshardcodear
-                    List<UserContactDTO> userContactDTOS = Arrays.asList(new UserContactDTO().firstName("Federico").lastName("Jaite").phoneNumber("123213"),
-                            new UserContactDTO().firstName("Federicos").lastName("Jaites").phoneNumber("123124124"));
-                    collection.add(R.string.contacts);
-                    collection.addAll(userContactDTOS);
+                    if (emergencyDataDTO.getContacts() != null && !emergencyDataDTO.getContacts().isEmpty()) {
+                        collection.add(R.string.contacts);
+                        collection.addAll(emergencyDataDTO.getContacts());
+                    }
 
                     vCollection.setLayoutManager(new LinearLayoutManager(SeeMoreActivity.this));
                     vCollection.setAdapter(new EmergencyDataAdapter(SeeMoreActivity.this, collection));
