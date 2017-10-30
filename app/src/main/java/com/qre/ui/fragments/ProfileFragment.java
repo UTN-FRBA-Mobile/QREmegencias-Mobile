@@ -65,8 +65,8 @@ public class ProfileFragment extends BaseFragment {
                 vId.setText(profile.getIdNumber());
                 vBirthday.setText(profile.getBirthDate().format(DATE_FORMATTER));
                 switch (profile.getSex()) {
-                    case "MALE": vMale.setSelected(true);
-                    case "FEMALE": vFemale.setSelected(true);
+                    case "M": vMale.setSelected(true);
+                    case "F": vFemale.setSelected(true);
                     default: vOther.setSelected(true);
                 }
             }

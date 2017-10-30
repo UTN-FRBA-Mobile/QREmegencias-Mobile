@@ -10,7 +10,7 @@
     <!-- Name -->
 
     <com.qre.ui.components.DetailValueView
-        android:id="@+id/name"
+        android:id="@+id/contact_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_account_grey600_24dp"
@@ -20,7 +20,7 @@
     <!-- Phone -->
 
     <com.qre.ui.components.DetailValueView
-        android:id="@+id/phone"
+        android:id="@+id/contact_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_phone_grey600_24dp"
