@@ -2,6 +2,7 @@
     <string name="app_name">QR Emergencias</string>
     <string name="login">Loguearse</string>
     <string name="email">Email</string>
+    <string name="password">Password</string>
     <string name="surname">Apellido</string>
     <string name="id">DNI</string>
     <string name="birthday">Fecha de nacimiento</string>
