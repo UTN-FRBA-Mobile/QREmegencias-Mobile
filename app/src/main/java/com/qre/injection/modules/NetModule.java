@@ -12,7 +12,10 @@ import com.qre.services.networking.RetrofitNetworkService;
 import com.qre.services.preference.impl.UserPreferenceService;
 import com.qre.utils.Constants;
 
+import org.aaronhe.threetengson.ThreeTenGsonAdapter;
 import org.apache.oltu.oauth2.common.token.BasicOAuthToken;
+
+import java.text.DateFormat;
 
 import javax.inject.Singleton;
 
@@ -21,6 +24,7 @@ import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetModule {
@@ -49,8 +53,8 @@ public class NetModule {
     @Singleton
     Gson provideGson() {
         final GsonBuilder gsonBuilder = new GsonBuilder();
-        //Deserializer & Serializer
-        return gsonBuilder.create();
+        final GsonBuilder threeTenGsonBuilder = ThreeTenGsonAdapter.registerAll(gsonBuilder);
+        return threeTenGsonBuilder.create();
     }
 
     @Provides
@@ -65,7 +69,9 @@ public class NetModule {
     }
 
     @Provides
-    ApiClient provideApiClient(final OkHttpClient okHttpClient, final UserPreferenceService userPreferenceService) {
+    ApiClient provideApiClient(final OkHttpClient okHttpClient,
+                               final UserPreferenceService userPreferenceService,
+                               final Gson gson) {
         final OAuth read = new OAuth(OAuthFlow.password, mBaseUrl + "oauth/authorize",
                 mBaseUrl + "oauth/token", mScopes);
 
@@ -86,6 +92,7 @@ public class NetModule {
         apiClient.configureAuthorizationFlow(mClientId, mClientSecret, "");
         apiClient.configureFromOkclient(okHttpClient);
         apiClient.getAdapterBuilder().baseUrl(mBaseUrl);
+        apiClient.getAdapterBuilder().addConverterFactory(GsonConverterFactory.create(gson));
         return apiClient;
     }
 

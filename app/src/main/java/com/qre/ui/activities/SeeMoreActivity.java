@@ -14,11 +14,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.qre.R;
 import com.qre.injection.Injector;
 import com.qre.models.EmergencyDataDTO;
-import com.qre.models.UserContactDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkException;
 import com.qre.services.networking.NetworkService;
@@ -30,7 +28,6 @@ import org.threeten.bp.format.DateTimeFormatter;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,13 +35,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static org.aaronhe.threetengson.ThreeTenGsonAdapter.registerAll;
-
 public class SeeMoreActivity extends AppCompatActivity {
 
     private static final String TAG = SeeMoreActivity.class.getSimpleName();
 
-    private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd / MM / yyyy");
+    public static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd / MM / yyyy");
 
     public static Intent getIntent(final Context context) {
         return new Intent(context, SeeMoreActivity.class);
@@ -52,6 +47,9 @@ public class SeeMoreActivity extends AppCompatActivity {
 
     @Inject
     NetworkService networkService;
+
+    @Inject
+    Gson gson;
 
     @BindView(R.id.loader_seemore)
     View vLoader;
@@ -101,8 +99,7 @@ public class SeeMoreActivity extends AppCompatActivity {
                 final InputStream key = getResources().openRawResource(R.raw.privatekey);
                 try {
 
-                    String decrypted = new String(CryptoUtils.decryptText(response, key), "ISO-8859-1").replaceAll("00:00:00", "00:00:00Z");
-                    Gson gson = registerAll((new GsonBuilder())).create();
+                    String decrypted = new String(CryptoUtils.decryptText(response, key), "ISO-8859-1");
                     EmergencyDataDTO emergencyDataDTO = gson.fromJson(decrypted, EmergencyDataDTO.class);
 
                     List<Object> collection = new ArrayList<>();

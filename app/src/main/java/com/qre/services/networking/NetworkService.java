@@ -1,5 +1,6 @@
 package com.qre.services.networking;
 
+import com.qre.models.EmergencyDataDTO;
 import com.qre.models.LoginUserDTO;
 import com.qre.models.VerificationDTO;
 
@@ -13,4 +14,5 @@ public interface NetworkService {
 	void getPublicKey(final String user, final NetCallback<VerificationDTO> callback);
     void uploadPublicKey(final PublicKey pk, final NetCallback<Void> callback);
     void logout();
+    void getEmergencyData(final NetCallback<EmergencyDataDTO> netCallback);
 }
