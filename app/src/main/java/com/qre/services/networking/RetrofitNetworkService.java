@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.qre.client.ApiClient;
 import com.qre.client.api.MobileRestControllerApi;
 import com.qre.models.ApiError;
+import com.qre.models.EmergencyDataDTO;
 import com.qre.models.LoginUserDTO;
 import com.qre.models.PublicKeyDTO;
 import com.qre.models.VerificationDTO;
@@ -43,6 +44,12 @@ public class RetrofitNetworkService implements NetworkService {
     @Override
     public void logout() {
         apiClient.setAccessToken(null);
+    }
+
+    @Override
+    public void getEmergencyData(final NetCallback<EmergencyDataDTO> callback) {
+        final Call<EmergencyDataDTO> call = getApi(MobileRestControllerApi.class).getEmergencyDataUsingGET();
+        enqueue(call, callback);
     }
 
     private <T> T getApi(Class<T> service) {
