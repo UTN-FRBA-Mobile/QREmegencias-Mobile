@@ -34,13 +34,13 @@
 
     <string name="menu_medical_profile">Perfil</string>
     <string name="menu_medical_emergency_data">Generar Token de Edición</string>
-    <string name="menu_medical_edit_user">Editar Paciente</string>
+    <string name="menu_medical_edit_user">Leer Datos de Emergencia</string>
     <string name="menu_user_profile">Perfil</string>
     <string name="menu_user_manage_qr">Gestionar QR</string>
     <string name="menu_user_clinical_history">Historia Clínica</string>
     <string name="menu_user_emergency_data">Datos Emergencia</string>
     <string name="menu_logout">Cerrar Sesión</string>
-    <string name="scan">Escanear</string>
+    <string name="scan">Escanear QR</string>
     <string name="see_more">Ver más</string>
     <string name="emergency_data_title">Datos de Emergencia</string>
     <string name="see_more_title">Más información</string>

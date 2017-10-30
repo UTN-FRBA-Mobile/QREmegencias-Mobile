@@ -9,11 +9,6 @@
     android:paddingRight="24dp"
     android:gravity="center">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/menu_medical_emergency_data"/>
-
     <Button
         android:id="@+id/btn_scan_code"
         android:layout_width="match_parent"
@@ -21,7 +16,7 @@
         android:layout_marginBottom="12dp"
         android:layout_marginTop="24dp"
         android:padding="12dp"
-        android:text="Escanear QR"
+        android:text="@string/scan"
         android:theme="@style/AppTheme.Button" />
 
     <Button
