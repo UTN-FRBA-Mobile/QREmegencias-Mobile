@@ -1,8 +1,10 @@
 package com.qre.ui.fragments;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -11,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -21,6 +24,7 @@ import android.widget.TimePicker;
 
 import com.qre.R;
 import com.qre.injection.Injector;
+import com.qre.models.UserContactDTO;
 import com.qre.models.UserProfileDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
@@ -147,6 +151,35 @@ public class ProfileFragment extends BaseFragment {
                 vSave.setEnabled(true);
             }
         });
+    }
+
+    @OnClick(R.id.btn_add_contact)
+    public void openContactDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_contact, null);
+        dialogBuilder.setView(dialogView);
+        final EditText name = (EditText) dialogView.findViewById(R.id.input_name);
+        final EditText surname = (EditText) dialogView.findViewById(R.id.input_surname);
+        final EditText phone = (EditText) dialogView.findViewById(R.id.input_phone);
+        dialogBuilder.setTitle(getString(R.string.add_contact));
+        dialogBuilder.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                UserContactDTO contact = new UserContactDTO();
+                contact.setFirstName(name.getText().toString());
+                contact.setLastName(surname.getText().toString());
+                contact.setPhoneNumber(phone.getText().toString());
+                profile.getContacts().add(contact);
+                vContacts.getAdapter().notifyDataSetChanged();
+            }
+        });
+        dialogBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //pass
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
     }
 
     @OnClick(R.id.input_birthday)
