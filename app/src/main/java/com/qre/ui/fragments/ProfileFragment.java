@@ -6,6 +6,9 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +24,8 @@ import com.qre.injection.Injector;
 import com.qre.models.UserProfileDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
+import com.qre.ui.activities.SeeMoreActivity;
+import com.qre.ui.adapters.EmergencyDataAdapter;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
@@ -70,6 +75,9 @@ public class ProfileFragment extends BaseFragment {
     @BindView(R.id.btn_save)
     Button vSave;
 
+    @BindView(R.id.contacts)
+    RecyclerView vContacts;
+
     private UserProfileDTO profile;
 
     @Override
@@ -97,6 +105,10 @@ public class ProfileFragment extends BaseFragment {
                 vMale.setChecked("M".equals(profile.getSex()));
                 vFemale.setChecked("F".equals(profile.getSex()));
                 vOther.setChecked("O".equals(profile.getSex()));
+                vContacts.setLayoutManager(new LinearLayoutManager(getActivity()));
+                vContacts.setAdapter(new EmergencyDataAdapter(getActivity(), profile.getContacts()));
+                DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(vContacts.getContext(), DividerItemDecoration.VERTICAL);
+                vContacts.addItemDecoration(dividerItemDecoration);
             }
 
             @Override
