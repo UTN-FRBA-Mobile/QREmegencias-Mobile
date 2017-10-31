@@ -72,6 +72,13 @@ public class RetrofitNetworkService implements NetworkService {
     }
 
     @Override
+    public void updateProfile(UserProfileDTO profile, boolean qrUpdateRequired, NetCallback<Void> callback) {
+        final Call<Void> call = getApi(MobileRestControllerApi.class)
+                .updateProfileUsingPATCH(profile, qrUpdateRequired);
+        enqueue(call, callback);
+    }
+
+    @Override
     public void getPublicKey(final String user, final NetCallback<VerificationDTO> callback) {
         final Call<VerificationDTO> call = getApi(MobileRestControllerApi.class)
                 .verifyQRSignatureUsingGET(user);

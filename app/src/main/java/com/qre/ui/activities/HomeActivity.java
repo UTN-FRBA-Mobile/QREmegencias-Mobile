@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.qre.R;
 import com.qre.injection.Injector;
@@ -40,6 +41,9 @@ public class HomeActivity extends AppCompatActivity {
 
 	@Inject
 	NetworkService networkService;
+
+	@BindView(R.id.loader)
+	View vLoader;
 
 	@BindView(R.id.drawer_layout)
 	DrawerLayout vDrawerLayout;

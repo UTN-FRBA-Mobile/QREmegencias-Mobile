@@ -34,8 +34,8 @@
     <string name="x_years">{0} años</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
-    <string name="male">Femenino</string>
-    <string name="female">Masculino</string>
+    <string name="male">Masculino</string>
+    <string name="female">Femenino</string>
     <string name="other">Otro</string>
     <string name="save">Guardar cambios</string>
     <string name="add_contact">Agregar contacto de emergencia</string>
