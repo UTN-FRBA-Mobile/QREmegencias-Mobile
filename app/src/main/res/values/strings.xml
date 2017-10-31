@@ -58,5 +58,12 @@
     <string name="medical_home">Seleccioná la opción deseada desde el menú</string>
     <string name="medical_welcome">Bienvenido</string>
     <string name="not_loaded">No cargado</string>
+    <string name="btn_qr">QR</string>
+    <string name="signed_qr">QR FIRMADO</string>
+    <string name="menu_user_signed_qr">QR Firmado</string>
+    <string name="generate_qr">Generar QR</string>
+    <string name="delete_qr">Deprecar QR</string>
+    <string name="user_qr">QR del paciente</string>
+    <string name="signed_qr_desc">QR Firmado</string>
 
 </resources>

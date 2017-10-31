@@ -7,6 +7,8 @@ import com.qre.models.VerificationDTO;
 
 import java.security.PublicKey;
 
+import okhttp3.ResponseBody;
+
 public interface NetworkService {
 
 	void login(final String username, final String password, final NetCallback<LoginUserDTO> callback);
@@ -17,5 +19,8 @@ public interface NetworkService {
 	void getPublicKey(final String user, final NetCallback<VerificationDTO> callback);
     void uploadPublicKey(final PublicKey pk, final NetCallback<Void> callback);
     void logout();
-    void getEmergencyData(final NetCallback<EmergencyDataDTO> netCallback);
+    void getEmergencyData(final NetCallback<EmergencyDataDTO> callback);
+    void getQR(final String username, final NetCallback<ResponseBody> callback);
+    void createQR(final NetCallback<Void> callback);
+    void deleteQR(final NetCallback<Void> callback);
 }

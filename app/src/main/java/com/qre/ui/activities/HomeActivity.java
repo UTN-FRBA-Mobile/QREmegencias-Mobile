@@ -23,6 +23,7 @@ import com.qre.ui.fragments.medical.MedicalEmergencyDataFragment;
 import com.qre.ui.fragments.user.UserClinicalHistoryFragment;
 import com.qre.ui.fragments.user.UserEmergencyDataFragment;
 import com.qre.ui.fragments.user.UserManageQRFragment;
+import com.qre.ui.fragments.user.UserSignedQRFragment;
 
 import javax.inject.Inject;
 
@@ -118,6 +119,10 @@ public class HomeActivity extends AppCompatActivity {
 								break;
 							case R.id.menu_user_manage_qr:
 								fragment = new UserManageQRFragment();
+								fragmentTransaction = true;
+								break;
+							case R.id.menu_user_signed_qr:
+								fragment = new UserSignedQRFragment();
 								fragmentTransaction = true;
 								break;
 							case R.id.menu_logout:

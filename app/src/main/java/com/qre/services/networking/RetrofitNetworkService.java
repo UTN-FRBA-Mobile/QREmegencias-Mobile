@@ -18,6 +18,7 @@ import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 
 import java.security.PublicKey;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,6 +51,24 @@ public class RetrofitNetworkService implements NetworkService {
     @Override
     public void getEmergencyData(final NetCallback<EmergencyDataDTO> callback) {
         final Call<EmergencyDataDTO> call = getApi(MobileRestControllerApi.class).getEmergencyDataUsingGET();
+        enqueue(call, callback);
+    }
+
+    @Override
+    public void getQR(final String username, final NetCallback<ResponseBody> callback) {
+        final Call<ResponseBody> call = getApi(MobileRestControllerApi.class).getQRUsingGET(username);
+        enqueue(call, callback);
+    }
+
+    @Override
+    public void createQR(final NetCallback<Void> callback) {
+        final Call<Void> call = getApi(MobileRestControllerApi.class).createQRUsingPOST();
+        enqueue(call, callback);
+    }
+
+    @Override
+    public void deleteQR(final NetCallback<Void> callback) {
+        final Call<Void> call = getApi(MobileRestControllerApi.class).deleteQRUsingDELETE();
         enqueue(call, callback);
     }
 

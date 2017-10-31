@@ -5,27 +5,20 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/btn_create_qr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/generate_qr" />
-
-    <Button
-        android:id="@+id/btn_delete_qr"
+        android:id="@+id/btn_signed_qr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/btn_create_qr"
-        android:text="@string/delete_qr" />
+        android:layout_alignParentTop="true"
+        android:text="@string/signed_qr" />
 
     <ImageView
         android:id="@+id/im_qr_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="100dp"
-        android:contentDescription="@string/user_qr" />
+        android:layout_below="@+id/btn_signed_qr"
+        android:layout_marginTop="42dp"
+        android:contentDescription="@string/signed_qr_desc" />
 
 </RelativeLayout>
