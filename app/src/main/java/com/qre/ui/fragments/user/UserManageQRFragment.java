@@ -1,10 +1,15 @@
 package com.qre.ui.fragments.user;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -13,6 +18,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.qre.R;
 import com.qre.injection.Injector;
+import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
 import com.qre.services.preference.impl.UserPreferenceService;
 import com.qre.ui.fragments.BaseFragment;
@@ -26,8 +32,11 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
 
 public class UserManageQRFragment extends BaseFragment {
+
+    private static final String TAG = UserManageQRFragment.class.getSimpleName();
 
     private static final String CHARSET_NAME = "ISO-8859-1";
     private static final int WHITE = 0xFFFFFFFF;
@@ -53,6 +62,9 @@ public class UserManageQRFragment extends BaseFragment {
     @BindView(R.id.im_qr_view)
     ImageView imageView;
 
+    @BindView(R.id.btn_delete_qr)
+    Button mButtonDelete;
+
     @Override
     protected int getLayout() {
         return R.layout.fragment_user_manage_qr;
@@ -64,13 +76,70 @@ public class UserManageQRFragment extends BaseFragment {
         Injector.getServiceComponent().inject(this);
     }
 
+    @Override
+    protected void initializeViews() {
+        super.initializeViews();
+        viewQR();
+    }
+
+    private void viewQR() {
+        networkService.getQR(userPreferenceService.getUsername(), new NetCallback<ResponseBody>() {
+            @Override
+            public void onSuccess(ResponseBody response) {
+                imageView.setImageBitmap(BitmapFactory.decodeStream(response.byteStream()));
+                imageView.setVisibility(View.VISIBLE);
+                mButtonDelete.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFailure(Throwable exception) {
+                Log.e(TAG, "Error al obtener QR del paciente", exception);
+                imageView.setVisibility(View.INVISIBLE);
+                mButtonDelete.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    // TODO Mover a generacion de token de edicion
     @OnClick(R.id.btn_signed_qr)
     public void generateQR() {
         final PrivateKey privateKey = userPreferenceService.getPrivateKey();
         final Bitmap bitmap = createBitmapQR(privateKey);
         imageView.setImageBitmap(bitmap);
+        imageView.setVisibility(View.VISIBLE);
     }
 
+    @OnClick(R.id.btn_create_qr)
+    public void createQR() {
+        networkService.createQR(new NetCallback<Void>() {
+            @Override
+            public void onSuccess(Void response) {
+                viewQR();
+            }
+
+            @Override
+            public void onFailure(Throwable exception) {
+                Toast.makeText(getContext(), "Error al crear QR", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @OnClick(R.id.btn_delete_qr)
+    public void deleteQR() {
+        networkService.deleteQR(new NetCallback<Void>() {
+            @Override
+            public void onSuccess(Void response) {
+                viewQR();
+            }
+
+            @Override
+            public void onFailure(Throwable exception) {
+                Toast.makeText(getContext(), "Error al borrar QR", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    // TODO Mover a generacion de token de edicion
     @NonNull
     private Bitmap createBitmapQR(PrivateKey privateKey) {
         try {

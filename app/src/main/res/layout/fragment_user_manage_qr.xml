@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
     <Button
@@ -10,9 +11,21 @@
         android:layout_height="wrap_content"
         android:text="QR FIRMADO"/>
 
+    <Button
+        android:id="@+id/btn_create_qr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Generar QR"/>
+
+    <Button
+        android:id="@+id/btn_delete_qr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deprecar QR"/>
+
     <ImageView
         android:id="@+id/im_qr_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</FrameLayout>
+</LinearLayout>
