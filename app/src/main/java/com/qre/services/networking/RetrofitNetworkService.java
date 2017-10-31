@@ -11,6 +11,7 @@ import com.qre.models.ApiError;
 import com.qre.models.EmergencyDataDTO;
 import com.qre.models.LoginUserDTO;
 import com.qre.models.PublicKeyDTO;
+import com.qre.models.UserProfileDTO;
 import com.qre.models.VerificationDTO;
 
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
@@ -64,6 +65,20 @@ public class RetrofitNetworkService implements NetworkService {
     }
 
     @Override
+    public void getProfile(NetCallback<UserProfileDTO> callback) {
+        final Call<UserProfileDTO> call = getApi(MobileRestControllerApi.class)
+                .getProfileUsingGET();
+        enqueue(call, callback);
+    }
+
+    @Override
+    public void updateProfile(UserProfileDTO profile, boolean qrUpdateRequired, NetCallback<Void> callback) {
+        final Call<Void> call = getApi(MobileRestControllerApi.class)
+                .updateProfileUsingPATCH(profile, qrUpdateRequired);
+        enqueue(call, callback);
+    }
+
+    @Override
     public void getPublicKey(final String user, final NetCallback<VerificationDTO> callback) {
         final Call<VerificationDTO> call = getApi(MobileRestControllerApi.class)
                 .verifyQRSignatureUsingGET(user);
@@ -111,7 +126,7 @@ public class RetrofitNetworkService implements NetworkService {
                     final String message = t.getCause() != null && t.getCause() instanceof OAuthProblemException ?
                             "Usuario/Password incorrectos" :
                             "Error de red. No se pudo contactar al servidor.";
-                    callback.onFailure(new Exception(message));
+                    callback.onFailure(t);
                 }
             }
         });
