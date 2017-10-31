@@ -42,6 +42,9 @@
     <string name="load">Cargar</string>
     <string name="save">Guardar cambios</string>
     <string name="add_contact">Agregar contacto de emergencia</string>
+    <string name="load_image">Cargar imagen</string>
+    <string name="load_image_from_camera">Sacar una foto con la cámara</string>
+    <string name="load_image_from_gallery">Elegir imagen de la galería</string>
 
     <string name="menu_medical_profile">Perfil</string>
     <string name="menu_medical_emergency_data">Leer Datos de Emergencia</string>

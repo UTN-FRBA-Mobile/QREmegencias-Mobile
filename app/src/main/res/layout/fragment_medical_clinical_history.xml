@@ -76,11 +76,19 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
+                android:id="@+id/btn_load"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="@string/load_image"
+                android:theme="@style/AppTheme.Button" />
+
+            <Button
                 android:id="@+id/btn_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                android:text="@string/load"
+                android:text="@string/add_history"
                 android:theme="@style/AppTheme.Button" />
 
         </LinearLayout>
