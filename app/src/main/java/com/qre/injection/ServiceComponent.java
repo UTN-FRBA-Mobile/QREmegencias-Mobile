@@ -12,6 +12,7 @@ import com.qre.ui.activities.VerifySignatureActivity;
 import com.qre.ui.fragments.user.UserEmergencyDataFragment;
 import com.qre.ui.fragments.ProfileFragment;
 import com.qre.ui.fragments.user.UserManageQRFragment;
+import com.qre.ui.fragments.user.UserSignedQRFragment;
 
 import javax.inject.Singleton;
 
@@ -36,6 +37,8 @@ public interface ServiceComponent {
     void inject(final UserManageQRFragment userManageQRFragment);
 
     void inject(final UserEmergencyDataFragment userEmergencyDataFragment);
+
+    void inject(final UserSignedQRFragment userSignedQRFragment);
 
     void inject(final ProfileFragment profileFragment);
 
