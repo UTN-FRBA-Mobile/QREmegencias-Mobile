@@ -39,6 +39,7 @@
     <string name="male">Masculino</string>
     <string name="female">Femenino</string>
     <string name="other">Otro</string>
+    <string name="load">Cargar</string>
     <string name="save">Guardar cambios</string>
     <string name="add_contact">Agregar contacto de emergencia</string>
 
@@ -65,5 +66,9 @@
     <string name="delete_qr">Deprecar QR</string>
     <string name="user_qr">QR del paciente</string>
     <string name="signed_qr_desc">QR Firmado</string>
+    <string name="add_history">Crear historia</string>
+    <string name="record_name">Estudio</string>
+    <string name="record_date">Fecha del informe</string>
+    <string name="record_text">Texto del informe</string>
 
 </resources>
