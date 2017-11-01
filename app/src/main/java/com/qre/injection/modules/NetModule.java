@@ -15,8 +15,6 @@ import com.qre.utils.Constants;
 import org.aaronhe.threetengson.ThreeTenGsonAdapter;
 import org.apache.oltu.oauth2.common.token.BasicOAuthToken;
 
-import java.text.DateFormat;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -98,7 +96,7 @@ public class NetModule {
 
     @Provides
     @Singleton
-    NetworkService provideNetworkService(final ApiClient apiClient) {
-        return new RetrofitNetworkService(apiClient);
+    NetworkService provideNetworkService(final ApiClient apiClient, final UserPreferenceService userPreferenceService) {
+        return new RetrofitNetworkService(apiClient, userPreferenceService);
     }
 }
