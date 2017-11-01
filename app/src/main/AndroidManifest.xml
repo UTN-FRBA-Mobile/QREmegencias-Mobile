@@ -10,6 +10,25 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme.NoActionBar">
+
+        <service
+            android:name="com.qre.services.firebase.QREMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo" />
+
+        <service
+            android:name="com.qre.services.firebase.QREInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
         <activity
             android:name="com.qre.ui.activities.LoginActivity"
             android:windowSoftInputMode="adjustResize">

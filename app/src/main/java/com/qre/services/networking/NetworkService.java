@@ -23,4 +23,5 @@ public interface NetworkService {
     void getQR(final String username, final NetCallback<ResponseBody> callback);
     void createQR(final NetCallback<Void> callback);
     void deleteQR(final NetCallback<Void> callback);
+    void updateFirebaseToken(final String token, final NetCallback<LoginUserDTO> callback);
 }

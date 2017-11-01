@@ -44,6 +44,13 @@ public class RetrofitNetworkService implements NetworkService {
     }
 
     @Override
+    public void updateFirebaseToken(final String token, final NetCallback<LoginUserDTO> callback) {
+        // TODO reemplazar con llamada al endpoint verdadero
+        Call<LoginUserDTO> call = getApi(MobileRestControllerApi.class).getUserInfoUsingGET();
+        enqueue(call, callback);
+    }
+
+    @Override
     public void logout() {
         apiClient.setAccessToken(null);
     }
