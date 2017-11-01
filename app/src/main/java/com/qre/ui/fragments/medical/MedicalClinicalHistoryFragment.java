@@ -5,7 +5,12 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.widget.Button;
@@ -20,6 +25,12 @@ import com.qre.ui.fragments.ProfileFragment;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,6 +58,7 @@ public class MedicalClinicalHistoryFragment extends BaseFragment {
     Button vSave;
 
     private LocalDate date;
+    private File file;
 
     @Override
     protected int getLayout() {
@@ -92,6 +104,28 @@ public class MedicalClinicalHistoryFragment extends BaseFragment {
         pictureDialog.show();
     }
 
+    public File saveImage(Bitmap myBitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        File wallpaperDirectory = new File(Environment.getExternalStorageDirectory() + "images");
+        if (!wallpaperDirectory.exists()) {
+            wallpaperDirectory.mkdirs();
+        }
+        try {
+            File f = new File(wallpaperDirectory, Calendar.getInstance().getTimeInMillis() + ".jpg");
+            f.createNewFile();
+            FileOutputStream fo = new FileOutputStream(f);
+            fo.write(bytes.toByteArray());
+            MediaScannerConnection.scanFile(getContext(), new String[]{f.getPath()}, new String[]{"image/jpeg"}, null);
+            fo.close();
+            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
+            return f;
+        } catch (IOException e) {
+            Log.e(TAG, "Cannot save image", e);
+        }
+        return null;
+    }
+
     public void choosePhotoFromGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, CODE_GALLERY);
@@ -108,9 +142,18 @@ public class MedicalClinicalHistoryFragment extends BaseFragment {
             date = (LocalDate) data.getSerializableExtra(DatePickerFragment.DATE);
             vDate.setText(date.format(DATE_FORMATTER));
         } else if (requestCode == CODE_GALLERY) {
-
+            if (data != null) {
+                Uri contentURI = data.getData();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentURI);
+                    file = saveImage(bitmap);
+                } catch (IOException e) {
+                    Log.e(TAG, "Cannot load image from gallery", e);
+                }
+            }
         } else if (requestCode == CODE_CAMERA) {
-
+            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+            file = saveImage(thumbnail);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
