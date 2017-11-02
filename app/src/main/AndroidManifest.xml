@@ -20,11 +20,11 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/logo" />
+            android:resource="@drawable/ic_notif_logo" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/white" />
+            android:resource="@color/icon" />
 
         <service
             android:name="com.qre.services.firebase.QREInstanceIdService">
