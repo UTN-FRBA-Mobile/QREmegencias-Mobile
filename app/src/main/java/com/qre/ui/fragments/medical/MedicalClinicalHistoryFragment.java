@@ -20,6 +20,8 @@ import android.widget.EditText;
 import com.qre.R;
 import com.qre.injection.Injector;
 import com.qre.services.networking.NetCallback;
+import com.qre.services.networking.NetworkService;
+import com.qre.services.preference.impl.UserPreferenceService;
 import com.qre.ui.fragments.BaseFragment;
 import com.qre.ui.fragments.ProfileFragment;
 
@@ -31,6 +33,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Map;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -44,6 +49,12 @@ public class MedicalClinicalHistoryFragment extends BaseFragment {
     private static final int CODE_DATE = 1;
     private static final int CODE_CAMERA = 2;
     private static final int CODE_GALLERY = 3;
+
+    @Inject
+    UserPreferenceService userPreferenceService;
+
+    @Inject
+    NetworkService networkService;
 
     @BindView(R.id.input_name)
     EditText vName;
@@ -67,12 +78,32 @@ public class MedicalClinicalHistoryFragment extends BaseFragment {
 
     @Override
     protected void initializeViews() {
-        //Injector.getServiceComponent().inject(this);
+        Injector.getServiceComponent().inject(this);
     }
 
     @OnClick(R.id.btn_save)
     public void save() {
+
         vSave.setEnabled(false);
+
+        String name = vName.getText().toString();
+        String text = vText.getText().toString();
+        String user = userPreferenceService.getUsername();
+
+        networkService.createMedicalRecord(name, text, date, user, file, new NetCallback<Map<String, String>>() {
+
+            @Override
+            public void onSuccess(Map<String, String> response) {
+                vSave.setEnabled(true);
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                Log.e(TAG, "Cannot create clinical history", e);
+                vSave.setEnabled(true);
+            }
+
+        });
     }
 
     @OnClick(R.id.input_date)
@@ -107,7 +138,7 @@ public class MedicalClinicalHistoryFragment extends BaseFragment {
     public File saveImage(Bitmap myBitmap) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-        File wallpaperDirectory = new File(Environment.getExternalStorageDirectory() + "images");
+        File wallpaperDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "qr");
         if (!wallpaperDirectory.exists()) {
             wallpaperDirectory.mkdirs();
         }
