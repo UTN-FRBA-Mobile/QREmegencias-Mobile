@@ -7,12 +7,12 @@ import com.qre.services.firebase.QREInstanceIdService;
 import com.qre.services.networking.RetrofitNetworkService;
 import com.qre.ui.activities.HomeActivity;
 import com.qre.ui.activities.LoginActivity;
+import com.qre.ui.activities.MedicalClinicalHistoryActivity;
 import com.qre.ui.activities.SeeMoreActivity;
 import com.qre.ui.activities.TemporalCodeActivity;
 import com.qre.ui.activities.VerifySignatureActivity;
-import com.qre.ui.activities.MedicalClinicalHistoryActivity;
-import com.qre.ui.fragments.user.UserEmergencyDataFragment;
 import com.qre.ui.fragments.ProfileFragment;
+import com.qre.ui.fragments.user.UserEmergencyDataFragment;
 import com.qre.ui.fragments.user.UserManageQRFragment;
 import com.qre.ui.fragments.user.UserSignedQRFragment;
 

@@ -3,7 +3,6 @@ package com.qre.ui.fragments;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +18,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TimePicker;
 
 import com.qre.R;
 import com.qre.injection.Injector;
@@ -28,15 +25,10 @@ import com.qre.models.UserContactDTO;
 import com.qre.models.UserProfileDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
-import com.qre.ui.activities.SeeMoreActivity;
 import com.qre.ui.adapters.EmergencyDataAdapter;
 
 import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalTime;
 import org.threeten.bp.format.DateTimeFormatter;
-
-import java.util.Calendar;
-import java.util.Date;
 
 import javax.inject.Inject;
 
