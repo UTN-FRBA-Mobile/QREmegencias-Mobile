@@ -17,9 +17,14 @@ import com.qre.models.VerificationDTO;
 import com.qre.services.preference.impl.UserPreferenceService;
 
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
+import org.threeten.bp.LocalDate;
 
+import java.io.File;
 import java.security.PublicKey;
+import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -127,6 +132,13 @@ public class RetrofitNetworkService implements NetworkService {
     @Override
     public void getVerificationCode(final String text, final NetCallback<Integer> callback) {
         final Call<Integer> call = getApi(MobileRestControllerApi.class).createTempCodeUsingPUT(text);
+        enqueue(call, callback);
+    }
+
+    @Override
+    public void createMedicalRecord(String name, String text, LocalDate performed, String user, File file, final NetCallback<Map<String, String>> callback) {
+        RequestBody fbody = RequestBody.create(MediaType.parse("image/*"), file);
+        final Call<Map<String, String>> call = getApi(MobileRestControllerApi.class).createMedicalRecordUsingPOST(name, text, performed, user, fbody);
         enqueue(call, callback);
     }
 

@@ -39,8 +39,12 @@
     <string name="male">Masculino</string>
     <string name="female">Femenino</string>
     <string name="other">Otro</string>
+    <string name="load">Cargar</string>
     <string name="save">Guardar cambios</string>
     <string name="add_contact">Agregar contacto de emergencia</string>
+    <string name="load_image">Cargar imagen</string>
+    <string name="load_image_from_camera">Sacar una foto con la cámara</string>
+    <string name="load_image_from_gallery">Elegir imagen de la galería</string>
 
     <string name="menu_medical_profile">Perfil</string>
     <string name="menu_medical_emergency_data">Leer Datos de Emergencia</string>
@@ -65,5 +69,14 @@
     <string name="delete_qr">Deprecar QR</string>
     <string name="user_qr">QR del paciente</string>
     <string name="signed_qr_desc">QR Firmado</string>
+    <string name="add_history">Crear historia</string>
+    <string name="record_name">Estudio</string>
+    <string name="record_date">Fecha del informe</string>
+    <string name="record_text">Texto del informe</string>
+    <string name="load_image_success">Imagen cargada correctamente</string>
+    <string name="load_image_error">No se pudo cargar la imagen</string>
+    <string name="load_history_error">No se puedo cargar la historia</string>
+    <string name="required_fields_error">Debe completar todos los datos</string>
+    <string name="widget_update">Actualizar</string>
 
 </resources>

@@ -5,7 +5,11 @@ import com.qre.models.LoginUserDTO;
 import com.qre.models.UserProfileDTO;
 import com.qre.models.VerificationDTO;
 
+import org.threeten.bp.LocalDate;
+
+import java.io.File;
 import java.security.PublicKey;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 
@@ -24,4 +28,5 @@ public interface NetworkService {
     void createQR(final NetCallback<Void> callback);
     void deleteQR(final NetCallback<Void> callback);
     void updateFirebaseToken(final String token, final NetCallback<LoginUserDTO> callback);
+    void createMedicalRecord(final String name, final String text, final LocalDate performed, final String user, final File file, final NetCallback<Map<String, String>> callback);
 }
