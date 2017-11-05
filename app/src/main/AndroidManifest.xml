@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name="com.qre.QREApplication"
@@ -29,6 +31,13 @@
         <activity
             android:name=".ui.activities.SeeMoreActivity"
             android:label="@string/see_more_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activities.MedicalClinicalHistoryActivity"
+            android:label="@string/add_history">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
