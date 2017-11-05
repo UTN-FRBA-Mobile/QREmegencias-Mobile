@@ -60,7 +60,7 @@ android {
 
 ext {
     androidSupportVersion = "25.2.0"
-    googlePlayServicesVersion = "10.0.1"
+    googlePlayServicesVersion = "11.0.4"
     multidexVersion = "1.0.1"
     butterknifeVersion = "8.4.0"
     retrofitVersion = "2.3.0"
@@ -84,6 +84,7 @@ dependencies {
     compile "com.android.support:support-v4:$androidSupportVersion"
     compile "com.android.support:design:$androidSupportVersion"
     compile "com.google.android.gms:play-services:$googlePlayServicesVersion"
+    compile 'com.google.firebase:firebase-messaging:11.0.4'
     compile "com.android.support:multidex:$multidexVersion"
 
     // Butterknife
@@ -132,3 +133,5 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 }
+
+apply plugin: 'com.google.gms.google-services'

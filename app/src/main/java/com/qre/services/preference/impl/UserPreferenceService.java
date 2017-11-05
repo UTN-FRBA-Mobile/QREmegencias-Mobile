@@ -70,12 +70,21 @@ public class UserPreferenceService extends PreferencesService {
         }
     }
 
+    public String getQRLocation() {
+        return getString(Key.USER_QR_LOCATION, null);
+    }
+
+    public void putQRLocation(String location) {
+        putString(Key.USER_QR_LOCATION, location);
+    }
+
     private static final class Key {
 
         private static final String USER_USERNAME = "user.username";
         private static final String USER_ROLE = "user.role";
         private static final String USER_ACCESS_TOKEN = "user.accessToken";
         private static final String USER_PRIVATE_KEY = "user.privateKey";
+        private static final String USER_QR_LOCATION = "user.qrLocation";
 
     }
 

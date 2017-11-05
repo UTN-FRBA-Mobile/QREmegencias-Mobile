@@ -2,7 +2,12 @@
     <string name="app_name">QR Emergencias</string>
     <string name="login">Loguearse</string>
     <string name="email">Email</string>
-    <string name="password">Contraseña</string>
+    <string name="password">Password</string>
+    <string name="surname">Apellido</string>
+    <string name="id">DNI</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="birthday">Fecha de nacimiento</string>
     <string name="forgot_password">¿Olvidaste tu contraseña?</string>
     <string name="blood_type">Tipo de sangre</string>
     <string name="age">Edad</string>
@@ -10,7 +15,7 @@
     <string name="pathologies">Patologías</string>
     <string name="sex">Sexo</string>
     <string name="contact">Contacto</string>
-    <string name="contacts">Contactos</string>
+    <string name="contacts">Contactos de emergencia</string>
     <string name="name">Nombre</string>
     <string name="phone">Teléfono</string>
     <string name="last_medical_check">Último chequeo médico</string>
@@ -31,6 +36,15 @@
     <string name="x_years">{0} años</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
+    <string name="male">Masculino</string>
+    <string name="female">Femenino</string>
+    <string name="other">Otro</string>
+    <string name="load">Cargar</string>
+    <string name="save">Guardar cambios</string>
+    <string name="add_contact">Agregar contacto de emergencia</string>
+    <string name="load_image">Cargar imagen</string>
+    <string name="load_image_from_camera">Sacar una foto con la cámara</string>
+    <string name="load_image_from_gallery">Elegir imagen de la galería</string>
 
     <string name="menu_medical_profile">Perfil</string>
     <string name="menu_medical_emergency_data">Generar Token de Edición</string>
@@ -48,5 +62,21 @@
     <string name="medical_home">Seleccioná la opción deseada desde el menú</string>
     <string name="medical_welcome">Bienvenido</string>
     <string name="not_loaded">No cargado</string>
+    <string name="btn_qr">QR</string>
+    <string name="signed_qr">QR FIRMADO</string>
+    <string name="menu_user_signed_qr">QR Firmado</string>
+    <string name="generate_qr">Generar QR</string>
+    <string name="delete_qr">Deprecar QR</string>
+    <string name="user_qr">QR del paciente</string>
+    <string name="signed_qr_desc">QR Firmado</string>
+    <string name="add_history">Crear historia</string>
+    <string name="record_name">Estudio</string>
+    <string name="record_date">Fecha del informe</string>
+    <string name="record_text">Texto del informe</string>
+    <string name="load_image_success">Imagen cargada correctamente</string>
+    <string name="load_image_error">No se pudo cargar la imagen</string>
+    <string name="load_history_error">No se puedo cargar la historia</string>
+    <string name="required_fields_error">Debe completar todos los datos</string>
+    <string name="widget_update">Actualizar</string>
 
 </resources>

@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.qre.R;
 import com.qre.injection.Injector;
@@ -22,6 +23,7 @@ import com.qre.ui.fragments.medical.MedicalEmergencyDataFragment;
 import com.qre.ui.fragments.user.UserClinicalHistoryFragment;
 import com.qre.ui.fragments.user.UserEmergencyDataFragment;
 import com.qre.ui.fragments.user.UserManageQRFragment;
+import com.qre.ui.fragments.user.UserSignedQRFragment;
 
 import javax.inject.Inject;
 
@@ -41,7 +43,10 @@ public class HomeActivity extends AppCompatActivity {
     @Inject
     NetworkService networkService;
 
-    @BindView(R.id.drawer_layout)
+    @BindView(R.id.loader)
+    View vLoader;
+
+	@BindView(R.id.drawer_layout)
     DrawerLayout vDrawerLayout;
 
     @BindView(R.id.navigation)
@@ -122,7 +127,11 @@ public class HomeActivity extends AppCompatActivity {
 //                              fragment = new UserManageQRFragment();
 //                              fragmentTransaction = true;
 //                              break;
-                            case R.id.menu_logout:
+//                            case R.id.menu_user_signed_qr:
+//								fragment = new UserSignedQRFragment();
+//								fragmentTransaction = true;
+//								break;
+							case R.id.menu_logout:
                                 userPreferenceService.delete();
                                 networkService.logout();
                                 startActivity(LoginActivity.getIntent(HomeActivity.this));

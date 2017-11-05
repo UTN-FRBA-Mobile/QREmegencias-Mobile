@@ -23,6 +23,10 @@
             android:icon="@drawable/ic_crop_free_black_24dp"
             android:title="@string/menu_user_manage_qr"/>
         <item
+            android:id="@+id/menu_user_signed_qr"
+            android:icon="@drawable/ic_fingerprint_black_24dp"
+            android:title="@string/menu_user_signed_qr"/>
+        <item
             android:id="@+id/menu_user_clinical_history"
             android:icon="@drawable/ic_assignment_black_24dp"
             android:title="@string/menu_user_clinical_history"/>
