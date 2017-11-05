@@ -65,5 +65,6 @@
     <string name="delete_qr">Deprecar QR</string>
     <string name="user_qr">QR del paciente</string>
     <string name="signed_qr_desc">QR Firmado</string>
+    <string name="widget_update">Actualizar</string>
 
 </resources>

@@ -38,6 +38,16 @@
         <activity android:name="com.qre.ui.activities.ScanForCodeActivity" />
         <activity android:name="com.qre.ui.activities.TemporalCodeActivity" />
         <activity android:name="com.qre.ui.activities.VerifySignatureActivity" />
+
+        <receiver android:name="com.qre.ui.widget.QREmergenciasWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/qre_widget_info" />
+        </receiver>
+
     </application>
 
 </manifest>
