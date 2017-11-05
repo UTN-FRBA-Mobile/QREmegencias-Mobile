@@ -3,6 +3,7 @@ package com.qre.services.networking;
 import android.util.Base64;
 import android.util.Log;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.qre.client.ApiClient;
@@ -13,6 +14,7 @@ import com.qre.models.LoginUserDTO;
 import com.qre.models.PublicKeyDTO;
 import com.qre.models.UserProfileDTO;
 import com.qre.models.VerificationDTO;
+import com.qre.services.preference.impl.UserPreferenceService;
 
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.threeten.bp.LocalDate;
@@ -33,19 +35,30 @@ import static org.aaronhe.threetengson.ThreeTenGsonAdapter.registerAll;
 public class RetrofitNetworkService implements NetworkService {
 
     private final ApiClient apiClient;
+    private final UserPreferenceService preferencesService;
 
     private static final String TAG = RetrofitNetworkService.class.getSimpleName();
 
-    public RetrofitNetworkService(final ApiClient apiClient) {
+    public RetrofitNetworkService(final ApiClient apiClient, final UserPreferenceService preferencesService) {
         this.apiClient = apiClient;
+        this.preferencesService = preferencesService;
     }
 
     @Override
     public void login(final String username, final String password,
                       final NetCallback<LoginUserDTO> callback) {
         apiClient.getTokenEndPoint().setUsername(username).setPassword(password);
-        final Call<LoginUserDTO> call = getApi(MobileRestControllerApi.class).getUserInfoUsingGET();
+        final String token = FirebaseInstanceId.getInstance().getToken();
+        final Call<LoginUserDTO> call = getApi(MobileRestControllerApi.class).getUserInfoUsingGET(token);
         enqueue(call, callback);
+    }
+
+    @Override
+    public void updateFirebaseToken(final String token, final NetCallback<LoginUserDTO> callback) {
+        if (preferencesService.getUsername() != null) {
+            Call<LoginUserDTO> call = getApi(MobileRestControllerApi.class).getUserInfoUsingGET(token);
+            enqueue(call, callback);
+        }
     }
 
     @Override

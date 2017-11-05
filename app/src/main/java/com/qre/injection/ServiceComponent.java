@@ -3,6 +3,7 @@ package com.qre.injection;
 import com.qre.injection.modules.AppModule;
 import com.qre.injection.modules.NetModule;
 import com.qre.injection.modules.PreferencesModule;
+import com.qre.services.firebase.QREInstanceIdService;
 import com.qre.services.networking.RetrofitNetworkService;
 import com.qre.ui.activities.HomeActivity;
 import com.qre.ui.activities.LoginActivity;
@@ -42,6 +43,8 @@ public interface ServiceComponent {
     void inject(final UserSignedQRFragment userSignedQRFragment);
 
     void inject(final ProfileFragment profileFragment);
+
+    void inject(final QREInstanceIdService qreInstanceIdService);
 
     void inject(final MedicalClinicalHistoryActivity medicalClinicalHistoryFragment);
 

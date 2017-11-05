@@ -27,5 +27,6 @@ public interface NetworkService {
     void getQR(final String username, final NetCallback<ResponseBody> callback);
     void createQR(final NetCallback<Void> callback);
     void deleteQR(final NetCallback<Void> callback);
+    void updateFirebaseToken(final String token, final NetCallback<LoginUserDTO> callback);
     void createMedicalRecord(final String name, final String text, final LocalDate performed, final String user, final File file, final NetCallback<Map<String, String>> callback);
 }
