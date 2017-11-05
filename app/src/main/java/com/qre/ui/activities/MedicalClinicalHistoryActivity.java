@@ -1,8 +1,9 @@
-package com.qre.ui.fragments.medical;
+package com.qre.ui.activities;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,18 +13,19 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.qre.R;
 import com.qre.injection.Injector;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
 import com.qre.services.preference.impl.UserPreferenceService;
-import com.qre.ui.fragments.BaseFragment;
-import com.qre.ui.fragments.ProfileFragment;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
@@ -38,11 +40,12 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MedicalClinicalHistoryFragment extends BaseFragment {
+public class MedicalClinicalHistoryActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    private static final String TAG = MedicalClinicalHistoryFragment.class.getSimpleName();
+    private static final String TAG = MedicalClinicalHistoryActivity.class.getSimpleName();
 
     private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd / MM / yyyy");
 
@@ -68,57 +71,79 @@ public class MedicalClinicalHistoryFragment extends BaseFragment {
     @BindView(R.id.btn_save)
     Button vSave;
 
+    @BindView(R.id.appbar)
+    Toolbar vToolbar;
+
     private LocalDate date;
     private File file;
 
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_medical_clinical_history;
+    public static Intent getIntent(final Context context) {
+        Intent intent = new Intent(context, MedicalClinicalHistoryActivity.class);
+        return intent;
     }
 
     @Override
-    protected void initializeViews() {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_medical_clinical_history);
+
+        ButterKnife.bind(this);
+
         Injector.getServiceComponent().inject(this);
+
+        setSupportActionBar(vToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        date = LocalDate.now();
+        vDate.setText(date.format(DATE_FORMATTER));
     }
 
     @OnClick(R.id.btn_save)
     public void save() {
 
-        vSave.setEnabled(false);
-
         String name = vName.getText().toString();
         String text = vText.getText().toString();
         String user = userPreferenceService.getUsername();
 
-        networkService.createMedicalRecord(name, text, date, user, file, new NetCallback<Map<String, String>>() {
+        if (!name.isEmpty() && !text.isEmpty() && file != null) {
 
-            @Override
-            public void onSuccess(Map<String, String> response) {
-                vSave.setEnabled(true);
-            }
+            vSave.setEnabled(false);
 
-            @Override
-            public void onFailure(Throwable e) {
-                Log.e(TAG, "Cannot create clinical history", e);
-                vSave.setEnabled(true);
-            }
+            networkService.createMedicalRecord(name, text, date, user, file, new NetCallback<Map<String, String>>() {
 
-        });
+                @Override
+                public void onSuccess(Map<String, String> response) {
+                    vSave.setEnabled(true);
+                    finish();
+                }
+
+                @Override
+                public void onFailure(Throwable e) {
+                    Log.e(TAG, "Cannot create clinical history", e);
+                    vSave.setEnabled(true);
+                    Toast.makeText(MedicalClinicalHistoryActivity.this, getString(R.string.load_history_error), Toast.LENGTH_SHORT).show();
+                }
+
+            });
+        } else {
+            Toast.makeText(MedicalClinicalHistoryActivity.this, getString(R.string.required_fields_error), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @OnClick(R.id.input_date)
     public void openDateDialog() {
-        DialogFragment dialog = new DatePickerFragment();
+        DatePickerFragment dialog = new DatePickerFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(DatePickerFragment.DATE, date);
         dialog.setArguments(bundle);
-        dialog.setTargetFragment(this, CODE_DATE);
-        dialog.show(getActivity().getSupportFragmentManager(), "datePicker");
+        dialog.setActivity(this);
+        dialog.show(getSupportFragmentManager(), "datePicker");
     }
 
     @OnClick(R.id.btn_load)
     public void openPictureDialog(){
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         pictureDialog.setTitle(getString(R.string.load_image));
         String[] pictureDialogItems = { getString(R.string.load_image_from_gallery), getString(R.string.load_image_from_camera) };
         pictureDialog.setItems(pictureDialogItems, new DialogInterface.OnClickListener() {
@@ -147,7 +172,7 @@ public class MedicalClinicalHistoryFragment extends BaseFragment {
             f.createNewFile();
             FileOutputStream fo = new FileOutputStream(f);
             fo.write(bytes.toByteArray());
-            MediaScannerConnection.scanFile(getContext(), new String[]{f.getPath()}, new String[]{"image/jpeg"}, null);
+            MediaScannerConnection.scanFile(this, new String[]{f.getPath()}, new String[]{"image/jpeg"}, null);
             fo.close();
             Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
             return f;
@@ -176,35 +201,43 @@ public class MedicalClinicalHistoryFragment extends BaseFragment {
             if (data != null) {
                 Uri contentURI = data.getData();
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentURI);
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), contentURI);
                     file = saveImage(bitmap);
+                    Toast.makeText(MedicalClinicalHistoryActivity.this, getString(R.string.load_image_success), Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
                     Log.e(TAG, "Cannot load image from gallery", e);
+                    Toast.makeText(MedicalClinicalHistoryActivity.this, getString(R.string.load_image_error), Toast.LENGTH_SHORT).show();
                 }
             }
         } else if (requestCode == CODE_CAMERA) {
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
             file = saveImage(thumbnail);
+            Toast.makeText(MedicalClinicalHistoryActivity.this, getString(R.string.load_image_success), Toast.LENGTH_SHORT).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        date = LocalDate.of(year, month+1, dayOfMonth);
+        vDate.setText(date.format(DATE_FORMATTER));
+    }
+
+    public static class DatePickerFragment extends DialogFragment {
 
         public static final String DATE = "date";
+
+        private MedicalClinicalHistoryActivity activity;
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             LocalDate date = (LocalDate) getArguments().getSerializable(DatePickerFragment.DATE);
             date = date != null ? date : LocalDate.now();
-            return new DatePickerDialog(getActivity(), this, date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+            return new DatePickerDialog(getActivity(), activity, date.getYear(), date.getMonthValue()-1, date.getDayOfMonth());
         }
 
-        @Override
-        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            Intent intent = new Intent();
-            intent.putExtra(DatePickerFragment.DATE, LocalDate.of(year, month, dayOfMonth));
-            getTargetFragment().onActivityResult(CODE_DATE, CODE_DATE, intent);
+        public void setActivity(MedicalClinicalHistoryActivity activity) {
+            this.activity = activity;
         }
 
     }
