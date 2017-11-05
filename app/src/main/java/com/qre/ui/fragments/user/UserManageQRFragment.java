@@ -33,7 +33,7 @@ import okhttp3.ResponseBody;
 public class UserManageQRFragment extends BaseFragment {
 
     private static final String TAG = UserManageQRFragment.class.getSimpleName();
-    private static final String QR_FILE_NAME = "qr.png";
+    public static final String QR_FILE_NAME = "qr.png";
 
     @Inject
     UserPreferenceService userPreferenceService;
