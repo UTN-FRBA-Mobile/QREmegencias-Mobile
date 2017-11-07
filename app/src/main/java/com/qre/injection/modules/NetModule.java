@@ -14,6 +14,9 @@ import com.qre.utils.Constants;
 
 import org.aaronhe.threetengson.ThreeTenGsonAdapter;
 import org.apache.oltu.oauth2.common.token.BasicOAuthToken;
+import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.format.DateTimeFormatterBuilder;
+import org.threeten.bp.temporal.ChronoField;
 
 import javax.inject.Singleton;
 
@@ -90,6 +93,22 @@ public class NetModule {
         apiClient.configureAuthorizationFlow(mClientId, mClientSecret, "");
         apiClient.configureFromOkclient(okHttpClient);
         apiClient.getAdapterBuilder().baseUrl(mBaseUrl);
+
+        final DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
+                .parseCaseInsensitive()
+                .append(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                .optionalStart()
+                .appendPattern(".SSS")
+                .optionalEnd()
+                .optionalStart()
+                .appendZoneOrOffsetId()
+                .optionalEnd()
+                .optionalStart()
+                .appendOffset("+HHMM", "0000")
+                .optionalEnd()
+                .parseDefaulting(ChronoField.OFFSET_SECONDS, 0)
+                .toFormatter();
+        apiClient.setOffsetDateTimeFormat(dateTimeFormatter);
         apiClient.getAdapterBuilder().addConverterFactory(GsonConverterFactory.create(gson));
         return apiClient;
     }

@@ -81,6 +81,7 @@ dependencies {
 
     // Android
     compile "com.android.support:appcompat-v7:$androidSupportVersion"
+    compile "com.android.support:cardview-v7:$androidSupportVersion"
     compile "com.android.support:support-v4:$androidSupportVersion"
     compile "com.android.support:design:$androidSupportVersion"
     compile "com.google.android.gms:play-services:$googlePlayServicesVersion"
