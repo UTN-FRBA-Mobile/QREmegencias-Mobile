@@ -1,9 +1,7 @@
 package com.qre.ui.adapters;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.qre.R;
+import com.qre.models.FileDTO;
 import com.qre.models.MedicalRecordDTO;
+import com.squareup.picasso.Picasso;
 
 import org.threeten.bp.LocalDate;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,23 +38,27 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        MedicalRecordDTO value = items.get(position);
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final MedicalRecordDTO value = items.get(position);
         holder.text.setText(value.getText());
         holder.title.setText(value.getName());
         LocalDate performed = value.getPerformed();
         holder.date.setText(performed.toString());
 
         if (!value.getFiles().isEmpty()) {
-            try {
-                URL newurl = new URL(value.getFiles().get(0).getUrl());
-                holder.image.setImageBitmap(BitmapFactory.decodeStream(newurl.openConnection() .getInputStream()));
-            } catch (IOException e) {
-                Log.e("", "Error", e);
-            }
-        }
+            final FileDTO file = value.getFiles().get(0);
 
+            if (file.getMimeType().contains("image")) {
+                Picasso.with(holder.image.getContext())
+                        .load(file.getUrl())
+                        .into(holder.image);
+            } else {
+                // TODO mostrar boton de descarga
+            }
+
+        }
     }
+
 
     @Override
     public int getItemCount() {
@@ -77,7 +79,7 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
         @BindView(R.id.card_image)
         public ImageView image;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

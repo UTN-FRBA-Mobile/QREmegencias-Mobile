@@ -126,6 +126,9 @@ dependencies {
         exclude module: 'threetenbp'
     }
 
+    // Picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
     // Unit Test
     testCompile "junit:junit:$junitVersion"
 
