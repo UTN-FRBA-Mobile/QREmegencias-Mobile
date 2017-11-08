@@ -18,6 +18,7 @@ import com.qre.ui.fragments.BaseFragment;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import okhttp3.OkHttpClient;
 
 public class UserClinicalHistoryFragment extends BaseFragment {
 
@@ -26,6 +27,9 @@ public class UserClinicalHistoryFragment extends BaseFragment {
 
     @Inject
     NetworkService networkService;
+
+    @Inject
+    OkHttpClient okHttpClient;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +51,7 @@ public class UserClinicalHistoryFragment extends BaseFragment {
             @Override
             public void onSuccess(PageOfMedicalRecordDTO response) {
                 vRecordsList.setLayoutManager(new LinearLayoutManager(getContext()));
-                vRecordsList.setAdapter(new MedicalRecordAdapter(getContext(), response.getContent()));
+                vRecordsList.setAdapter(new MedicalRecordAdapter(getContext(), response.getContent(), okHttpClient));
                 DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(vRecordsList.getContext(), DividerItemDecoration.VERTICAL);
                 vRecordsList.addItemDecoration(dividerItemDecoration);
                 vRecordsList.setHasFixedSize(true);

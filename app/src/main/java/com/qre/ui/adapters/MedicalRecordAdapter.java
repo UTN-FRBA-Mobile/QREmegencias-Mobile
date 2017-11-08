@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jakewharton.picasso.OkHttp3Downloader;
 import com.qre.R;
 import com.qre.models.FileDTO;
 import com.qre.models.MedicalRecordDTO;
@@ -20,15 +21,18 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.OkHttpClient;
 
 public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
     private List<MedicalRecordDTO> items = Collections.emptyList();
+    private OkHttpClient okHttpClient;
 
-    public MedicalRecordAdapter(Context context, List<MedicalRecordDTO> items) {
+    public MedicalRecordAdapter(Context context, List<MedicalRecordDTO> items, OkHttpClient okHttpClient) {
         this.inflater = LayoutInflater.from(context);
         this.items = items;
+        this.okHttpClient = okHttpClient;
     }
 
     @Override
@@ -49,7 +53,10 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
             final FileDTO file = value.getFiles().get(0);
 
             if (file.getMimeType().contains("image")) {
-                Picasso.with(holder.image.getContext())
+                new Picasso
+                        .Builder(holder.image.getContext())
+                        .downloader(new OkHttp3Downloader(okHttpClient))
+                        .build()
                         .load(file.getUrl())
                         .into(holder.image);
             } else {
