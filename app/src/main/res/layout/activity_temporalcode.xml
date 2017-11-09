@@ -16,6 +16,17 @@
         android:layout_marginEnd="75dp"
         app:circleColor="@color/primary"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="101dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/code_description" />
+
+
     <FrameLayout
         android:id="@+id/loader_temp_code"
         android:layout_width="match_parent"

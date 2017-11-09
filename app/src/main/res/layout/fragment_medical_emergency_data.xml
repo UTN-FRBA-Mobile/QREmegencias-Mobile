@@ -9,6 +9,11 @@
     android:paddingRight="24dp"
     android:gravity="center">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/scan_description"/>
+
     <Button
         android:id="@+id/btn_scan_code"
         android:layout_width="match_parent"

@@ -79,5 +79,6 @@
     <string name="required_fields_error">Debe completar todos los datos</string>
     <string name="widget_update">Actualizar</string>
     <string name="scan_description">Escanear el QR del paciente para obtener un código de verificación</string>
+    <string name="code_description">Ingresá este código de verificación en la web para editar los datos del usuario</string>
 
 </resources>
