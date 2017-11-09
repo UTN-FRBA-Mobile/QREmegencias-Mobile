@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme.NoActionBar">
 
-        <service
+        <!--service
             android:name="com.qre.services.firebase.QREMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
@@ -33,7 +33,7 @@
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
-        </service>
+        </service-->
 
         <activity
             android:name="com.qre.ui.activities.LoginActivity"
@@ -71,14 +71,14 @@
         <activity android:name="com.qre.ui.activities.TemporalCodeActivity" />
         <activity android:name="com.qre.ui.activities.VerifySignatureActivity" />
 
-        <receiver android:name="com.qre.ui.widget.QREmergenciasWidgetProvider">
+        <!--receiver android:name="com.qre.ui.widget.QREmergenciasWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/qre_widget_info" />
-        </receiver>
+        </receiver-->
 
     </application>
 

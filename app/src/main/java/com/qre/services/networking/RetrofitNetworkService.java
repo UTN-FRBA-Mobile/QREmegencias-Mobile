@@ -48,7 +48,7 @@ public class RetrofitNetworkService implements NetworkService {
     public void login(final String username, final String password,
                       final NetCallback<LoginUserDTO> callback) {
         apiClient.getTokenEndPoint().setUsername(username).setPassword(password);
-        final String token = FirebaseInstanceId.getInstance().getToken();
+        final String token = null; //FirebaseInstanceId.getInstance().getToken();
         final Call<LoginUserDTO> call = getApi(MobileRestControllerApi.class).getUserInfoUsingGET(token);
         enqueue(call, callback);
     }

@@ -8,6 +8,11 @@
     android:paddingRight="24dp"
     android:paddingTop="24dp">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/scan_description"/>
+
     <Button
         android:id="@+id/btn_scan"
         android:layout_width="match_parent"
