@@ -46,6 +46,9 @@ public class TemporalCodeActivity extends AppCompatActivity {
     @BindView(R.id.text_temp_code)
     TextView vTempCode;
 
+    @BindView(R.id.text_temp_code_information)
+    TextView vTempCodeInformation;
+
     @BindView(R.id.timer)
     TimerView mTimerView;
 
@@ -108,6 +111,7 @@ public class TemporalCodeActivity extends AppCompatActivity {
         networkService.getVerificationCode(this.uuid, new NetCallback<Integer>() {
             @Override
             public void onSuccess(Integer response) {
+                vTempCodeInformation.setVisibility(TextView.VISIBLE);
                 vLoader.setVisibility(View.GONE);
                 vTempCode.setText(response.toString());
                 mTimerView.start(60, new TimerView.AnimationCallback() {
