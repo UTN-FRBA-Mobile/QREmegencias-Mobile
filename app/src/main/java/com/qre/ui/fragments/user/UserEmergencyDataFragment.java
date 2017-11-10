@@ -19,6 +19,8 @@ import com.qre.ui.adapters.EmergencyDataAdapter;
 import com.qre.ui.components.DetailValueView;
 import com.qre.ui.fragments.BaseFragment;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +85,11 @@ public class UserEmergencyDataFragment extends BaseFragment {
 
                     if (emergencyDataDTO.getGeneral() != null) {
 
-                        vLastMedicalCheck.setValue(emergencyDataDTO.getGeneral().getLastMedicalCheck().format(DATE_FORMATTER));
+                        final LocalDate lastMedicalCheck = emergencyDataDTO.getGeneral().getLastMedicalCheck();
+                        if (lastMedicalCheck != null) {
+                            vLastMedicalCheck.setValue(lastMedicalCheck.format(DATE_FORMATTER));
+                        }
+
                         vBloodType.setValue(emergencyDataDTO.getGeneral().getBloodType());
                         vOrganDonor.setValue(emergencyDataDTO.getGeneral().isOrganDonor() ? getString(R.string.yes) : getString(R.string.no));
 

@@ -22,7 +22,6 @@ import org.threeten.bp.LocalDate;
 
 import java.io.File;
 import java.security.PublicKey;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
@@ -38,12 +37,15 @@ import static org.aaronhe.threetengson.ThreeTenGsonAdapter.registerAll;
 public class RetrofitNetworkService implements NetworkService {
 
     private final ApiClient apiClient;
+    private final MobileRestControllerApi api;
     private final UserPreferenceService preferencesService;
 
     private static final String TAG = RetrofitNetworkService.class.getSimpleName();
 
-    public RetrofitNetworkService(final ApiClient apiClient, final UserPreferenceService preferencesService) {
+    public RetrofitNetworkService(final ApiClient apiClient, final UserPreferenceService preferencesService,
+                                  final MobileRestControllerApi api) {
         this.apiClient = apiClient;
+        this.api = api;
         this.preferencesService = preferencesService;
     }
 
@@ -52,14 +54,14 @@ public class RetrofitNetworkService implements NetworkService {
                       final NetCallback<LoginUserDTO> callback) {
         apiClient.getTokenEndPoint().setUsername(username).setPassword(password);
         final String token = FirebaseInstanceId.getInstance().getToken();
-        final Call<LoginUserDTO> call = getApi(MobileRestControllerApi.class).getUserInfoUsingGET(token);
+        final Call<LoginUserDTO> call = api.getUserInfoUsingGET(token);
         enqueue(call, callback);
     }
 
     @Override
     public void updateFirebaseToken(final String token, final NetCallback<LoginUserDTO> callback) {
         if (preferencesService.getUsername() != null) {
-            Call<LoginUserDTO> call = getApi(MobileRestControllerApi.class).getUserInfoUsingGET(token);
+            Call<LoginUserDTO> call = api.getUserInfoUsingGET(token);
             enqueue(call, callback);
         }
     }
@@ -71,56 +73,52 @@ public class RetrofitNetworkService implements NetworkService {
 
     @Override
     public void getEmergencyData(final NetCallback<EmergencyDataDTO> callback) {
-        final Call<EmergencyDataDTO> call = getApi(MobileRestControllerApi.class).getEmergencyDataUsingGET();
+        final Call<EmergencyDataDTO> call = api.getEmergencyDataUsingGET();
         enqueue(call, callback);
     }
 
     @Override
     public void getQR(final String username, final NetCallback<ResponseBody> callback) {
-        final Call<ResponseBody> call = getApi(MobileRestControllerApi.class).getQRUsingGET(username);
+        final Call<ResponseBody> call = api.getQRUsingGET(username);
         enqueue(call, callback);
     }
 
     @Override
     public void createQR(final NetCallback<Void> callback) {
-        final Call<Void> call = getApi(MobileRestControllerApi.class).createQRUsingPOST();
+        final Call<Void> call = api.createQRUsingPOST();
         enqueue(call, callback);
     }
 
     @Override
     public void deleteQR(final NetCallback<Void> callback) {
-        final Call<Void> call = getApi(MobileRestControllerApi.class).deleteQRUsingDELETE();
+        final Call<Void> call = api.deleteQRUsingDELETE();
         enqueue(call, callback);
-    }
-
-    private <T> T getApi(Class<T> service) {
-        return apiClient.createService(service);
     }
 
     @Override
     public void getPublicEmergencyData(final String uuid, final NetCallback<String> callback) {
-        final Call<String> call = getApi(MobileRestControllerApi.class)
+        final Call<String> call = api
                 .getEmergencyDataByUuidUsingGET(uuid, "yes");
         enqueue(call, callback);
     }
 
     @Override
     public void getProfile(NetCallback<UserProfileDTO> callback) {
-        final Call<UserProfileDTO> call = getApi(MobileRestControllerApi.class)
+        final Call<UserProfileDTO> call = api
                 .getProfileUsingGET();
         enqueue(call, callback);
     }
 
     @Override
     public void updateProfile(UserProfileDTO profile, boolean qrUpdateRequired, NetCallback<Void> callback) {
-        final Call<Void> call = getApi(MobileRestControllerApi.class)
+        final Call<Void> call = api
                 .updateProfileUsingPATCH(profile, qrUpdateRequired);
         enqueue(call, callback);
     }
 
     @Override
     public void getPublicKey(final String user, final NetCallback<VerificationDTO> callback) {
-        final Call<VerificationDTO> call = getApi(MobileRestControllerApi.class)
+        final Call<VerificationDTO> call = api
                 .verifyQRSignatureUsingGET(user);
         enqueue(call, callback);
     }
@@ -128,26 +126,26 @@ public class RetrofitNetworkService implements NetworkService {
     @Override
     public void uploadPublicKey(final PublicKey pk, final NetCallback<Void> callback) {
         final PublicKeyDTO publicKeyDTO = new PublicKeyDTO().publicKey(Base64.encodeToString(pk.getEncoded(), Base64.NO_WRAP));
-        final Call<Void> call = getApi(MobileRestControllerApi.class).uploadPublicKeyUsingPUT(publicKeyDTO);
+        final Call<Void> call = api.uploadPublicKeyUsingPUT(publicKeyDTO);
         enqueue(call, callback);
     }
 
     @Override
     public void getVerificationCode(final String text, final NetCallback<Integer> callback) {
-        final Call<Integer> call = getApi(MobileRestControllerApi.class).createTempCodeUsingPUT(text);
+        final Call<Integer> call = api.createTempCodeUsingPUT(text);
         enqueue(call, callback);
     }
 
     @Override
     public void createMedicalRecord(String name, String text, LocalDate performed, String user, File file, final NetCallback<Map<String, String>> callback) {
         RequestBody fbody = RequestBody.create(MediaType.parse("image/*"), file);
-        final Call<Map<String, String>> call = getApi(MobileRestControllerApi.class).createMedicalRecordUsingPOST(name, text, performed, user, fbody);
+        final Call<Map<String, String>> call = api.createMedicalRecordUsingPOST(name, text, performed, user, fbody);
         enqueue(call, callback);
     }
 
     @Override
     public void getSelfMedicalRecords(NetCallback<PageOfMedicalRecordDTO> callback) {
-        final Call<PageOfMedicalRecordDTO> call = getApi(MobileRestControllerApi.class).listMyMedicalRecordsUsingGET(0, 50, Collections.<String>emptyList());
+        final Call<PageOfMedicalRecordDTO> call = api.listMyMedicalRecordsUsingGET(0, 50, Collections.<String>emptyList());
         enqueue(call, callback);
     }
 
@@ -162,7 +160,7 @@ public class RetrofitNetworkService implements NetworkService {
                         try {
                             Gson gson = registerAll((new GsonBuilder())).create();
                             String errorBody = response.errorBody().string();
-                            ApiError apiError = gson.fromJson(errorBody.replaceAll(":([0-9]{2}).[0-9]{3}",":$1Z"), ApiError.class);
+                            ApiError apiError = gson.fromJson(errorBody.replaceAll(":([0-9]{2}).[0-9]{3}", ":$1Z"), ApiError.class);
                             callback.onFailure(new NetworkException(response.code(), apiError.getMessage()));
                         } catch (final Exception e) {
                             Log.e(TAG, "ERROR:  Error al leer error web", e);

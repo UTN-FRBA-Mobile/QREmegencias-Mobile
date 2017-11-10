@@ -55,12 +55,16 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
             final FileDTO file = value.getFiles().get(0);
 
             if (file.getMimeType().contains("image")) {
+                String url = file.getUrl();
+                if (url.contains("/api/medicalRecord")) {
+                    url = url.replace("/api/medicalRecord", "/api/mobile/medicalRecord");
+                }
+
                 new Picasso
                         .Builder(holder.image.getContext())
                         .downloader(new OkHttp3Downloader(okHttpClient))
                         .build()
-                        // TODO Deshardcodear
-                        .load("https://www.elsevier.es/corp/wp-content/uploads/2016/11/Captura-de-pantalla-2016-11-17-a-las-18.10.00-1.png")
+                        .load(url)
                         .into(holder.image);
                 holder.hasImage = true;
                 holder.closeButton.setVisibility(View.VISIBLE);

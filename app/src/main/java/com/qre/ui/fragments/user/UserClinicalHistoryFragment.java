@@ -15,6 +15,7 @@ import com.qre.ui.adapters.MedicalRecordAdapter;
 import com.qre.ui.fragments.BaseFragment;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import butterknife.BindView;
 import okhttp3.OkHttpClient;
@@ -28,6 +29,7 @@ public class UserClinicalHistoryFragment extends BaseFragment {
     NetworkService networkService;
 
     @Inject
+    @Named("withOAuth")
     OkHttpClient okHttpClient;
 
     @Override
