@@ -2,7 +2,6 @@ package com.qre.ui.fragments.user;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -46,14 +45,12 @@ public class UserClinicalHistoryFragment extends BaseFragment {
     protected void initializeViews() {
         super.initializeViews();
 
-        networkService.getSelfMedicalRecords(new NetCallback<PageOfMedicalRecordDTO>(){
+        networkService.getSelfMedicalRecords(new NetCallback<PageOfMedicalRecordDTO>() {
 
             @Override
             public void onSuccess(PageOfMedicalRecordDTO response) {
                 vRecordsList.setLayoutManager(new LinearLayoutManager(getContext()));
                 vRecordsList.setAdapter(new MedicalRecordAdapter(getContext(), response.getContent(), okHttpClient));
-                DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(vRecordsList.getContext(), DividerItemDecoration.VERTICAL);
-                vRecordsList.addItemDecoration(dividerItemDecoration);
                 vRecordsList.setHasFixedSize(true);
             }
 

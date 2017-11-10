@@ -3,47 +3,100 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="wrap_content"
     card_view:cardCornerRadius="4dp"
     card_view:cardElevation="4dp"
     card_view:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Titulo"
-            android:id="@+id/card_title"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="10dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Fecha"
-            android:id="@+id/card_date"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="10dp" />
+            <ImageView
+                android:id="@+id/medical_record_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:contentDescription="@string/icon_medicalrecord"
+                android:src="@drawable/ic_medicine_bowl" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Texto"
-            android:id="@+id/card_text"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="10dp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/medical_record_icon"
+                android:layout_alignTop="@+id/medical_record_icon"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/medical_record_icon"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/card_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Titulo" />
+
+                <TextView
+                    android:id="@+id/card_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/close_image_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@android:color/transparent"
+                android:visibility="gone"
+                android:layout_alignTop="@id/medical_record_icon"
+                android:layout_alignBottom="@+id/medical_record_icon"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_expanded"/>
+
+            <ImageButton
+                android:id="@+id/view_image_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@android:color/transparent"
+                android:visibility="gone"
+                android:layout_alignTop="@id/medical_record_icon"
+                android:layout_alignBottom="@+id/medical_record_icon"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_collapsed"/>
+
+        </RelativeLayout>
 
         <ImageView
+            android:id="@+id/card_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/card_image"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"
+            android:scaleType="fitStart"
+            android:maxHeight="240dp"
+            android:maxWidth="240dp" />
+
+        <TextView
+            android:id="@+id/card_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="5dp"
+            android:text="Texto" />
+
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

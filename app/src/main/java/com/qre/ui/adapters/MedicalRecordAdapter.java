@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,13 +15,14 @@ import com.qre.models.FileDTO;
 import com.qre.models.MedicalRecordDTO;
 import com.squareup.picasso.Picasso;
 
-import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.OkHttpClient;
 
 public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdapter.ViewHolder> {
@@ -28,6 +30,7 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
     private LayoutInflater inflater;
     private List<MedicalRecordDTO> items = Collections.emptyList();
     private OkHttpClient okHttpClient;
+    private static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd / MM / yyyy");
 
     public MedicalRecordAdapter(Context context, List<MedicalRecordDTO> items, OkHttpClient okHttpClient) {
         this.inflater = LayoutInflater.from(context);
@@ -46,8 +49,7 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
         final MedicalRecordDTO value = items.get(position);
         holder.text.setText(value.getText());
         holder.title.setText(value.getName());
-        LocalDate performed = value.getPerformed();
-        holder.date.setText(performed.toString());
+        holder.date.setText(value.getPerformed().format(DATE_FORMATTER));
 
         if (!value.getFiles().isEmpty()) {
             final FileDTO file = value.getFiles().get(0);
@@ -57,9 +59,13 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
                         .Builder(holder.image.getContext())
                         .downloader(new OkHttp3Downloader(okHttpClient))
                         .build()
-                        .load(file.getUrl())
+                        // TODO Deshardcodear
+                        .load("https://www.elsevier.es/corp/wp-content/uploads/2016/11/Captura-de-pantalla-2016-11-17-a-las-18.10.00-1.png")
                         .into(holder.image);
+                holder.hasImage = true;
+                holder.closeButton.setVisibility(View.VISIBLE);
             } else {
+                holder.image.setVisibility(View.GONE);
                 // TODO mostrar boton de descarga
             }
 
@@ -74,6 +80,8 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        public boolean hasImage;
+
         @BindView(R.id.card_text)
         public TextView text;
 
@@ -85,6 +93,30 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
 
         @BindView(R.id.card_image)
         public ImageView image;
+
+        @BindView(R.id.close_image_button)
+        public ImageButton closeButton;
+
+        @BindView(R.id.view_image_button)
+        public ImageButton viewButton;
+
+        @OnClick(R.id.view_image_button)
+        public void viewButtonClicked() {
+            if (hasImage) {
+                image.setVisibility(View.VISIBLE);
+                closeButton.setVisibility(View.VISIBLE);
+                viewButton.setVisibility(View.GONE);
+            }
+        }
+
+        @OnClick(R.id.close_image_button)
+        public void closeButtonClicked() {
+            if (hasImage) {
+                image.setVisibility(View.GONE);
+                closeButton.setVisibility(View.GONE);
+                viewButton.setVisibility(View.VISIBLE);
+            }
+        }
 
         ViewHolder(View itemView) {
             super(itemView);

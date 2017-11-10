@@ -78,5 +78,6 @@
     <string name="load_history_error">No se puedo cargar la historia</string>
     <string name="required_fields_error">Debe completar todos los datos</string>
     <string name="widget_update">Actualizar</string>
+    <string name="icon_medicalrecord">Icono MedicalRecord</string>
 
 </resources>
