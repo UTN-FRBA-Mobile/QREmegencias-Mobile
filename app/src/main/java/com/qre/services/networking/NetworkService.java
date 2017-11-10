@@ -2,6 +2,7 @@ package com.qre.services.networking;
 
 import com.qre.models.EmergencyDataDTO;
 import com.qre.models.LoginUserDTO;
+import com.qre.models.PageOfMedicalRecordDTO;
 import com.qre.models.UserProfileDTO;
 import com.qre.models.VerificationDTO;
 
@@ -29,4 +30,5 @@ public interface NetworkService {
     void deleteQR(final NetCallback<Void> callback);
     void updateFirebaseToken(final String token, final NetCallback<LoginUserDTO> callback);
     void createMedicalRecord(final String name, final String text, final LocalDate performed, final String user, final File file, final NetCallback<Map<String, String>> callback);
+    void getSelfMedicalRecords(final NetCallback<PageOfMedicalRecordDTO> netCallback);
 }

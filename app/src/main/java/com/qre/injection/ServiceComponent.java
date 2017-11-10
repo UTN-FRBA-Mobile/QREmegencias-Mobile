@@ -12,6 +12,7 @@ import com.qre.ui.activities.SeeMoreActivity;
 import com.qre.ui.activities.TemporalCodeActivity;
 import com.qre.ui.activities.VerifySignatureActivity;
 import com.qre.ui.fragments.ProfileFragment;
+import com.qre.ui.fragments.user.UserClinicalHistoryFragment;
 import com.qre.ui.fragments.user.UserEmergencyDataFragment;
 import com.qre.ui.fragments.user.UserManageQRFragment;
 import com.qre.ui.fragments.user.UserSignedQRFragment;
@@ -47,5 +48,7 @@ public interface ServiceComponent {
     void inject(final QREInstanceIdService qreInstanceIdService);
 
     void inject(final MedicalClinicalHistoryActivity medicalClinicalHistoryFragment);
+
+    void inject(final UserClinicalHistoryFragment userClinicalHistoryFragment);
 
 }

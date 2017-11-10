@@ -11,6 +11,7 @@ import com.qre.client.api.MobileRestControllerApi;
 import com.qre.models.ApiError;
 import com.qre.models.EmergencyDataDTO;
 import com.qre.models.LoginUserDTO;
+import com.qre.models.PageOfMedicalRecordDTO;
 import com.qre.models.PublicKeyDTO;
 import com.qre.models.UserProfileDTO;
 import com.qre.models.VerificationDTO;
@@ -21,6 +22,8 @@ import org.threeten.bp.LocalDate;
 
 import java.io.File;
 import java.security.PublicKey;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -139,6 +142,12 @@ public class RetrofitNetworkService implements NetworkService {
     public void createMedicalRecord(String name, String text, LocalDate performed, String user, File file, final NetCallback<Map<String, String>> callback) {
         RequestBody fbody = RequestBody.create(MediaType.parse("image/*"), file);
         final Call<Map<String, String>> call = getApi(MobileRestControllerApi.class).createMedicalRecordUsingPOST(name, text, performed, user, fbody);
+        enqueue(call, callback);
+    }
+
+    @Override
+    public void getSelfMedicalRecords(NetCallback<PageOfMedicalRecordDTO> callback) {
+        final Call<PageOfMedicalRecordDTO> call = getApi(MobileRestControllerApi.class).listMyMedicalRecordsUsingGET(0, 50, Collections.<String>emptyList());
         enqueue(call, callback);
     }
 
