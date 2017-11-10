@@ -31,4 +31,5 @@ public interface NetworkService {
     void updateFirebaseToken(final String token, final NetCallback<LoginUserDTO> callback);
     void createMedicalRecord(final String name, final String text, final LocalDate performed, final String user, final File file, final NetCallback<Map<String, String>> callback);
     void getSelfMedicalRecords(final NetCallback<PageOfMedicalRecordDTO> netCallback);
+    void forgotPassword(final String email, final NetCallback<Void> callback);
 }

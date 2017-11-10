@@ -70,6 +70,7 @@
         <activity android:name="com.qre.ui.activities.ScanForCodeActivity" />
         <activity android:name="com.qre.ui.activities.TemporalCodeActivity" />
         <activity android:name="com.qre.ui.activities.VerifySignatureActivity" />
+        <activity android:name="com.qre.ui.activities.ForgotPasswordActivity" />
 
         <receiver android:name="com.qre.ui.widget.QREmergenciasWidgetProvider">
             <intent-filter>

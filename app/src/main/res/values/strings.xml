@@ -79,5 +79,7 @@
     <string name="required_fields_error">Debe completar todos los datos</string>
     <string name="widget_update">Actualizar</string>
     <string name="icon_medicalrecord">Icono MedicalRecord</string>
+    <string name="send">Enviar</string>
+    <string name="forgot_intro">Por favor, ingresá tu email y te informaremos los pasos a seguir</string>
 
 </resources>

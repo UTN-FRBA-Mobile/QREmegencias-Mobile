@@ -149,6 +149,12 @@ public class RetrofitNetworkService implements NetworkService {
         enqueue(call, callback);
     }
 
+    @Override
+    public void forgotPassword(final String email, final NetCallback<Void> callback) {
+        final Call<Void> call = api.sendForgotPasswordUsingPOST(email, "yes");
+        enqueue(call, callback);
+    }
+
     private <T> void enqueue(final Call<T> call, final NetCallback<T> callback) {
         call.enqueue(new Callback<T>() {
             @Override

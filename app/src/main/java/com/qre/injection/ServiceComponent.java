@@ -5,6 +5,7 @@ import com.qre.injection.modules.NetModule;
 import com.qre.injection.modules.PreferencesModule;
 import com.qre.services.firebase.QREInstanceIdService;
 import com.qre.services.networking.RetrofitNetworkService;
+import com.qre.ui.activities.ForgotPasswordActivity;
 import com.qre.ui.activities.HomeActivity;
 import com.qre.ui.activities.LoginActivity;
 import com.qre.ui.activities.MedicalClinicalHistoryActivity;
@@ -50,5 +51,7 @@ public interface ServiceComponent {
     void inject(final MedicalClinicalHistoryActivity medicalClinicalHistoryFragment);
 
     void inject(final UserClinicalHistoryFragment userClinicalHistoryFragment);
+
+    void inject(final ForgotPasswordActivity forgotPasswordActivity);
 
 }

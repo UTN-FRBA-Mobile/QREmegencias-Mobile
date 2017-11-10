@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.link_forgot_password)
     public void forgotPassword() {
-        Log.i(TAG, "Recover password for email " + vEmail.getText().toString());
+        startActivity(ForgotPasswordActivity.getIntent(this));
     }
 
 }
