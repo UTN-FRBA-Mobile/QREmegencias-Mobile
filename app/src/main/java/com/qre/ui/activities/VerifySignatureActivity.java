@@ -42,15 +42,15 @@ public class VerifySignatureActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         final String qrContent = intent.getStringExtra("tempCode");
 
-        networkService.getPublicKey(qrContent, new NetCallback<VerificationDTO>() {
+        networkService.verifySignature(qrContent, new NetCallback<VerificationDTO>() {
 
             @Override
             public void onSuccess(VerificationDTO response) {
                 if (response.getUuid() != null) {
-                    final Intent tempCodeIntent = TemporalCodeActivity
+                    final Intent editUserIntent = EditPatientActivity
                             .getIntent(VerifySignatureActivity.this);
-                    tempCodeIntent.putExtra("uuid", response.getUuid());
-                    startActivity(tempCodeIntent);
+                    editUserIntent.putExtra("user", response.getUuid());
+                    startActivity(editUserIntent);
                 } else {
                     vVerifySign.setText(response.getErrorMessage());
                 }

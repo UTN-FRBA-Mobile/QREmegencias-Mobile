@@ -117,7 +117,7 @@ public class RetrofitNetworkService implements NetworkService {
     }
 
     @Override
-    public void getPublicKey(final String user, final NetCallback<VerificationDTO> callback) {
+    public void verifySignature(final String user, final NetCallback<VerificationDTO> callback) {
         final Call<VerificationDTO> call = api
                 .verifyQRSignatureUsingGET(user);
         enqueue(call, callback);

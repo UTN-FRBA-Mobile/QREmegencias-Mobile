@@ -104,7 +104,7 @@ public class MedicalClinicalHistoryActivity extends AppCompatActivity implements
 
         String name = vName.getText().toString();
         String text = vText.getText().toString();
-        String user = userPreferenceService.getUsername();
+        String user = getIntent().getStringExtra("user");
 
         if (!name.isEmpty() && !text.isEmpty() && file != null) {
 
