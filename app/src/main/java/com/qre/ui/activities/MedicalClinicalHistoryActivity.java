@@ -44,6 +44,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.qre.utils.Constants.INTENT_EXTRA_USER;
+
 public class MedicalClinicalHistoryActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private static final String TAG = MedicalClinicalHistoryActivity.class.getSimpleName();
@@ -104,7 +106,7 @@ public class MedicalClinicalHistoryActivity extends AppCompatActivity implements
 
         String name = vName.getText().toString();
         String text = vText.getText().toString();
-        String user = userPreferenceService.getUsername();
+        String user = getIntent().getStringExtra(INTENT_EXTRA_USER);
 
         if (!name.isEmpty() && !text.isEmpty() && file != null) {
 
@@ -143,17 +145,19 @@ public class MedicalClinicalHistoryActivity extends AppCompatActivity implements
     }
 
     @OnClick(R.id.btn_load)
-    public void openPictureDialog(){
+    public void openPictureDialog() {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         pictureDialog.setTitle(getString(R.string.load_image));
-        String[] pictureDialogItems = { getString(R.string.load_image_from_gallery), getString(R.string.load_image_from_camera) };
+        String[] pictureDialogItems = {getString(R.string.load_image_from_gallery), getString(R.string.load_image_from_camera)};
         pictureDialog.setItems(pictureDialogItems, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
-                    case 0: choosePhotoFromGallery();
+                    case 0:
+                        choosePhotoFromGallery();
                         break;
-                    case 1: takePhotoFromCamera();
+                    case 1:
+                        takePhotoFromCamera();
                         break;
                 }
             }
@@ -220,7 +224,7 @@ public class MedicalClinicalHistoryActivity extends AppCompatActivity implements
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        date = LocalDate.of(year, month+1, dayOfMonth);
+        date = LocalDate.of(year, month + 1, dayOfMonth);
         vDate.setText(date.format(DATE_FORMATTER));
     }
 
@@ -234,7 +238,7 @@ public class MedicalClinicalHistoryActivity extends AppCompatActivity implements
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             LocalDate date = (LocalDate) getArguments().getSerializable(DatePickerFragment.DATE);
             date = date != null ? date : LocalDate.now();
-            return new DatePickerDialog(getActivity(), activity, date.getYear(), date.getMonthValue()-1, date.getDayOfMonth());
+            return new DatePickerDialog(getActivity(), activity, date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth());
         }
 
         public void setActivity(MedicalClinicalHistoryActivity activity) {

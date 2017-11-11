@@ -10,17 +10,17 @@ import com.qre.services.preference.PreferencesService;
 
 public class DefaultPreferenceService extends PreferencesService {
 
-	private static final String SHARED_PREFERENCES_NAME = "qre_preferences";
+    private static final String SHARED_PREFERENCES_NAME = "qre_preferences";
 
-	public DefaultPreferenceService(@NonNull final Application application, @NonNull final Gson gson) {
-		super(application, gson);
-	}
+    public DefaultPreferenceService(@NonNull final Application application, @NonNull final Gson gson) {
+        super(application, gson);
+    }
 
-	@Override
-	protected SharedPreferences initPreferences(@NonNull final Application application) {
-		return application.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-	}
+    @Override
+    protected SharedPreferences initPreferences(@NonNull final Application application) {
+        return application.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+    }
 
-	private static final class Key {
-	}
+    private static final class Key {
+    }
 }

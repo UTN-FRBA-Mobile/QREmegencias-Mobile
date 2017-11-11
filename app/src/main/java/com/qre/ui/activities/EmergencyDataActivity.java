@@ -29,6 +29,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.qre.utils.Constants.INTENT_EXTRA_SCAN_RESULT;
+import static com.qre.utils.Constants.INTENT_EXTRA_UUID;
+
 public class EmergencyDataActivity extends AppCompatActivity {
 
     private static final String TAG = EmergencyDataActivity.class.getSimpleName();
@@ -84,7 +87,7 @@ public class EmergencyDataActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         final Intent intent = getIntent();
-        final String result = intent.getStringExtra("result");
+        final String result = intent.getStringExtra(INTENT_EXTRA_SCAN_RESULT);
         final InputStream key = getResources().openRawResource(R.raw.privatekey);
 
         try {
@@ -150,7 +153,7 @@ public class EmergencyDataActivity extends AppCompatActivity {
     @OnClick(R.id.btn_see_more)
     public void seeMore() {
         final Intent intent = SeeMoreActivity.getIntent(this);
-        intent.putExtra("uuid", this.uuid);
+        intent.putExtra(INTENT_EXTRA_UUID, this.uuid);
         startActivity(intent);
     }
 

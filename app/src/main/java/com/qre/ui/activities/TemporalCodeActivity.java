@@ -31,6 +31,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.widget.Toast.LENGTH_SHORT;
+import static com.qre.utils.Constants.INTENT_EXTRA_TEMP_CODE;
+import static com.qre.utils.Constants.INTENT_EXTRA_UUID;
 
 public class TemporalCodeActivity extends AppCompatActivity {
 
@@ -69,11 +71,11 @@ public class TemporalCodeActivity extends AppCompatActivity {
         Injector.getServiceComponent().inject(this);
 
         final Intent intent = getIntent();
-        final String qrContent = intent.getStringExtra("tempCode");
+        final String qrContent = intent.getStringExtra(INTENT_EXTRA_TEMP_CODE);
 
         try {
-            if (intent.getExtras().containsKey("uuid")) {
-                this.uuid = intent.getStringExtra("uuid");
+            if (intent.getExtras().containsKey(INTENT_EXTRA_UUID)) {
+                this.uuid = intent.getStringExtra(INTENT_EXTRA_UUID);
             } else {
                 final InputStream key = getResources().openRawResource(R.raw.privatekey);
                 final byte[] bytes = CryptoUtils.decryptText(qrContent, key);

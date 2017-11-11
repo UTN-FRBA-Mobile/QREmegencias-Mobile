@@ -46,12 +46,18 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case TYPE_HEADER: return new HeaderViewHolder(inflater.inflate(R.layout.item_header, parent, false));
-            case TYPE_ALLERGY: return new AllergyViewHolder(inflater.inflate(R.layout.item_allergy, parent, false));
-            case TYPE_HOSPITALIZATION: return new HospitalizationViewHolder(inflater.inflate(R.layout.item_hospitalization, parent, false));
-            case TYPE_MEDICATION: return new MedicationViewHolder(inflater.inflate(R.layout.item_medication, parent, false));
-            case TYPE_PATHOLOGY: return new PathologyViewHolder(inflater.inflate(R.layout.item_pathology, parent, false));
-            case TYPE_CONTACT: return new ContactViewHolder(inflater.inflate(R.layout.item_contact, parent, false));
+            case TYPE_HEADER:
+                return new HeaderViewHolder(inflater.inflate(R.layout.item_header, parent, false));
+            case TYPE_ALLERGY:
+                return new AllergyViewHolder(inflater.inflate(R.layout.item_allergy, parent, false));
+            case TYPE_HOSPITALIZATION:
+                return new HospitalizationViewHolder(inflater.inflate(R.layout.item_hospitalization, parent, false));
+            case TYPE_MEDICATION:
+                return new MedicationViewHolder(inflater.inflate(R.layout.item_medication, parent, false));
+            case TYPE_PATHOLOGY:
+                return new PathologyViewHolder(inflater.inflate(R.layout.item_pathology, parent, false));
+            case TYPE_CONTACT:
+                return new ContactViewHolder(inflater.inflate(R.layout.item_contact, parent, false));
         }
         throw new IllegalArgumentException("Invalid view type " + viewType);
     }

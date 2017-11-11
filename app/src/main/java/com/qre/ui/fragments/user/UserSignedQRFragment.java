@@ -78,7 +78,7 @@ public class UserSignedQRFragment extends BaseFragment {
             dsa.initSign(privateKey);
             long timestamp = System.currentTimeMillis();
             final String id = userPreferenceService.getUsername();
-            dsa.update((id+timestamp).getBytes());
+            dsa.update((id + timestamp).getBytes());
             final byte[] sign = dsa.sign();
             final String signature = new String(sign, CHARSET_NAME);
             final String signatureSize = String.format("%03d", signature.length());
@@ -91,7 +91,7 @@ public class UserSignedQRFragment extends BaseFragment {
             final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
-                    bitmap.setPixel(x, y,  bitMatrix.get(x, y) ? BLACK : WHITE);
+                    bitmap.setPixel(x, y, bitMatrix.get(x, y) ? BLACK : WHITE);
                 }
             }
             return bitmap;

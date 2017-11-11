@@ -35,6 +35,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.qre.utils.Constants.INTENT_EXTRA_UUID;
+
 public class SeeMoreActivity extends AppCompatActivity {
 
     private static final String TAG = SeeMoreActivity.class.getSimpleName();
@@ -90,7 +92,7 @@ public class SeeMoreActivity extends AppCompatActivity {
 
         vLoader.setVisibility(View.VISIBLE);
 
-        networkService.getPublicEmergencyData(getIntent().getStringExtra("uuid"), new NetCallback<String>() {
+        networkService.getPublicEmergencyData(getIntent().getStringExtra(INTENT_EXTRA_UUID), new NetCallback<String>() {
             @Override
             public void onSuccess(String response) {
 
@@ -145,11 +147,6 @@ public class SeeMoreActivity extends AppCompatActivity {
                     vCollection.setAdapter(new EmergencyDataAdapter(SeeMoreActivity.this, collection));
                     DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(vCollection.getContext(), DividerItemDecoration.VERTICAL);
                     vCollection.addItemDecoration(dividerItemDecoration);
-
-                    getIntent().putExtra("response", emergencyDataDTO.toString());
-
-                    Log.d(TAG, "JSON: " + emergencyDataDTO.toString());
-
                 } catch (final Exception e) {
                     Log.e(TAG, "ERROR:  Error al desencriptar contenido web", e);
                     tException.setText("No se pudo cargar la información.\nAsegurate que el QR sea el actual.");

@@ -9,23 +9,24 @@ import java.util.Objects;
 
 public class Injector {
 
-	private static ServiceComponent serviceComponent;
+    private static ServiceComponent serviceComponent;
 
-	private Injector() {}
+    private Injector() {
+    }
 
-	public static void initializeApplicationComponent(QREApplication application) {
-		serviceComponent = DaggerServiceComponent.builder()
-				.appModule(new AppModule(application))
-				.preferencesModule(new PreferencesModule())
-				.netModule(new NetModule("https://qr.rrramundo.com.ar/qremergencias/",
-						"prueba", "prueba123", "read"))
-				.build();
+    public static void initializeApplicationComponent(QREApplication application) {
+        serviceComponent = DaggerServiceComponent.builder()
+                .appModule(new AppModule(application))
+                .preferencesModule(new PreferencesModule())
+                .netModule(new NetModule("https://qr.rrramundo.com.ar/qremergencias/",
+                        "prueba", "prueba123", "read"))
+                .build();
 
-	}
+    }
 
-	public static ServiceComponent getServiceComponent() {
-		Objects.requireNonNull(serviceComponent, "serviceComponent cannot be");
-		return serviceComponent;
-	}
+    public static ServiceComponent getServiceComponent() {
+        Objects.requireNonNull(serviceComponent, "serviceComponent cannot be");
+        return serviceComponent;
+    }
 
 }
