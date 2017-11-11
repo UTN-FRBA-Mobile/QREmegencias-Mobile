@@ -32,128 +32,128 @@ import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity {
 
-	private static final String TAG = HomeActivity.class.getSimpleName();
+    private static final String TAG = HomeActivity.class.getSimpleName();
 
-	private static final String ROLE_MEDICAL = "ROLE_MEDICO";
-	public static final String ROLE_USER = "ROLE_PACIENTE";
+    private static final String ROLE_MEDICAL = "ROLE_MEDICO";
+    public static final String ROLE_USER = "ROLE_PACIENTE";
 
-	@Inject
-	UserPreferenceService userPreferenceService;
+    @Inject
+    UserPreferenceService userPreferenceService;
 
-	@Inject
-	NetworkService networkService;
+    @Inject
+    NetworkService networkService;
 
-	@BindView(R.id.loader)
-	View vLoader;
+    @BindView(R.id.loader)
+    View vLoader;
 
-	@BindView(R.id.drawer_layout)
-	DrawerLayout vDrawerLayout;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout vDrawerLayout;
 
-	@BindView(R.id.navigation)
-	NavigationView vNavigationView;
+    @BindView(R.id.navigation)
+    NavigationView vNavigationView;
 
-	@BindView(R.id.appbar)
-	Toolbar toolbar;
+    @BindView(R.id.appbar)
+    Toolbar toolbar;
 
-	public static Intent getIntent(final Context context) {
-		Intent intent = new Intent(context, HomeActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		return intent;
-	}
+    public static Intent getIntent(final Context context) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        return intent;
+    }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-		ButterKnife.bind(this);
+        ButterKnife.bind(this);
 
-		Injector.getServiceComponent().inject(this);
+        Injector.getServiceComponent().inject(this);
 
-		setSupportActionBar(toolbar);
-		getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		initDrawer();
-	}
+        initDrawer();
+    }
 
-	private void initDrawer() {
+    private void initDrawer() {
 
-		String role = userPreferenceService.getRole();
-		Log.i(TAG, "Prepare menu for user with role " + role);
-		vNavigationView.getMenu().setGroupVisible(R.id.menu_medical, role.equals(ROLE_MEDICAL));
-		vNavigationView.getMenu().setGroupVisible(R.id.menu_user, role.equals(ROLE_USER));
+        String role = userPreferenceService.getRole();
+        Log.i(TAG, "Prepare menu for user with role " + role);
+        vNavigationView.getMenu().setGroupVisible(R.id.menu_medical, role.equals(ROLE_MEDICAL));
+        vNavigationView.getMenu().setGroupVisible(R.id.menu_user, role.equals(ROLE_USER));
 
-		vNavigationView.setNavigationItemSelectedListener(
-				new NavigationView.OnNavigationItemSelectedListener() {
-					@Override
-					public boolean onNavigationItemSelected(MenuItem menuItem) {
+        vNavigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
 
-						boolean fragmentTransaction = false;
-						Fragment fragment = null;
+                        boolean fragmentTransaction = false;
+                        Fragment fragment = null;
 
-						switch (menuItem.getItemId()) {
-							case R.id.menu_medical_profile:
-								fragment = new ProfileFragment();
-								fragmentTransaction = true;
-								break;
-							case R.id.menu_medical_emergency_data:
-								fragment = new MedicalEmergencyDataFragment();
-								fragmentTransaction = true;
-								break;
-							case R.id.menu_medical_edit_user:
-								fragment = new MedicalEditUserFragment();
-								fragmentTransaction = true;
-								break;
-							case R.id.menu_user_profile:
-								fragment = new ProfileFragment();
-								fragmentTransaction = true;
-								break;
-							case R.id.menu_user_clinical_history:
-								fragment = new UserClinicalHistoryFragment();
-								fragmentTransaction = true;
-								break;
-							case R.id.menu_user_emergency_data:
-								fragment = new UserEmergencyDataFragment();
-								fragmentTransaction = true;
-								break;
-							case R.id.menu_user_manage_qr:
-								fragment = new UserManageQRFragment();
-								fragmentTransaction = true;
-								break;
-							case R.id.menu_user_signed_qr:
-								fragment = new UserSignedQRFragment();
-								fragmentTransaction = true;
-								break;
-							case R.id.menu_logout:
-								userPreferenceService.delete();
-								networkService.logout();
-								startActivity(LoginActivity.getIntent(HomeActivity.this));
-								break;
-						}
+                        switch (menuItem.getItemId()) {
+                            case R.id.menu_medical_profile:
+                                fragment = new ProfileFragment();
+                                fragmentTransaction = true;
+                                break;
+                            case R.id.menu_medical_emergency_data:
+                                fragment = new MedicalEmergencyDataFragment();
+                                fragmentTransaction = true;
+                                break;
+                            case R.id.menu_medical_edit_user:
+                                fragment = new MedicalEditUserFragment();
+                                fragmentTransaction = true;
+                                break;
+                            case R.id.menu_user_profile:
+                                fragment = new ProfileFragment();
+                                fragmentTransaction = true;
+                                break;
+                            case R.id.menu_user_clinical_history:
+                                fragment = new UserClinicalHistoryFragment();
+                                fragmentTransaction = true;
+                                break;
+                            case R.id.menu_user_emergency_data:
+                                fragment = new UserEmergencyDataFragment();
+                                fragmentTransaction = true;
+                                break;
+                            case R.id.menu_user_manage_qr:
+                                fragment = new UserManageQRFragment();
+                                fragmentTransaction = true;
+                                break;
+                            case R.id.menu_user_signed_qr:
+                                fragment = new UserSignedQRFragment();
+                                fragmentTransaction = true;
+                                break;
+                            case R.id.menu_logout:
+                                userPreferenceService.delete();
+                                networkService.logout();
+                                startActivity(LoginActivity.getIntent(HomeActivity.this));
+                                break;
+                        }
 
-						if(fragmentTransaction) {
-							getSupportFragmentManager().beginTransaction()
-									.replace(R.id.content_frame, fragment)
-									.commit();
-							menuItem.setChecked(true);
-							getSupportActionBar().setTitle(menuItem.getTitle());
-						}
+                        if (fragmentTransaction) {
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.content_frame, fragment)
+                                    .commit();
+                            menuItem.setChecked(true);
+                            getSupportActionBar().setTitle(menuItem.getTitle());
+                        }
 
-						vDrawerLayout.closeDrawers();
-						return true;
-					}
-				});
-	}
+                        vDrawerLayout.closeDrawers();
+                        return true;
+                    }
+                });
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()) {
-			case android.R.id.home:
-				vDrawerLayout.openDrawer(GravityCompat.START);
-				return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                vDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

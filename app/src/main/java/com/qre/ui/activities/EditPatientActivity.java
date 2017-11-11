@@ -4,21 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.qre.R;
-import com.qre.injection.Injector;
-import com.qre.services.networking.NetCallback;
-import com.qre.services.networking.NetworkService;
-import com.qre.ui.fragments.user.UserClinicalHistoryFragment;
 
-import javax.inject.Inject;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.qre.utils.Constants.INTENT_EXTRA_USER;
 
 public class EditPatientActivity extends AppCompatActivity {
 
@@ -38,8 +30,8 @@ public class EditPatientActivity extends AppCompatActivity {
     @OnClick(R.id.btn_load_clinical_history)
     public void cargarClinicalHistory() {
         final Intent intent = MedicalClinicalHistoryActivity.getIntent(this);
-        String user = getIntent().getStringExtra("user");
-        intent.putExtra("user", user);
+        final String user = getIntent().getStringExtra(INTENT_EXTRA_USER);
+        intent.putExtra(INTENT_EXTRA_USER, user);
         startActivity(intent);
     }
 

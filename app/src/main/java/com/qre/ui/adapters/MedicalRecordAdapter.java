@@ -53,26 +53,12 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
 
         if (!value.getFiles().isEmpty()) {
             final FileDTO file = value.getFiles().get(0);
-
             if (file.getMimeType().contains("image")) {
-                String url = file.getUrl();
-                if (url.contains("/api/medicalRecord")) {
-                    url = url.replace("/api/medicalRecord", "/api/mobile/medicalRecord");
-                }
-
-                new Picasso
-                        .Builder(holder.image.getContext())
-                        .downloader(new OkHttp3Downloader(okHttpClient))
-                        .build()
-                        .load(url)
-                        .into(holder.image);
-                holder.hasImage = true;
-                holder.closeButton.setVisibility(View.VISIBLE);
-            } else {
-                holder.image.setVisibility(View.GONE);
-                // TODO mostrar boton de descarga
+                holder.imageUrl = file.getUrl().contains("/api/medicalRecord") ?
+                        file.getUrl().replace("/api/medicalRecord", "/api/mobile/medicalRecord") :
+                        file.getUrl();
             }
-
+            holder.viewButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -84,7 +70,7 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public boolean hasImage;
+        String imageUrl;
 
         @BindView(R.id.card_text)
         public TextView text;
@@ -106,7 +92,16 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
 
         @OnClick(R.id.view_image_button)
         public void viewButtonClicked() {
-            if (hasImage) {
+            if (imageUrl != null) {
+
+                if (image.getDrawable() == null) {
+                    new Picasso
+                            .Builder(image.getContext())
+                            .downloader(new OkHttp3Downloader(okHttpClient))
+                            .build()
+                            .load(imageUrl)
+                            .into(image);
+                }
                 image.setVisibility(View.VISIBLE);
                 closeButton.setVisibility(View.VISIBLE);
                 viewButton.setVisibility(View.GONE);
@@ -115,7 +110,7 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
 
         @OnClick(R.id.close_image_button)
         public void closeButtonClicked() {
-            if (hasImage) {
+            if (imageUrl != null) {
                 image.setVisibility(View.GONE);
                 closeButton.setVisibility(View.GONE);
                 viewButton.setVisibility(View.VISIBLE);

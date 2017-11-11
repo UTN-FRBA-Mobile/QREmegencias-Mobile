@@ -17,6 +17,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.qre.utils.Constants.INTENT_EXTRA_TEMP_CODE;
+import static com.qre.utils.Constants.INTENT_EXTRA_USER;
+
 public class VerifySignatureActivity extends AppCompatActivity {
 
     private static final String TAG = VerifySignatureActivity.class.getSimpleName();
@@ -40,16 +43,16 @@ public class VerifySignatureActivity extends AppCompatActivity {
         Injector.getServiceComponent().inject(this);
 
         final Intent intent = getIntent();
-        final String qrContent = intent.getStringExtra("tempCode");
+        final String qrContent = intent.getStringExtra(INTENT_EXTRA_TEMP_CODE);
 
         networkService.verifySignature(qrContent, new NetCallback<VerificationDTO>() {
 
             @Override
             public void onSuccess(VerificationDTO response) {
-                if (response.getUuid() != null) {
+                if (response.getUser() != null) {
                     final Intent editUserIntent = EditPatientActivity
                             .getIntent(VerifySignatureActivity.this);
-                    editUserIntent.putExtra("user", response.getUuid());
+                    editUserIntent.putExtra(INTENT_EXTRA_USER, response.getUser());
                     startActivity(editUserIntent);
                 } else {
                     vVerifySign.setText(response.getErrorMessage());

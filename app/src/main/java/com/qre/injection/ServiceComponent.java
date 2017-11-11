@@ -23,12 +23,12 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules={AppModule.class, NetModule.class, PreferencesModule.class})
+@Component(modules = {AppModule.class, NetModule.class, PreferencesModule.class})
 public interface ServiceComponent {
 
     void inject(final RetrofitNetworkService retrofitNetworkService);
 
-	void inject(final HomeActivity homeActivity);
+    void inject(final HomeActivity homeActivity);
 
     void inject(final LoginActivity loginActivity);
 

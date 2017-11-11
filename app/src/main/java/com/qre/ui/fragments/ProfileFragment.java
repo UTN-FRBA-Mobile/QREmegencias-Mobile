@@ -123,9 +123,15 @@ public class ProfileFragment extends BaseFragment {
         profile.setIdNumber(vId.getText().toString());
 
         switch (vSex.getCheckedRadioButtonId()) {
-            case R.id.male: profile.setSex("M"); break;
-            case R.id.female: profile.setSex("F"); break;
-            case R.id.other: profile.setSex("O"); break;
+            case R.id.male:
+                profile.setSex("M");
+                break;
+            case R.id.female:
+                profile.setSex("F");
+                break;
+            case R.id.other:
+                profile.setSex("O");
+                break;
         }
 
         vSave.setEnabled(false);
