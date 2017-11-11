@@ -81,5 +81,6 @@
     <string name="icon_medicalrecord">Icono MedicalRecord</string>
     <string name="send">Enviar</string>
     <string name="forgot_intro">Por favor, ingresá tu email y te informaremos los pasos a seguir</string>
+    <string name="delete_medical_record_text">Borrar</string>
 
 </resources>

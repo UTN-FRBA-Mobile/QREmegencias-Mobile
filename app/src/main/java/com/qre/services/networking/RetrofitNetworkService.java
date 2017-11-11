@@ -150,6 +150,18 @@ public class RetrofitNetworkService implements NetworkService {
     }
 
     @Override
+    public void getUserMedicalRecords(final String user, NetCallback<PageOfMedicalRecordDTO> callback) {
+        final Call<PageOfMedicalRecordDTO> call = api.listPatientRecordsUsingGET(user, 0, 50, Collections.<String>emptyList());
+        enqueue(call, callback);
+    }
+
+    @Override
+    public void deleteMedicalRecord(final String id, final NetCallback<Void> callback) {
+        final Call<Void> call = api.deleteMedicalRecordUsingDELETE(id);
+        enqueue(call, callback);
+    }
+
+    @Override
     public void forgotPassword(final String email, final NetCallback<Void> callback) {
         final Call<Void> call = api.sendForgotPasswordUsingPOST(email, "yes");
         enqueue(call, callback);

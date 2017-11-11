@@ -24,6 +24,7 @@ import com.qre.ui.fragments.user.UserClinicalHistoryFragment;
 import com.qre.ui.fragments.user.UserEmergencyDataFragment;
 import com.qre.ui.fragments.user.UserManageQRFragment;
 import com.qre.ui.fragments.user.UserSignedQRFragment;
+import com.qre.utils.Constants;
 
 import javax.inject.Inject;
 
@@ -33,9 +34,6 @@ import butterknife.ButterKnife;
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
-
-    private static final String ROLE_MEDICAL = "ROLE_MEDICO";
-    public static final String ROLE_USER = "ROLE_PACIENTE";
 
     @Inject
     UserPreferenceService userPreferenceService;
@@ -81,8 +79,8 @@ public class HomeActivity extends AppCompatActivity {
 
         String role = userPreferenceService.getRole();
         Log.i(TAG, "Prepare menu for user with role " + role);
-        vNavigationView.getMenu().setGroupVisible(R.id.menu_medical, role.equals(ROLE_MEDICAL));
-        vNavigationView.getMenu().setGroupVisible(R.id.menu_user, role.equals(ROLE_USER));
+        vNavigationView.getMenu().setGroupVisible(R.id.menu_medical, role.equals(Constants.ROLE_MEDICAL));
+        vNavigationView.getMenu().setGroupVisible(R.id.menu_user, role.equals(Constants.ROLE_USER));
 
         vNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {

@@ -1,27 +1,35 @@
-package com.qre.ui.fragments.user;
+package com.qre.ui.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.qre.R;
 import com.qre.injection.Injector;
+import com.qre.models.MedicalRecordDTO;
 import com.qre.models.PageOfMedicalRecordDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
 import com.qre.services.preference.impl.UserPreferenceService;
 import com.qre.ui.adapters.MedicalRecordAdapter;
-import com.qre.ui.fragments.BaseFragment;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.OkHttpClient;
 
-public class UserClinicalHistoryFragment extends BaseFragment {
+import static com.qre.utils.Constants.INTENT_EXTRA_USER;
+
+public class MedicalClinicalHistoryViewActivity extends AppCompatActivity {
 
     @BindView(R.id.records_list)
     RecyclerView vRecordsList;
@@ -36,27 +44,25 @@ public class UserClinicalHistoryFragment extends BaseFragment {
     @Named("withOAuth")
     OkHttpClient okHttpClient;
 
+    public static Intent getIntent(final Context context) {
+        return new Intent(context, MedicalClinicalHistoryViewActivity.class);
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user_clinical_history);
+        ButterKnife.bind(this);
         Injector.getServiceComponent().inject(this);
-    }
 
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_user_clinical_history;
-    }
-
-    @Override
-    protected void initializeViews() {
-        super.initializeViews();
-
-        networkService.getSelfMedicalRecords(new NetCallback<PageOfMedicalRecordDTO>() {
+        final String user = getIntent().getStringExtra(INTENT_EXTRA_USER);
+        networkService.getUserMedicalRecords(user, new NetCallback<PageOfMedicalRecordDTO>() {
 
             @Override
             public void onSuccess(PageOfMedicalRecordDTO response) {
-                vRecordsList.setLayoutManager(new LinearLayoutManager(getContext()));
-                vRecordsList.setAdapter(new MedicalRecordAdapter(getContext(), response.getContent(), okHttpClient, userPreferenceService, networkService));
+                vRecordsList.setLayoutManager(new LinearLayoutManager(MedicalClinicalHistoryViewActivity.this));
+                final List<MedicalRecordDTO> content = response.getContent();
+                vRecordsList.setAdapter(new MedicalRecordAdapter(MedicalClinicalHistoryViewActivity.this, content, okHttpClient, userPreferenceService, networkService));
                 vRecordsList.setHasFixedSize(true);
             }
 
@@ -65,6 +71,6 @@ public class UserClinicalHistoryFragment extends BaseFragment {
                 Log.e(getClass().getSimpleName(), "Error", exception);
             }
         });
-
     }
+
 }

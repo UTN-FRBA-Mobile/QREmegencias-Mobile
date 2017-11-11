@@ -9,6 +9,7 @@ import com.qre.ui.activities.ForgotPasswordActivity;
 import com.qre.ui.activities.HomeActivity;
 import com.qre.ui.activities.LoginActivity;
 import com.qre.ui.activities.MedicalClinicalHistoryActivity;
+import com.qre.ui.activities.MedicalClinicalHistoryViewActivity;
 import com.qre.ui.activities.SeeMoreActivity;
 import com.qre.ui.activities.TemporalCodeActivity;
 import com.qre.ui.activities.VerifySignatureActivity;
@@ -53,5 +54,7 @@ public interface ServiceComponent {
     void inject(final UserClinicalHistoryFragment userClinicalHistoryFragment);
 
     void inject(final ForgotPasswordActivity forgotPasswordActivity);
+
+    void inject(final MedicalClinicalHistoryViewActivity medicalClinicalHistoryViewActivity);
 
 }
