@@ -18,6 +18,8 @@ import com.qre.services.networking.NetworkService;
 import com.qre.services.preference.impl.UserPreferenceService;
 import com.qre.ui.adapters.MedicalRecordAdapter;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -62,6 +64,16 @@ public class MedicalClinicalHistoryViewActivity extends AppCompatActivity {
             public void onSuccess(PageOfMedicalRecordDTO response) {
                 vRecordsList.setLayoutManager(new LinearLayoutManager(MedicalClinicalHistoryViewActivity.this));
                 final List<MedicalRecordDTO> content = response.getContent();
+                if (content != null) {
+                    Collections.sort(content, new Comparator<MedicalRecordDTO>() {
+                        @Override
+                        public int compare(MedicalRecordDTO o1, MedicalRecordDTO o2) {
+                            if (o1.getPerformed() == null) return 1;
+                            if (o2.getPerformed() == null) return -1;
+                            return o2.getPerformed().compareTo(o1.getPerformed());
+                        }
+                    });
+                }
                 vRecordsList.setAdapter(new MedicalRecordAdapter(MedicalClinicalHistoryViewActivity.this, content, okHttpClient, userPreferenceService, networkService));
                 vRecordsList.setHasFixedSize(true);
             }
