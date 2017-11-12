@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.qre.R;
@@ -77,6 +80,9 @@ public class MedicalClinicalHistoryActivity extends AppCompatActivity implements
     @BindView(R.id.appbar)
     Toolbar vToolbar;
 
+    @BindView(R.id.image_file_attached)
+    ImageView vImageAttached;
+
     private LocalDate date;
     private File file;
 
@@ -108,15 +114,35 @@ public class MedicalClinicalHistoryActivity extends AppCompatActivity implements
         String text = vText.getText().toString();
         String user = getIntent().getStringExtra(INTENT_EXTRA_USER);
 
-        if (!name.isEmpty() && !text.isEmpty() && file != null) {
+        boolean ok = true;
+
+        if (name.isEmpty()) {
+            ok = false;
+            vName.setError(getString(R.string.required_field));
+        }
+
+        if (text.isEmpty()) {
+            ok = false;
+            vText.setError(getString(R.string.required_field));
+        }
+
+        if (file == null) {
+            ok = false;
+            Toast.makeText(this, getString(R.string.file_history_missing), Toast.LENGTH_SHORT).show();
+        }
+
+        if (ok) {
 
             vSave.setEnabled(false);
+            final Drawable vSaveBackground = vSave.getBackground();
+            vSave.setBackgroundColor(Color.GRAY);
 
             networkService.createMedicalRecord(name, text, date, user, file, new NetCallback<Map<String, String>>() {
 
                 @Override
                 public void onSuccess(Map<String, String> response) {
                     vSave.setEnabled(true);
+                    vSave.setBackground(vSaveBackground);
                     finish();
                 }
 
@@ -124,14 +150,12 @@ public class MedicalClinicalHistoryActivity extends AppCompatActivity implements
                 public void onFailure(Throwable e) {
                     Log.e(TAG, "Cannot create clinical history", e);
                     vSave.setEnabled(true);
+                    vSave.setBackground(vSaveBackground);
                     Toast.makeText(MedicalClinicalHistoryActivity.this, getString(R.string.load_history_error), Toast.LENGTH_SHORT).show();
                 }
 
             });
-        } else {
-            Toast.makeText(MedicalClinicalHistoryActivity.this, getString(R.string.required_fields_error), Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @OnClick(R.id.input_date)
@@ -218,6 +242,9 @@ public class MedicalClinicalHistoryActivity extends AppCompatActivity implements
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
             file = saveImage(thumbnail);
             Toast.makeText(MedicalClinicalHistoryActivity.this, getString(R.string.load_image_success), Toast.LENGTH_SHORT).show();
+        }
+        if (file != null) {
+            vImageAttached.setImageResource(R.drawable.ic_file_check_grey600_24dp);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

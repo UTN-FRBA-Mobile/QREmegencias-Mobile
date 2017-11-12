@@ -82,13 +82,29 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/btn_load"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:text="@string/load_image"
-                android:theme="@style/AppTheme.Button" />
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_load"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:padding="12dp"
+                    android:text="@string/load_image"
+                    android:theme="@style/AppTheme.Button" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="match_parent"
+                    android:id="@+id/image_file_attached"
+                    android:src="@drawable/ic_file_hidden_black_24dp"
+                    />
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btn_save"

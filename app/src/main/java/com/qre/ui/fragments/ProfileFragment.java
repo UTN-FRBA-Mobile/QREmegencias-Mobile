@@ -5,6 +5,8 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -18,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.qre.R;
 import com.qre.injection.Injector;
@@ -25,6 +28,7 @@ import com.qre.models.UserContactDTO;
 import com.qre.models.UserProfileDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
+import com.qre.ui.activities.MedicalClinicalHistoryActivity;
 import com.qre.ui.adapters.EmergencyDataAdapter;
 
 import org.threeten.bp.LocalDate;
@@ -118,65 +122,127 @@ public class ProfileFragment extends BaseFragment {
     @OnClick(R.id.btn_save)
     public void save() {
 
-        profile.setFirstName(vName.getText().toString());
-        profile.setLastName(vSurname.getText().toString());
-        profile.setIdNumber(vId.getText().toString());
+        boolean ok = true;
 
-        switch (vSex.getCheckedRadioButtonId()) {
-            case R.id.male:
-                profile.setSex("M");
-                break;
-            case R.id.female:
-                profile.setSex("F");
-                break;
-            case R.id.other:
-                profile.setSex("O");
-                break;
+        if (vName.getText().toString().isEmpty()) {
+            ok = false;
+            vName.setError(getString(R.string.required_field));
         }
 
-        vSave.setEnabled(false);
+        if (vSurname.getText().toString().isEmpty()) {
+            ok = false;
+            vSurname.setError(getString(R.string.required_field));
+        }
 
-        networkService.updateProfile(profile, true, new NetCallback<Void>() {
+        if (vId.getText().toString().isEmpty()) {
+            ok = false;
+            vId.setError(getString(R.string.required_field));
+        }
 
-            @Override
-            public void onSuccess(Void response) {
-                vSave.setEnabled(true);
+        if (ok) {
+
+            vSave.setEnabled(false);
+            final Drawable vSaveBackground = vSave.getBackground();
+            vSave.setBackgroundColor(Color.GRAY);
+
+            profile.setFirstName(vName.getText().toString());
+            profile.setLastName(vSurname.getText().toString());
+            profile.setIdNumber(vId.getText().toString());
+
+            switch (vSex.getCheckedRadioButtonId()) {
+                case R.id.male:
+                    profile.setSex("M");
+                    break;
+                case R.id.female:
+                    profile.setSex("F");
+                    break;
+                case R.id.other:
+                    profile.setSex("O");
+                    break;
             }
 
-            @Override
-            public void onFailure(Throwable e) {
-                Log.e(TAG, "Cannot update profile", e);
-                vSave.setEnabled(true);
-            }
-        });
+            networkService.updateProfile(profile, true, new NetCallback<Void>() {
+
+                @Override
+                public void onSuccess(Void response) {
+                    vSave.setEnabled(true);
+                    vSave.setBackground(vSaveBackground);
+                    Toast.makeText(getContext(), getString(R.string.save_profile_success), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Throwable e) {
+                    Log.e(TAG, "Cannot update profile", e);
+                    vSave.setEnabled(true);
+                    vSave.setBackground(vSaveBackground);
+                    Toast.makeText(getContext(), getString(R.string.save_profile_error), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } else {
+            Toast.makeText(getContext(), getString(R.string.required_fields_error), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.btn_add_contact)
     public void openContactDialog() {
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.dialog_contact, null);
         dialogBuilder.setView(dialogView);
-        final EditText name = (EditText) dialogView.findViewById(R.id.input_name);
-        final EditText surname = (EditText) dialogView.findViewById(R.id.input_surname);
-        final EditText phone = (EditText) dialogView.findViewById(R.id.input_phone);
+
+        final EditText vName = (EditText) dialogView.findViewById(R.id.input_name);
+        final EditText vSurname = (EditText) dialogView.findViewById(R.id.input_surname);
+        final EditText vPhone = (EditText) dialogView.findViewById(R.id.input_phone);
+
         dialogBuilder.setTitle(getString(R.string.add_contact));
-        dialogBuilder.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                UserContactDTO contact = new UserContactDTO();
-                contact.setFirstName(name.getText().toString());
-                contact.setLastName(surname.getText().toString());
-                contact.setPhoneNumber(phone.getText().toString());
-                profile.getContacts().add(contact);
-                vContacts.getAdapter().notifyDataSetChanged();
-            }
-        });
-        dialogBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                //pass
-            }
-        });
+        dialogBuilder.setPositiveButton(getString(R.string.accept), null);
+        dialogBuilder.setNegativeButton(getString(R.string.cancel), null);
         AlertDialog b = dialogBuilder.create();
+
+        b.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(final DialogInterface dialog) {
+
+                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+
+                        boolean ok = true;
+
+                        if (vName.getText().toString().isEmpty()) {
+                            ok = false;
+                            vName.setError(getString(R.string.required_field));
+                        }
+
+                        if (vSurname.getText().toString().isEmpty()) {
+                            ok = false;
+                            vSurname.setError(getString(R.string.required_field));
+                        }
+
+                        if (vPhone.getText().toString().isEmpty()) {
+                            ok = false;
+                            vPhone.setError(getString(R.string.required_field));
+                        }
+
+                        if (ok) {
+                            UserContactDTO contact = new UserContactDTO();
+                            contact.setFirstName(vName.getText().toString());
+                            contact.setLastName(vSurname.getText().toString());
+                            contact.setPhoneNumber(vPhone.getText().toString());
+                            profile.getContacts().add(contact);
+                            vContacts.getAdapter().notifyDataSetChanged();
+                            dialog.dismiss();
+                        }
+                    }
+                });
+            }
+        });
+
         b.show();
     }
 
