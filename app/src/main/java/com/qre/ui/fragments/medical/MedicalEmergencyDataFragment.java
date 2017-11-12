@@ -1,7 +1,7 @@
 package com.qre.ui.fragments.medical;
 
 import com.qre.R;
-import com.qre.ui.activities.ScanForCodeActivity;
+import com.qre.ui.activities.ScanEmergencyDataActivity;
 import com.qre.ui.fragments.BaseFragment;
 
 import butterknife.OnClick;
@@ -17,6 +17,6 @@ public class MedicalEmergencyDataFragment extends BaseFragment {
 
     @OnClick(R.id.btn_scan_code)
     public void scanForCode() {
-        startActivity(ScanForCodeActivity.getIntent(this.getContext()));
+        startActivity(ScanEmergencyDataActivity.getIntent(this.getContext()));
     }
 }
