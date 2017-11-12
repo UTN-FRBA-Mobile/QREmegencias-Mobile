@@ -14,8 +14,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_account_grey600_24dp"
-        app:title="@string/name"
-        app:value="@string/app_name" />
+        app:title="@string/name"/>
+
+    <!-- Surname -->
+
+    <com.qre.ui.components.DetailValueView
+        android:id="@+id/contact_surname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_account_grey600_24dp"
+        app:title="@string/surname"/>
 
     <!-- Phone -->
 
@@ -24,7 +32,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_phone_grey600_24dp"
-        app:title="@string/phone"
-        app:value="@string/app_name" />
+        app:title="@string/phone" />
 
 </LinearLayout>

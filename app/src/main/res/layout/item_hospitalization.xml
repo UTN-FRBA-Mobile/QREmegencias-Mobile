@@ -14,8 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_hospital_grey600_24dp"
-        app:title="@string/institution"
-        app:value="@string/app_name" />
+        app:title="@string/institution"/>
 
     <!-- Type -->
 
@@ -24,8 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_triangle_grey600_24dp"
-        app:title="@string/type"
-        app:value="@string/app_name" />
+        app:title="@string/type"/>
 
     <!-- Date -->
 
@@ -34,8 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_calendar_clock_grey600_24dp"
-        app:title="@string/date"
-        app:value="@string/app_name" />
+        app:title="@string/date" />
 
     <!-- Reason -->
 
@@ -44,7 +41,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_information_outline_grey600_24dp"
-        app:title="@string/reason"
-        app:value="@string/app_name" />
+        app:title="@string/reason" />
 
 </LinearLayout>
