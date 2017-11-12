@@ -73,68 +73,84 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_login)
     public void login() {
+
         final String username = vEmail.getText().toString();
-        String password = vPassword.getText().toString();
-        bLogin.setEnabled(false);
-        final Drawable bLoginBackground = bLogin.getBackground();
-        bLogin.setBackgroundColor(Color.GRAY);
-        Log.i(TAG, "Login with email " + username + " and password " + password);
-        networkService.login(username, password, new NetCallback<LoginUserDTO>() {
-            @Override
-            public void onSuccess(LoginUserDTO response) {
-                Log.i(TAG, "User " + response.getName() + " " + response.getLastName() + " logged successfully");
-                preferencesService.putUsername(username);
-                final String role = response.getRoles().iterator().next();
-                preferencesService.putRole(role);
+        final String password = vPassword.getText().toString();
 
-                if (ROLE_USER.equals(role)) {
+        boolean ok = true;
 
-                    final KeyPair keyPair = CryptoUtils.generateKeyPair();
-                    networkService.uploadPublicKey(keyPair.getPublic(), new NetCallback<Void>() {
-                        @Override
-                        public void onSuccess(Void response) {
-                            preferencesService.putPrivateKey(keyPair.getPrivate());
-                            startActivity(HomeActivity.getIntent(LoginActivity.this));
-                            bLogin.setEnabled(true);
-                            bLogin.setBackground(bLoginBackground);
-                        }
+        if (username.isEmpty()) {
+            ok = false;
+            vEmail.setError(getString(R.string.required_field));
+        }
 
-                        @Override
-                        public void onFailure(Throwable exception) {
-                            Log.e(TAG, "Cannot upload key", exception);
-                            Context context = getApplicationContext();
-                            Toast.makeText(context, exception.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
+        if (password.isEmpty()) {
+            ok = false;
+            vPassword.setError(getString(R.string.required_field));
+        }
 
-                } else {
-                    startActivity(HomeActivity.getIntent(LoginActivity.this));
+        if (ok) {
+            bLogin.setEnabled(false);
+            final Drawable bLoginBackground = bLogin.getBackground();
+            bLogin.setBackgroundColor(Color.GRAY);
+            Log.i(TAG, "Login with email " + username + " and password " + password);
+            networkService.login(username, password, new NetCallback<LoginUserDTO>() {
+                @Override
+                public void onSuccess(LoginUserDTO response) {
+                    Log.i(TAG, "User " + response.getName() + " " + response.getLastName() + " logged successfully");
+                    preferencesService.putUsername(username);
+                    final String role = response.getRoles().iterator().next();
+                    preferencesService.putRole(role);
+
+                    if (ROLE_USER.equals(role)) {
+
+                        final KeyPair keyPair = CryptoUtils.generateKeyPair();
+                        networkService.uploadPublicKey(keyPair.getPublic(), new NetCallback<Void>() {
+                            @Override
+                            public void onSuccess(Void response) {
+                                preferencesService.putPrivateKey(keyPair.getPrivate());
+                                startActivity(HomeActivity.getIntent(LoginActivity.this));
+                                bLogin.setEnabled(true);
+                                bLogin.setBackground(bLoginBackground);
+                            }
+
+                            @Override
+                            public void onFailure(Throwable exception) {
+                                Log.e(TAG, "Cannot upload key", exception);
+                                Context context = getApplicationContext();
+                                Toast.makeText(context, exception.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                    } else {
+                        startActivity(HomeActivity.getIntent(LoginActivity.this));
+                        bLogin.setEnabled(true);
+                        bLogin.setBackground(bLoginBackground);
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Throwable exception) {
+                    Log.e(TAG, "Cannot login with username " + vEmail.getText().toString(), exception);
+                    Context context = getApplicationContext();
+                    CharSequence text;
+
+                    if (exception instanceof NetworkException) {
+                        text = exception.getMessage();
+                    } else {
+                        text = "No se pudo cargar la información.\nError al conectarse con el servidor.";
+                    }
+
+                    int duration = Toast.LENGTH_LONG;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                     bLogin.setEnabled(true);
                     bLogin.setBackground(bLoginBackground);
                 }
-
-            }
-
-            @Override
-            public void onFailure(Throwable exception) {
-                Log.e(TAG, "Cannot login with username " + vEmail.getText().toString(), exception);
-                Context context = getApplicationContext();
-                CharSequence text;
-
-                if (exception instanceof NetworkException) {
-                    text = exception.getMessage();
-                } else {
-                    text = "No se pudo cargar la información.\nError al conectarse con el servidor.";
-                }
-
-                int duration = Toast.LENGTH_LONG;
-
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-                bLogin.setEnabled(true);
-                bLogin.setBackground(bLoginBackground);
-            }
-        });
+            });
+        }
     }
 
     @OnClick(R.id.btn_scan)
