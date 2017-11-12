@@ -17,7 +17,7 @@ public class ScanForCodeActivity extends ScanActivity {
 
     @Override
     public void handleResult(Result rawResult) {
-        final Intent intent = VerifySignatureActivity.getIntent(ScanForCodeActivity.this);
+        final Intent intent = EditPatientActivity.getIntent(ScanForCodeActivity.this);
         intent.putExtra(INTENT_EXTRA_TEMP_CODE, rawResult.getText());
         startActivity(intent);
     }
