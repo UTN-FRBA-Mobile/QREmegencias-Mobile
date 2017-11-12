@@ -101,7 +101,8 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
             case TYPE_CONTACT:
                 UserContactDTO userContactDTO = (UserContactDTO) items.get(position);
                 ContactViewHolder contactViewHolder = (ContactViewHolder) holder;
-                contactViewHolder.name.setValue(userContactDTO.getFirstName() + " " + userContactDTO.getLastName());
+                contactViewHolder.name.setValue(userContactDTO.getFirstName());
+                contactViewHolder.surname.setValue(userContactDTO.getLastName());
                 contactViewHolder.phone.setValue(userContactDTO.getPhoneNumber());
                 break;
         }
@@ -224,6 +225,9 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         @BindView(R.id.contact_name)
         public DetailValueView name;
+
+        @BindView(R.id.contact_surname)
+        public DetailValueView surname;
 
         @BindView(R.id.contact_phone)
         public DetailValueView phone;

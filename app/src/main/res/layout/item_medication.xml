@@ -14,8 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_pill_grey600_24dp"
-        app:title="@string/name"
-        app:value="@string/app_name" />
+        app:title="@string/name"/>
 
     <!-- Description -->
 
@@ -24,8 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_information_outline_grey600_24dp"
-        app:title="@string/description"
-        app:value="@string/app_name" />
+        app:title="@string/description" />
 
     <!-- Amount -->
 
@@ -34,8 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_clipboard_text_grey600_24dp"
-        app:title="@string/amount"
-        app:value="@string/app_name" />
+        app:title="@string/amount" />
 
     <!-- Period -->
 
@@ -44,7 +41,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_calendar_clock_grey600_24dp"
-        app:title="@string/period"
-        app:value="@string/app_name" />
+        app:title="@string/period" />
 
 </LinearLayout>
