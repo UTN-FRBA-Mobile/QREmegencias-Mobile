@@ -16,10 +16,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qre.R;
@@ -28,8 +31,11 @@ import com.qre.models.UserContactDTO;
 import com.qre.models.UserProfileDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
+import com.qre.services.preference.impl.UserPreferenceService;
 import com.qre.ui.activities.MedicalClinicalHistoryActivity;
 import com.qre.ui.adapters.EmergencyDataAdapter;
+import com.qre.ui.adapters.ProfileContactAdapter;
+import com.qre.utils.Constants;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
@@ -47,6 +53,9 @@ public class ProfileFragment extends BaseFragment {
 
     @Inject
     NetworkService networkService;
+
+    @Inject
+    UserPreferenceService userPreferenceService;
 
     @BindView(R.id.input_name)
     EditText vName;
@@ -72,6 +81,9 @@ public class ProfileFragment extends BaseFragment {
     @BindView(R.id.other)
     RadioButton vOther;
 
+    @BindView(R.id.layout_contacts)
+    LinearLayout vContactsLayout;
+
     @BindView(R.id.btn_save)
     Button vSave;
 
@@ -92,6 +104,8 @@ public class ProfileFragment extends BaseFragment {
 
         getActivity().findViewById(R.id.loader).setVisibility(View.VISIBLE);
 
+        final String role = userPreferenceService.getRole();
+
         networkService.getProfile(new NetCallback<UserProfileDTO>() {
 
             @Override
@@ -105,10 +119,13 @@ public class ProfileFragment extends BaseFragment {
                 vMale.setChecked("M".equals(profile.getSex()));
                 vFemale.setChecked("F".equals(profile.getSex()));
                 vOther.setChecked("O".equals(profile.getSex()));
-                vContacts.setLayoutManager(new LinearLayoutManager(getActivity()));
-                vContacts.setAdapter(new EmergencyDataAdapter(getActivity(), profile.getContacts()));
-                DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(vContacts.getContext(), DividerItemDecoration.VERTICAL);
-                vContacts.addItemDecoration(dividerItemDecoration);
+                if (role.equals(Constants.ROLE_USER)) {
+                    vContactsLayout.setVisibility(View.VISIBLE);
+                    vContacts.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    vContacts.setAdapter(new ProfileContactAdapter(getActivity(), profile.getContacts()));
+                    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(vContacts.getContext(), DividerItemDecoration.VERTICAL);
+                    vContacts.addItemDecoration(dividerItemDecoration);
+                }
             }
 
             @Override
@@ -123,6 +140,7 @@ public class ProfileFragment extends BaseFragment {
     public void save() {
 
         boolean ok = true;
+        final String role = userPreferenceService.getRole();
 
         if (vName.getText().toString().isEmpty()) {
             ok = false;
@@ -137,6 +155,17 @@ public class ProfileFragment extends BaseFragment {
         if (vId.getText().toString().isEmpty()) {
             ok = false;
             vId.setError(getString(R.string.required_field));
+        }
+
+        int primaryContacts = 0;
+
+        for (UserContactDTO contact : profile.getContacts()) {
+            if (contact.isPrimary())
+                primaryContacts++;
+        }
+
+        if (primaryContacts != 1) {
+            ok = false;
         }
 
         if (ok) {
@@ -161,7 +190,7 @@ public class ProfileFragment extends BaseFragment {
                     break;
             }
 
-            networkService.updateProfile(profile, true, new NetCallback<Void>() {
+            networkService.updateProfile(profile, role.equals(Constants.ROLE_USER), new NetCallback<Void>() {
 
                 @Override
                 public void onSuccess(Void response) {
@@ -179,6 +208,9 @@ public class ProfileFragment extends BaseFragment {
                 }
             });
 
+        } else if (primaryContacts != 1) {
+            Toast.makeText(getContext(), getString(R.string.primary_contacts_error), Toast.LENGTH_SHORT).show();
+
         } else {
             Toast.makeText(getContext(), getString(R.string.required_fields_error), Toast.LENGTH_SHORT).show();
         }
@@ -195,6 +227,7 @@ public class ProfileFragment extends BaseFragment {
         final EditText vName = (EditText) dialogView.findViewById(R.id.input_name);
         final EditText vSurname = (EditText) dialogView.findViewById(R.id.input_surname);
         final EditText vPhone = (EditText) dialogView.findViewById(R.id.input_phone);
+        final CheckBox vPrimary = (CheckBox) dialogView.findViewById(R.id.checkbox_primary);
 
         dialogBuilder.setTitle(getString(R.string.add_contact));
         dialogBuilder.setPositiveButton(getString(R.string.accept), null);
@@ -234,6 +267,7 @@ public class ProfileFragment extends BaseFragment {
                             contact.setFirstName(vName.getText().toString());
                             contact.setLastName(vSurname.getText().toString());
                             contact.setPhoneNumber(vPhone.getText().toString());
+                            contact.setPrimary(vPrimary.isChecked());
                             profile.getContacts().add(contact);
                             vContacts.getAdapter().notifyDataSetChanged();
                             dialog.dismiss();
@@ -245,6 +279,7 @@ public class ProfileFragment extends BaseFragment {
 
         b.show();
     }
+
 
     @OnClick(R.id.input_birthday)
     public void openBirthdayDialog() {

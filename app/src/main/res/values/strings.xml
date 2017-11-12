@@ -82,6 +82,7 @@
     <string name="login_error">El email y/o password ingresados son inválidos</string>
     <string name="save_profile_success">El perfil fue guardado correctamente</string>
     <string name="save_profile_error">Ocurrió un error al guardar el perfil</string>
+    <string name="primary_contacts_error">Error, debe tener un único contacto primario</string>
     <string name="file_history_missing">Debe cargar una imagen</string>
     <string name="widget_update">Actualizar</string>
     <string name="icon_medicalrecord">Icono MedicalRecord</string>
