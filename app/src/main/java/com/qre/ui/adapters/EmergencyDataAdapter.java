@@ -39,12 +39,20 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
     private Context context;
     private Listener listener;
     private LayoutInflater inflater;
+    private boolean editable = false;
     private List<?> items = Collections.emptyList();
 
     public EmergencyDataAdapter(Context context, List<?> items) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.items = items;
+    }
+
+    public EmergencyDataAdapter(Context context, List<?> items, boolean editable) {
+        this.context = context;
+        this.inflater = LayoutInflater.from(context);
+        this.items = items;
+        this.editable = editable;
     }
 
     @Override
@@ -72,6 +80,7 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
             case TYPE_HEADER:
                 final int type = (Integer) items.get(position);
                 HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
+                headerViewHolder.add.setVisibility(editable ? View.VISIBLE : View.GONE);
                 headerViewHolder.value.setText(context.getString(getHeaderTitle(type)));
                 headerViewHolder.add.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -94,9 +103,11 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
             case TYPE_HOSPITALIZATION:
                 final HospitalizationDTO hospitalizationDTO = (HospitalizationDTO) items.get(position);
                 HospitalizationViewHolder hospitalizationViewHolder = (HospitalizationViewHolder) holder;
+                hospitalizationViewHolder.actions.setVisibility(editable ? View.VISIBLE : View.GONE);
                 hospitalizationViewHolder.institution.setValue(hospitalizationDTO.getInstitution());
-                hospitalizationViewHolder.type.setValue(hospitalizationDTO.getType().toString());
-                hospitalizationViewHolder.date.setValue(hospitalizationDTO.getDate().format(DATE_FORMATTER));
+                hospitalizationViewHolder.type.setValue(String.valueOf(hospitalizationDTO.getType()));
+                if (hospitalizationDTO.getDate() != null)
+                    hospitalizationViewHolder.date.setValue(hospitalizationDTO.getDate().format(DATE_FORMATTER));
                 hospitalizationViewHolder.reason.setValue(hospitalizationDTO.getReason());
                 hospitalizationViewHolder.edit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -114,10 +125,11 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
             case TYPE_MEDICATION:
                 final MedicationDTO medicationDTO = (MedicationDTO) items.get(position);
                 MedicationViewHolder medicationViewHolder = (MedicationViewHolder) holder;
+                medicationViewHolder.actions.setVisibility(editable ? View.VISIBLE : View.GONE);
                 medicationViewHolder.name.setValue(medicationDTO.getName());
                 medicationViewHolder.description.setValue(medicationDTO.getDescription());
-                medicationViewHolder.amount.setValue(medicationDTO.getAmount().toString());
-                medicationViewHolder.period.setValue(medicationDTO.getPeriod().toString());
+                medicationViewHolder.amount.setValue(String.valueOf(medicationDTO.getAmount()));
+                medicationViewHolder.period.setValue(String.valueOf(medicationDTO.getPeriod()));
                 medicationViewHolder.edit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -134,9 +146,11 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
             case TYPE_PATHOLOGY:
                 final PathologyDTO pathologyDTO = (PathologyDTO) items.get(position);
                 PathologyViewHolder pathologyViewHolder = (PathologyViewHolder) holder;
-                pathologyViewHolder.type.setValue(pathologyDTO.getType().toString());
+                pathologyViewHolder.actions.setVisibility(editable ? View.VISIBLE : View.GONE);
+                pathologyViewHolder.type.setValue(String.valueOf(pathologyDTO.getType()));
                 pathologyViewHolder.description.setValue(pathologyDTO.getDescription());
-                pathologyViewHolder.date.setValue(pathologyDTO.getDate().format(DATE_FORMATTER));
+                if (pathologyDTO.getDate() != null)
+                    pathologyViewHolder.date.setValue(pathologyDTO.getDate().format(DATE_FORMATTER));
                 pathologyViewHolder.edit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -153,6 +167,7 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
             case TYPE_CONTACT:
                 final UserContactDTO userContactDTO = (UserContactDTO) items.get(position);
                 ContactViewHolder contactViewHolder = (ContactViewHolder) holder;
+                contactViewHolder.actions.setVisibility(editable ? View.VISIBLE : View.GONE);
                 contactViewHolder.name.setValue(userContactDTO.getFirstName());
                 contactViewHolder.surname.setValue(userContactDTO.getLastName());
                 contactViewHolder.phone.setValue(userContactDTO.getPhoneNumber());
@@ -270,6 +285,9 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
         @BindView(R.id.btn_delete)
         public Button remove;
 
+        @BindView(R.id.actions)
+        public View actions;
+
         public HospitalizationViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -297,6 +315,9 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
         @BindView(R.id.btn_delete)
         public Button remove;
 
+        @BindView(R.id.actions)
+        public View actions;
+
         public MedicationViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -321,6 +342,9 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
         @BindView(R.id.btn_delete)
         public Button remove;
 
+        @BindView(R.id.actions)
+        public View actions;
+
         public PathologyViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -344,6 +368,9 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         @BindView(R.id.btn_delete)
         public Button remove;
+
+        @BindView(R.id.actions)
+        public View actions;
 
         public ContactViewHolder(View itemView) {
             super(itemView);
