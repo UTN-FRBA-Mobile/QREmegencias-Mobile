@@ -151,6 +151,7 @@ public class MedicalClinicalHistoryActivity extends AppCompatActivity implements
                 public void onSuccess(Map<String, String> response) {
                     vSave.setEnabled(true);
                     vSave.setBackground(vSaveBackground);
+                    Toast.makeText(MedicalClinicalHistoryActivity.this, getString(R.string.load_history_success), Toast.LENGTH_LONG).show();
                     finish();
                 }
 
