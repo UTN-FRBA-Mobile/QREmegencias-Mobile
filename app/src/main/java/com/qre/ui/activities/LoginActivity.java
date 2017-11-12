@@ -135,16 +135,12 @@ public class LoginActivity extends AppCompatActivity {
                     Log.e(TAG, "Cannot login with username " + vEmail.getText().toString(), exception);
                     Context context = getApplicationContext();
                     CharSequence text;
-
                     if (exception instanceof NetworkException) {
                         text = exception.getMessage();
                     } else {
-                        text = "No se pudo cargar la información.\nError al conectarse con el servidor.";
+                        text = getString(R.string.login_error);
                     }
-
-                    int duration = Toast.LENGTH_LONG;
-
-                    Toast toast = Toast.makeText(context, text, duration);
+                    Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
                     toast.show();
                     bLogin.setEnabled(true);
                     bLogin.setBackground(bLoginBackground);
