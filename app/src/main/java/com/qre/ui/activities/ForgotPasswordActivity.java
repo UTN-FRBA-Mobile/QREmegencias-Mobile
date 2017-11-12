@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.Patterns;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -43,19 +44,24 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_send_forgot_password)
     public void sendForgotPassword() {
-        networkService.forgotPassword(vEmail.getText().toString(), new NetCallback<Void>() {
-            @Override
-            public void onSuccess(Void response) {
-                Toast.makeText(ForgotPasswordActivity.this, "Éxito! Revise su cuenta de email", Toast.LENGTH_LONG).show();
-                finish();
-            }
 
-            @Override
-            public void onFailure(Throwable exception) {
-                Log.e(TAG, "Error al enviar forgot password", exception);
-                Toast.makeText(ForgotPasswordActivity.this, "Error al enviar email. Intente nuevamente", Toast.LENGTH_LONG).show();
-            }
-        });
+        if (!Patterns.EMAIL_ADDRESS.matcher(vEmail.getText().toString()).matches()) {
+            vEmail.setError(getString(R.string.required_mail));
+        } else {
+            networkService.forgotPassword(vEmail.getText().toString(), new NetCallback<Void>() {
+                @Override
+                public void onSuccess(Void response) {
+                    Toast.makeText(ForgotPasswordActivity.this, "Éxito! Revise su cuenta de email", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+
+                @Override
+                public void onFailure(Throwable exception) {
+                    Log.e(TAG, "Error al enviar forgot password", exception);
+                    Toast.makeText(ForgotPasswordActivity.this, "Error al enviar email. Intente nuevamente", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
 }
