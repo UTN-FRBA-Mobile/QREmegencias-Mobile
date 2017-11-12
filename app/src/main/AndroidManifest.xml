@@ -69,7 +69,6 @@
         <activity android:name="com.qre.ui.activities.ScanEmergencyDataActivity" />
         <activity android:name="com.qre.ui.activities.ScanForCodeActivity" />
         <activity android:name="com.qre.ui.activities.TemporalCodeActivity" />
-        <activity android:name="com.qre.ui.activities.VerifySignatureActivity" />
         <activity android:name="com.qre.ui.activities.ForgotPasswordActivity" />
         <activity android:name="com.qre.ui.activities.EditPatientActivity" />
         <activity android:name="com.qre.ui.activities.MedicalClinicalHistoryViewActivity" />

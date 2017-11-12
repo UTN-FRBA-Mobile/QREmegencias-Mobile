@@ -1,47 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <TextView
+        android:id="@+id/text_verify_sign"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textSize="40sp"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btn_edit_emergency_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:paddingTop="24dp">
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:visibility="gone"
+        android:text="Editar Datos de Emergencia"
+        android:theme="@style/AppTheme.Button" />
 
-        <Button
-            android:id="@+id/btn_edit_emergency_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:layout_marginTop="24dp"
-            android:padding="12dp"
-            android:text="Editar Datos de Emergencia"
-            android:theme="@style/AppTheme.Button" />
+    <Button
+        android:id="@+id/btn_load_clinical_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:visibility="gone"
+        android:text="Cargar Historia Clinica"
+        android:theme="@style/AppTheme.Button" />
 
-        <Button
-            android:id="@+id/btn_load_clinical_history"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:layout_marginTop="24dp"
-            android:padding="12dp"
-            android:text="Cargar Historia Clinica"
-            android:theme="@style/AppTheme.Button" />
+    <Button
+        android:id="@+id/btn_view_clinical_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:visibility="gone"
+        android:text="Ver Historia Clinica"
+        android:theme="@style/AppTheme.Button" />
 
-        <Button
-            android:id="@+id/btn_view_clinical_history"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:layout_marginTop="24dp"
-            android:padding="12dp"
-            android:text="Ver Historia Clinica"
-            android:theme="@style/AppTheme.Button" />
-
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>
