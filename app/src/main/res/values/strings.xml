@@ -41,6 +41,9 @@
     <string name="other">Otro</string>
     <string name="load">Cargar</string>
     <string name="save">Guardar cambios</string>
+    <string name="edit">Modificar</string>
+    <string name="delete">Eliminar</string>
+
     <string name="add_contact">Agregar contacto de emergencia</string>
     <string name="load_image">Cargar imagen</string>
     <string name="load_image_from_camera">Sacar una foto con la cámara</string>

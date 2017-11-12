@@ -126,8 +126,6 @@ public class UserEmergencyDataFragment extends BaseFragment {
 
                     vCollection.setLayoutManager(new LinearLayoutManager(getContext()));
                     vCollection.setAdapter(new EmergencyDataAdapter(getContext(), collection));
-                    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(vCollection.getContext(), DividerItemDecoration.VERTICAL);
-                    vCollection.addItemDecoration(dividerItemDecoration);
                 } catch (final Exception e) {
                     Log.e(TAG, "ERROR:  Error al obtener contenido web", e);
                     tException.setText("No se pudo cargar la información.\nAsegurate que el QR sea el actual.");
