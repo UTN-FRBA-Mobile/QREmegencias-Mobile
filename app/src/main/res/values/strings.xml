@@ -76,11 +76,12 @@
     <string name="record_text">Texto del informe</string>
     <string name="load_image_success">Imagen cargada correctamente</string>
     <string name="load_image_error">No se pudo cargar la imagen</string>
-    <string name="load_history_error">No se puedo cargar la historia</string>
+    <string name="load_history_error">No se pudo cargar la historia</string>
     <string name="required_fields_error">Debe completar todos los datos</string>
     <string name="login_error">El email y/o password ingresados son inválidos</string>
     <string name="save_profile_success">El perfil fue guardado correctamente</string>
     <string name="save_profile_error">Ocurrió un error al guardar el perfil</string>
+    <string name="file_history_missing">Debe cargar una imagen</string>
     <string name="widget_update">Actualizar</string>
     <string name="icon_medicalrecord">Icono MedicalRecord</string>
     <string name="send">Enviar</string>
