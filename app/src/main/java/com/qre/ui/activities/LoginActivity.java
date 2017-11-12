@@ -104,25 +104,27 @@ public class LoginActivity extends AppCompatActivity {
                     preferencesService.putRole(role);
 
                     if (ROLE_USER.equals(role)) {
-
                         final KeyPair keyPair = CryptoUtils.generateKeyPair();
-                        networkService.uploadPublicKey(keyPair.getPublic(), new NetCallback<Void>() {
-                            @Override
-                            public void onSuccess(Void response) {
-                                preferencesService.putPrivateKey(keyPair.getPrivate());
-                                startActivity(HomeActivity.getIntent(LoginActivity.this));
-                                bLogin.setEnabled(true);
-                                bLogin.setBackground(bLoginBackground);
-                            }
+                        if (keyPair != null) {
+                            networkService.uploadPublicKey(keyPair.getPublic(), new NetCallback<Void>() {
+                                @Override
+                                public void onSuccess(Void response) {
+                                    preferencesService.putPrivateKey(keyPair.getPrivate(), LoginActivity.this);
+                                    startActivity(HomeActivity.getIntent(LoginActivity.this));
+                                    bLogin.setEnabled(true);
+                                    bLogin.setBackground(bLoginBackground);
+                                }
 
-                            @Override
-                            public void onFailure(Throwable exception) {
-                                Log.e(TAG, "Cannot upload key", exception);
-                                Context context = getApplicationContext();
-                                Toast.makeText(context, exception.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-                        });
-
+                                @Override
+                                public void onFailure(Throwable exception) {
+                                    Log.e(TAG, "Cannot upload key", exception);
+                                    Context context = getApplicationContext();
+                                    Toast.makeText(context, exception.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Error al loguearse, intente nuevamente", Toast.LENGTH_LONG).show();
+                        }
                     } else {
                         startActivity(HomeActivity.getIntent(LoginActivity.this));
                         bLogin.setEnabled(true);

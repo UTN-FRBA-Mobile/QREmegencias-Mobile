@@ -27,6 +27,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public final class CryptoUtils {
 
+    private static final String TAG = CryptoUtils.class.getSimpleName();
     private static final String CHARSET_NAME = "ISO-8859-1";
     private static final IvParameterSpec IV_PARAMETER_SPEC;
 
@@ -34,6 +35,7 @@ public final class CryptoUtils {
         try {
             IV_PARAMETER_SPEC = new IvParameterSpec("4e5Wa71fYoT7MFEX".getBytes(CHARSET_NAME));
         } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, "Error al crear IV", e);
             throw new RuntimeException(e);
         }
     }
@@ -55,6 +57,7 @@ public final class CryptoUtils {
             return cipher;
         } catch (final NoSuchAlgorithmException | NoSuchPaddingException
                 | InvalidKeyException | IOException | InvalidAlgorithmParameterException e) {
+            Log.e(TAG, "Error inicializando cipher", e);
             throw new RuntimeException(e);
         }
     }
@@ -89,14 +92,10 @@ public final class CryptoUtils {
         return null;
     }
 
-    public static PrivateKey getPrivateKey(byte[] bytes) {
-        try {
-            final KeyFactory keyFactory = KeyFactory.getInstance("EC");
-            final KeySpec privateKeySpec = new PKCS8EncodedKeySpec(bytes);
-            return keyFactory.generatePrivate(privateKeySpec);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new RuntimeException("Error al generar privateKey", e);
-        }
+    public static PrivateKey getPrivateKey(byte[] bytes) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        final KeyFactory keyFactory = KeyFactory.getInstance("EC");
+        final KeySpec privateKeySpec = new PKCS8EncodedKeySpec(bytes);
+        return keyFactory.generatePrivate(privateKeySpec);
     }
 
 }

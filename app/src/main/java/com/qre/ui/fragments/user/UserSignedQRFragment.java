@@ -2,10 +2,11 @@ package com.qre.ui.fragments.user;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -65,13 +66,18 @@ public class UserSignedQRFragment extends BaseFragment {
 
     @OnClick(R.id.btn_signed_qr)
     public void generateQR() {
-        final PrivateKey privateKey = userPreferenceService.getPrivateKey();
-        final Bitmap bitmap = createBitmapQR(privateKey);
-        imageView.setImageBitmap(bitmap);
-        imageView.setVisibility(View.VISIBLE);
+        final PrivateKey privateKey = userPreferenceService.getPrivateKey(getContext());
+
+        if (privateKey != null) {
+            final Bitmap bitmap = createBitmapQR(privateKey);
+            if (bitmap != null) {
+                imageView.setImageBitmap(bitmap);
+                imageView.setVisibility(View.VISIBLE);
+            }
+        }
+
     }
 
-    @NonNull
     private Bitmap createBitmapQR(PrivateKey privateKey) {
         try {
             final Signature dsa = Signature.getInstance("SHA256withECDSA");
@@ -96,9 +102,10 @@ public class UserSignedQRFragment extends BaseFragment {
             }
             return bitmap;
         } catch (Exception e) {
-            throw new RuntimeException("FALLO");
+            Log.e(TAG, "Error al generar firma", e);
+            Toast.makeText(getContext(), "Error al generar firma", Toast.LENGTH_LONG).show();
         }
-
+        return null;
     }
 
 }

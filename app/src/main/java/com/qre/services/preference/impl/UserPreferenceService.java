@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.qre.services.preference.PreferencesService;
@@ -14,6 +16,7 @@ import java.security.PrivateKey;
 
 public class UserPreferenceService extends PreferencesService {
 
+    private static final String TAG = UserPreferenceService.class.getSimpleName();
     private static final String SHARED_PREFERENCES_NAME = "qre_user_preferences";
 
     public UserPreferenceService(@NonNull final Application application, @NonNull final Gson gson) {
@@ -53,20 +56,23 @@ public class UserPreferenceService extends PreferencesService {
         putString(Key.USER_ACCESS_TOKEN, accessToken);
     }
 
-    public PrivateKey getPrivateKey() {
+    public PrivateKey getPrivateKey(final Context context) {
         try {
             byte[] bytes = getString(Key.USER_PRIVATE_KEY, "").getBytes("ISO-8859-1");
             return CryptoUtils.getPrivateKey(bytes);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Error leyendo private key", e);
+        } catch (final Exception e) {
+            Log.e(TAG, "Error leyendo private key", e);
+            Toast.makeText(context, "Error leyendo private key", Toast.LENGTH_LONG).show();
         }
+        return null;
     }
 
-    public void putPrivateKey(final PrivateKey privateKey) {
+    public void putPrivateKey(final PrivateKey privateKey, final Context context) {
         try {
             putString(Key.USER_PRIVATE_KEY, new String(privateKey.getEncoded(), "ISO-8859-1"));
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Error guardando private key", e);
+            Log.e(TAG, "Error guardando private key", e);
+            Toast.makeText(context, "Error guardando private key", Toast.LENGTH_LONG).show();
         }
     }
 
