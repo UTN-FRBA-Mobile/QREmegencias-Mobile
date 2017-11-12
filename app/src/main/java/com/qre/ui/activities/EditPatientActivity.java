@@ -103,4 +103,9 @@ public class EditPatientActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @OnClick(R.id.btn_back_to_home)
+    public void backToHome() {
+        startActivity(HomeActivity.getIntent(this));
+    }
+
 }
