@@ -16,6 +16,8 @@ public class EditPatientActivity extends AppCompatActivity {
 
     private static final String TAG = EditPatientActivity.class.getSimpleName();
 
+    private String user;
+
     public static Intent getIntent(final Context context) {
         return new Intent(context, EditPatientActivity.class);
     }
@@ -25,12 +27,19 @@ public class EditPatientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_patient);
         ButterKnife.bind(this);
+        user = getIntent().getStringExtra(INTENT_EXTRA_USER);
     }
 
     @OnClick(R.id.btn_load_clinical_history)
-    public void cargarClinicalHistory() {
+    public void loadClinicalHistory() {
         final Intent intent = MedicalClinicalHistoryActivity.getIntent(this);
-        final String user = getIntent().getStringExtra(INTENT_EXTRA_USER);
+        intent.putExtra(INTENT_EXTRA_USER, user);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.btn_view_clinical_history)
+    public void viewClinicalHistory() {
+        final Intent intent = MedicalClinicalHistoryViewActivity.getIntent(this);
         intent.putExtra(INTENT_EXTRA_USER, user);
         startActivity(intent);
     }

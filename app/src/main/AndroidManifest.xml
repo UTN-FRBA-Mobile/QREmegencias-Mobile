@@ -72,6 +72,7 @@
         <activity android:name="com.qre.ui.activities.VerifySignatureActivity" />
         <activity android:name="com.qre.ui.activities.ForgotPasswordActivity" />
         <activity android:name="com.qre.ui.activities.EditPatientActivity" />
+        <activity android:name="com.qre.ui.activities.MedicalClinicalHistoryViewActivity" />
 
         <receiver android:name="com.qre.ui.widget.QREmergenciasWidgetProvider">
             <intent-filter>

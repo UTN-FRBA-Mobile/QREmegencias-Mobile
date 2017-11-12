@@ -28,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.qre.ui.activities.HomeActivity.ROLE_USER;
+import static com.qre.utils.Constants.ROLE_USER;
 
 public class LoginActivity extends AppCompatActivity {
 

@@ -46,5 +46,9 @@ public interface NetworkService {
 
     void getSelfMedicalRecords(final NetCallback<PageOfMedicalRecordDTO> netCallback);
 
+    void getUserMedicalRecords(final String user, NetCallback<PageOfMedicalRecordDTO> callback);
+
     void forgotPassword(final String email, final NetCallback<Void> callback);
+
+    void deleteMedicalRecord(final String id, final NetCallback<Void> callback);
 }
