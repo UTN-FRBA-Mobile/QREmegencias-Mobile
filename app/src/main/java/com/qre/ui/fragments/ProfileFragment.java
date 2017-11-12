@@ -5,6 +5,8 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -139,6 +141,10 @@ public class ProfileFragment extends BaseFragment {
 
         if (ok) {
 
+            vSave.setEnabled(false);
+            final Drawable vSaveBackground = vSave.getBackground();
+            vSave.setBackgroundColor(Color.GRAY);
+
             profile.setFirstName(vName.getText().toString());
             profile.setLastName(vSurname.getText().toString());
             profile.setIdNumber(vId.getText().toString());
@@ -155,19 +161,21 @@ public class ProfileFragment extends BaseFragment {
                     break;
             }
 
-            vSave.setEnabled(false);
-
             networkService.updateProfile(profile, true, new NetCallback<Void>() {
 
                 @Override
                 public void onSuccess(Void response) {
                     vSave.setEnabled(true);
+                    vSave.setBackground(vSaveBackground);
+                    Toast.makeText(getContext(), getString(R.string.save_profile_success), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(Throwable e) {
                     Log.e(TAG, "Cannot update profile", e);
                     vSave.setEnabled(true);
+                    vSave.setBackground(vSaveBackground);
+                    Toast.makeText(getContext(), getString(R.string.save_profile_error), Toast.LENGTH_SHORT).show();
                 }
             });
 
