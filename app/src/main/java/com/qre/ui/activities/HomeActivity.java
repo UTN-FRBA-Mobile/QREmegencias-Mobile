@@ -25,6 +25,7 @@ import com.qre.ui.fragments.user.UserEmergencyDataFragment;
 import com.qre.ui.fragments.user.UserManageQRFragment;
 import com.qre.ui.fragments.user.UserSignedQRFragment;
 import com.qre.utils.Constants;
+import com.qre.utils.QRUtils;
 
 import javax.inject.Inject;
 
@@ -124,6 +125,7 @@ public class HomeActivity extends AppCompatActivity {
                                 fragmentTransaction = true;
                                 break;
                             case R.id.menu_logout:
+                                QRUtils.deleteQR(userPreferenceService);
                                 userPreferenceService.delete();
                                 networkService.logout();
                                 startActivity(LoginActivity.getIntent(HomeActivity.this));

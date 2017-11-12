@@ -176,10 +176,14 @@ public class RetrofitNetworkService implements NetworkService {
                         callback.onSuccess(response.body());
                     } else {
                         try {
-                            Gson gson = registerAll((new GsonBuilder())).create();
-                            String errorBody = response.errorBody().string();
-                            ApiError apiError = gson.fromJson(errorBody.replaceAll(":([0-9]{2}).[0-9]{3}", ":$1Z"), ApiError.class);
-                            callback.onFailure(new NetworkException(response.code(), apiError.getMessage()));
+                            if (response.errorBody() != null && !response.errorBody().string().isEmpty()) {
+                                String errorBody = response.errorBody().string();
+                                Gson gson = registerAll((new GsonBuilder())).create();
+                                ApiError apiError = gson.fromJson(errorBody.replaceAll(":([0-9]{2}).[0-9]{3}", ":$1Z"), ApiError.class);
+                                callback.onFailure(new NetworkException(response.code(), apiError.getMessage()));
+                            } else {
+                                callback.onFailure(new NetworkException(response.code(), "Error del servidor"));
+                            }
                         } catch (final Exception e) {
                             Log.e(TAG, "ERROR:  Error al leer error web", e);
                             callback.onFailure(new NetworkException(response.code(), response.code() + " error executing a network call"));

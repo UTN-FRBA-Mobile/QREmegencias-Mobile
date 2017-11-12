@@ -2,11 +2,15 @@ package com.qre.utils;
 
 import com.qre.exception.InvalidQRException;
 import com.qre.models.EmergencyData;
+import com.qre.services.preference.impl.UserPreferenceService;
 
 import org.threeten.bp.LocalDate;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.BitSet;
+
+import static com.qre.ui.fragments.user.UserManageQRFragment.QR_FILE_NAME;
 
 public class QRUtils {
 
@@ -112,6 +116,15 @@ public class QRUtils {
             default:
                 return "Otro";
         }
+    }
+
+    public static boolean deleteQR(final UserPreferenceService userPreferenceService) {
+        final File file = new File(userPreferenceService.getQRLocation(), QR_FILE_NAME);
+        if (file.exists() && file.delete()) {
+            userPreferenceService.putQRLocation(null);
+            return true;
+        }
+        return false;
     }
 
 
