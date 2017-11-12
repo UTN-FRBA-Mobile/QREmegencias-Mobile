@@ -1,11 +1,13 @@
 package com.qre.ui.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -14,7 +16,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -38,7 +42,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -58,6 +65,7 @@ public class MedicalClinicalHistoryActivity extends AppCompatActivity implements
     private static final int CODE_DATE = 1;
     private static final int CODE_CAMERA = 2;
     private static final int CODE_GALLERY = 3;
+    private static final int CAMERA_STORAGE_PERMISSIONS = 1000;
 
     @Inject
     UserPreferenceService userPreferenceService;
@@ -170,6 +178,23 @@ public class MedicalClinicalHistoryActivity extends AppCompatActivity implements
 
     @OnClick(R.id.btn_load)
     public void openPictureDialog() {
+        List<String> permissionsList = new ArrayList<>(3);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+            permissionsList.add(Manifest.permission.CAMERA);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            permissionsList.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            permissionsList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (!permissionsList.isEmpty()) {
+            ActivityCompat.requestPermissions(this,
+                    permissionsList.toArray(new String[permissionsList.size()]), CAMERA_STORAGE_PERMISSIONS);
+        } else {
+            openPictureDialogWithPermissionsGrantedByUserInputFromAndroidDevice();
+        }
+    }
+
+    private void openPictureDialogWithPermissionsGrantedByUserInputFromAndroidDevice() {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         pictureDialog.setTitle(getString(R.string.load_image));
         String[] pictureDialogItems = {getString(R.string.load_image_from_gallery), getString(R.string.load_image_from_camera)};
@@ -283,5 +308,32 @@ public class MedicalClinicalHistoryActivity extends AppCompatActivity implements
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case CAMERA_STORAGE_PERMISSIONS: {
+                boolean permissionsOk = true;
+                for (int grantResult : grantResults) {
+                    if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                        permissionsOk = false;
+                        break;
+                    }
+                }
+                if (permissionsOk) {
+                    openPictureDialogWithPermissionsGrantedByUserInputFromAndroidDevice();
+                } else {
+                    Context context = getApplicationContext();
+                    CharSequence text = "Se necesitan permisos de cámara y almacenamiento para cargar historia clínica";
+                    int duration = Toast.LENGTH_LONG;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+            }
+        }
+    }
+
 
 }
