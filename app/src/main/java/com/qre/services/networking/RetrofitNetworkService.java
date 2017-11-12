@@ -117,6 +117,13 @@ public class RetrofitNetworkService implements NetworkService {
     }
 
     @Override
+    public void updateEmergencyData(EmergencyDataDTO data, String userId, boolean qrUpdateRequired, NetCallback<Void> callback) {
+        final Call<Void> call = api
+                .updateEmergencyDataUsingPATCH(data, userId, qrUpdateRequired);
+        enqueue(call, callback);
+    }
+
+    @Override
     public void verifySignature(final String user, final NetCallback<VerificationDTO> callback) {
         final Call<VerificationDTO> call = api
                 .verifyQRSignatureUsingGET(user);

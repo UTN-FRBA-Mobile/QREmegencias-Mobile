@@ -26,6 +26,8 @@ public interface NetworkService {
 
     void updateProfile(final UserProfileDTO profile, final boolean qrUpdateRequired, final NetCallback<Void> callback);
 
+    void updateEmergencyData(final EmergencyDataDTO data, final String userId, final boolean qrUpdateRequired, final NetCallback<Void> callback);
+
     void verifySignature(final String user, final NetCallback<VerificationDTO> callback);
 
     void uploadPublicKey(final PublicKey pk, final NetCallback<Void> callback);
