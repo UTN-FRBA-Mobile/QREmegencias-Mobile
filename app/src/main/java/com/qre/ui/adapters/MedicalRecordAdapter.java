@@ -147,7 +147,7 @@ public class MedicalRecordAdapter extends RecyclerView.Adapter<MedicalRecordAdap
 
             final AlertDialog.Builder alert = new AlertDialog.Builder(context);
             alert.setTitle("Borrar Historia");
-            alert.setMessage("¿Esta seguro que desea borrar este estudio?");
+            alert.setMessage("¿Está seguro que desea borrar este estudio?");
             alert.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(final DialogInterface dialog, int which) {
