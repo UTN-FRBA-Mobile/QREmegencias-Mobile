@@ -19,6 +19,8 @@ import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.format.DateTimeFormatterBuilder;
 import org.threeten.bp.temporal.ChronoField;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -69,6 +71,9 @@ public class NetModule {
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         client.cache(cache);
         client.addInterceptor(logging);
+        client.connectTimeout(30, TimeUnit.SECONDS);
+        client.readTimeout(30, TimeUnit.SECONDS);
+        client.writeTimeout(30, TimeUnit.SECONDS);
         return client.build();
     }
 

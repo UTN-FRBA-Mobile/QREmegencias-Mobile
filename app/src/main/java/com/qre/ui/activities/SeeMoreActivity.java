@@ -24,6 +24,7 @@ import com.qre.ui.adapters.EmergencyDataAdapter;
 import com.qre.ui.components.DetailValueView;
 import com.qre.utils.CryptoUtils;
 
+import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import java.io.InputStream;
@@ -108,7 +109,10 @@ public class SeeMoreActivity extends AppCompatActivity {
 
                     if (emergencyDataDTO.getGeneral() != null) {
 
-                        vLastMedicalCheck.setValue(emergencyDataDTO.getGeneral().getLastMedicalCheck().format(DATE_FORMATTER));
+                        final LocalDate lastMedicalCheck = emergencyDataDTO.getGeneral().getLastMedicalCheck();
+                        if (lastMedicalCheck != null) {
+                            vLastMedicalCheck.setValue(lastMedicalCheck.format(DATE_FORMATTER));
+                        }
                         vBloodType.setValue(emergencyDataDTO.getGeneral().getBloodType());
                         vOrganDonor.setValue(emergencyDataDTO.getGeneral().isOrganDonor() ? getString(R.string.yes) : getString(R.string.no));
 
