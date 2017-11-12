@@ -18,6 +18,7 @@ import com.qre.injection.Injector;
 import com.qre.services.networking.NetworkService;
 import com.qre.services.preference.impl.UserPreferenceService;
 import com.qre.ui.fragments.ProfileFragment;
+import com.qre.ui.fragments.WelcomeFragment;
 import com.qre.ui.fragments.medical.MedicalEditUserFragment;
 import com.qre.ui.fragments.medical.MedicalEmergencyDataFragment;
 import com.qre.ui.fragments.user.UserClinicalHistoryFragment;
@@ -72,6 +73,10 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_frame, new WelcomeFragment())
+                .commit();
 
         initDrawer();
     }

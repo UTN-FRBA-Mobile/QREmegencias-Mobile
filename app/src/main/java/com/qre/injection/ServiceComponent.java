@@ -14,6 +14,7 @@ import com.qre.ui.activities.MedicalClinicalHistoryViewActivity;
 import com.qre.ui.activities.SeeMoreActivity;
 import com.qre.ui.activities.TemporalCodeActivity;
 import com.qre.ui.fragments.ProfileFragment;
+import com.qre.ui.fragments.WelcomeFragment;
 import com.qre.ui.fragments.user.UserClinicalHistoryFragment;
 import com.qre.ui.fragments.user.UserEmergencyDataFragment;
 import com.qre.ui.fragments.user.UserManageQRFragment;
@@ -56,5 +57,7 @@ public interface ServiceComponent {
     void inject(final ForgotPasswordActivity forgotPasswordActivity);
 
     void inject(final MedicalClinicalHistoryViewActivity medicalClinicalHistoryViewActivity);
+
+    void inject(final WelcomeFragment welcomeFragment);
 
 }
