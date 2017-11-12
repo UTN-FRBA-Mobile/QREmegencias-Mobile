@@ -46,15 +46,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         networkService.forgotPassword(vEmail.getText().toString(), new NetCallback<Void>() {
             @Override
             public void onSuccess(Void response) {
-                // TODO mejorar esto y navegar al login
-                Toast.makeText(ForgotPasswordActivity.this, "OK", Toast.LENGTH_LONG).show();
+                Toast.makeText(ForgotPasswordActivity.this, "Éxito! Revise su cuenta de email", Toast.LENGTH_LONG).show();
+                finish();
             }
 
             @Override
             public void onFailure(Throwable exception) {
-                // TODO mejorar esto
                 Log.e(TAG, "Error al enviar forgot password", exception);
-                Toast.makeText(ForgotPasswordActivity.this, "NO OK", Toast.LENGTH_LONG).show();
+                Toast.makeText(ForgotPasswordActivity.this, "Error al enviar email. Intente nuevamente", Toast.LENGTH_LONG).show();
             }
         });
     }
