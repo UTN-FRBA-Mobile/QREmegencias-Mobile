@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -79,9 +80,9 @@ public class LoginActivity extends AppCompatActivity {
 
         boolean ok = true;
 
-        if (username.isEmpty()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(username).matches()) {
             ok = false;
-            vEmail.setError(getString(R.string.required_field));
+            vEmail.setError(getString(R.string.required_mail));
         }
 
         if (password.isEmpty()) {

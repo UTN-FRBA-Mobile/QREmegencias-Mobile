@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.qre.R;
@@ -78,6 +79,9 @@ public class MedicalClinicalHistoryActivity extends AppCompatActivity implements
 
     @BindView(R.id.appbar)
     Toolbar vToolbar;
+
+    @BindView(R.id.image_file_attached)
+    ImageView vImageAttached;
 
     private LocalDate date;
     private File file;
@@ -238,6 +242,9 @@ public class MedicalClinicalHistoryActivity extends AppCompatActivity implements
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
             file = saveImage(thumbnail);
             Toast.makeText(MedicalClinicalHistoryActivity.this, getString(R.string.load_image_success), Toast.LENGTH_SHORT).show();
+        }
+        if (file != null) {
+            vImageAttached.setImageResource(R.drawable.ic_file_check_grey600_24dp);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

@@ -46,6 +46,7 @@
     <string name="load_image_from_camera">Sacar una foto con la cámara</string>
     <string name="load_image_from_gallery">Elegir imagen de la galería</string>
     <string name="required_field">Debe completar este campo</string>
+    <string name="required_mail">Debe ingresar un e-mail válido</string>
 
     <string name="menu_medical_profile">Perfil</string>
     <string name="menu_medical_emergency_data">Leer Datos de Emergencia</string>
