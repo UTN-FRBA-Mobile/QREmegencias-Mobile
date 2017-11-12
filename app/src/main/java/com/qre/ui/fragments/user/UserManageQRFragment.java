@@ -17,6 +17,7 @@ import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkService;
 import com.qre.services.preference.impl.UserPreferenceService;
 import com.qre.ui.fragments.BaseFragment;
+import com.qre.utils.QRUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -75,6 +76,7 @@ public class UserManageQRFragment extends BaseFragment {
                     imageView.setImageBitmap(BitmapFactory.decodeStream(fileInputStream));
                     imageView.setVisibility(View.VISIBLE);
                     mButtonDelete.setVisibility(View.VISIBLE);
+                    // TODO actualizar Widget
                 } catch (FileNotFoundException e) {
                     fetchQR();
                 } catch (IOException e) {
@@ -134,16 +136,14 @@ public class UserManageQRFragment extends BaseFragment {
         });
     }
 
-    // TODO Borrar el archivo local no anda y borrar el archivo al cerrar session falta
     @OnClick(R.id.btn_delete_qr)
     public void deleteQR() {
         networkService.deleteQR(new NetCallback<Void>() {
             @Override
             public void onSuccess(Void response) {
-                if (new File(userPreferenceService.getQRLocation()).delete()) {
+                if (QRUtils.deleteQR(userPreferenceService)) {
                     imageView.setVisibility(View.INVISIBLE);
                     mButtonDelete.setVisibility(View.INVISIBLE);
-                    userPreferenceService.putQRLocation(null);
                 } else {
                     Toast.makeText(getContext(), "No se pudo borrar el QR", Toast.LENGTH_LONG).show();
                 }

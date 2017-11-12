@@ -27,6 +27,8 @@ public class QREmergenciasWidgetProvider extends AppWidgetProvider {
             final File storedQR = new File(qrDir, QR_FILE_NAME);
             if (storedQR.exists() && storedQR.isFile()) {
                 remoteViews.setImageViewBitmap(R.id.widget_image, BitmapFactory.decodeFile(qrDir + "/" + QR_FILE_NAME));
+            } else {
+                remoteViews.setImageViewResource(R.id.widget_image, R.drawable.logo);
             }
 
             final Intent intent = new Intent(context, QREmergenciasWidgetProvider.class);
