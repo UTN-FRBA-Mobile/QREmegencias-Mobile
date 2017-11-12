@@ -98,4 +98,18 @@
     <string name="delete_medical_record_text">Borrar</string>
     <string name="load_history_success">Carga exitosa!</string>
 
+    <string-array name="hospitalization_type">
+        <item>CIRUGIA</item>
+        <item>ADMISION</item>
+    </string-array>
+
+    <string-array name="pathology_type">
+        <item>ASMA</item>
+        <item>HIPERTENSION</item>
+        <item>ANTECEDENTES_ONCOLOGICOS</item>
+        <item>INSUFICIENCIA_SUPRARRENAL</item>
+        <item>OTRO</item>
+    </string-array>
+
+
 </resources>
