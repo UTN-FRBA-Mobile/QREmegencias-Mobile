@@ -11,7 +11,9 @@
     <string name="forgot_password">¿Olvidaste tu contraseña?</string>
     <string name="blood_type">Tipo de sangre</string>
     <string name="age">Edad</string>
+    <string name="allergy">Alergia</string>
     <string name="allergies">Alergias</string>
+    <string name="pathology">Patología</string>
     <string name="pathologies">Patologías</string>
     <string name="sex">Sexo</string>
     <string name="contact">Contacto</string>
@@ -22,6 +24,7 @@
     <string name="organ_donor">Donante de órganos</string>
     <string name="surgery">Operación</string>
     <string name="surgeries">Operaciones</string>
+    <string name="hospitalization">Internación</string>
     <string name="hospitalizations">Internaciones</string>
     <string name="institution">Institución</string>
     <string name="type">Tipo</string>
@@ -43,6 +46,8 @@
     <string name="save">Guardar cambios</string>
     <string name="edit">Modificar</string>
     <string name="delete">Eliminar</string>
+
+    <string name="delete_confirmation">¿Desea eliminar este elemento?</string>
 
     <string name="add_contact">Agregar contacto de emergencia</string>
     <string name="load_image">Cargar imagen</string>
