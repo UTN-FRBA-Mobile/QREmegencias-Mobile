@@ -7,7 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.qre.R;
 import com.qre.injection.Injector;
@@ -42,6 +44,9 @@ public class MedicalClinicalHistoryViewActivity extends AppCompatActivity {
     @Inject
     UserPreferenceService userPreferenceService;
 
+    @BindView(R.id.appbar)
+    Toolbar vToolbar;
+
     @Inject
     @Named("withOAuth")
     OkHttpClient okHttpClient;
@@ -56,6 +61,9 @@ public class MedicalClinicalHistoryViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_clinical_history);
         ButterKnife.bind(this);
         Injector.getServiceComponent().inject(this);
+
+        setSupportActionBar(vToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final String user = getIntent().getStringExtra(INTENT_EXTRA_USER);
         networkService.getUserMedicalRecords(user, new NetCallback<PageOfMedicalRecordDTO>() {
@@ -83,6 +91,16 @@ public class MedicalClinicalHistoryViewActivity extends AppCompatActivity {
                 Log.e(getClass().getSimpleName(), "Error", exception);
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

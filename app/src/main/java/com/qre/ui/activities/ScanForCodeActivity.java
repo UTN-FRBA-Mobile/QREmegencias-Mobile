@@ -12,7 +12,9 @@ public class ScanForCodeActivity extends ScanActivity {
     private static final String TAG = ScanForCodeActivity.class.getSimpleName();
 
     public static Intent getIntent(final Context context) {
-        return new Intent(context, ScanForCodeActivity.class);
+        Intent intent = new Intent(context, ScanForCodeActivity.class);
+        intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+        return intent;
     }
 
     @Override
