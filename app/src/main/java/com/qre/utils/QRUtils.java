@@ -1,8 +1,14 @@
 package com.qre.utils;
 
+import android.app.Activity;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Intent;
+
 import com.qre.exception.InvalidQRException;
 import com.qre.models.EmergencyData;
 import com.qre.services.preference.impl.UserPreferenceService;
+import com.qre.ui.widget.QREmergenciasWidgetProvider;
 
 import org.threeten.bp.LocalDate;
 
@@ -118,13 +124,25 @@ public class QRUtils {
         }
     }
 
-    public static boolean deleteQR(final UserPreferenceService userPreferenceService) {
+    public static boolean deleteQR(final UserPreferenceService userPreferenceService,
+                                   final Activity activity) {
         final File file = new File(userPreferenceService.getQRLocation(), QR_FILE_NAME);
         if (file.exists() && file.delete()) {
             userPreferenceService.putQRLocation(null);
+            updateWidget(activity);
             return true;
         }
         return false;
+    }
+
+    public static void updateWidget(final Activity activity) {
+        Intent intent = new Intent(activity, QREmergenciasWidgetProvider.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int[] ids = AppWidgetManager.getInstance(activity.getApplication())
+                .getAppWidgetIds(new ComponentName(activity.getApplication(),
+                        QREmergenciasWidgetProvider.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        activity.sendBroadcast(intent);
     }
 
 

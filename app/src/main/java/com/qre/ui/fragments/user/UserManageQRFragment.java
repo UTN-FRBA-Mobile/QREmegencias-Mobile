@@ -98,6 +98,7 @@ public class UserManageQRFragment extends BaseFragment {
             Log.e(TAG, "Error al guardar QR", e);
         }
         userPreferenceService.putQRLocation(directory.getAbsolutePath());
+        QRUtils.updateWidget(getActivity());
     }
 
     private void fetchQR() {
@@ -141,7 +142,7 @@ public class UserManageQRFragment extends BaseFragment {
         networkService.deleteQR(new NetCallback<Void>() {
             @Override
             public void onSuccess(Void response) {
-                if (QRUtils.deleteQR(userPreferenceService)) {
+                if (QRUtils.deleteQR(userPreferenceService, getActivity())) {
                     imageView.setVisibility(View.INVISIBLE);
                     mButtonDelete.setVisibility(View.INVISIBLE);
                 } else {
