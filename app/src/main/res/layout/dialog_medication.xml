@@ -63,12 +63,15 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp">
 
-        <EditText
+        <Spinner
             android:id="@+id/input_period"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/period"
-            android:inputType="textCapSentences" />
+            android:spinnerMode="dropdown"
+            android:entries="@array/periods"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+        </Spinner>
 
     </android.support.design.widget.TextInputLayout>
 

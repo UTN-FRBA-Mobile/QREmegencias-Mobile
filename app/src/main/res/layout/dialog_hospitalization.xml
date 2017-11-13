@@ -21,18 +21,6 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <!--  Type Label -->
-
-    <Spinner
-        android:id="@+id/input_type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dropdown"
-        android:entries="@array/hospitalization_type"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
-    </Spinner>
-
     <!--  Date Label -->
 
     <android.support.design.widget.TextInputLayout

@@ -64,6 +64,8 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
                 return new AllergyViewHolder(inflater.inflate(R.layout.item_allergy, parent, false));
             case TYPE_HOSPITALIZATION:
                 return new HospitalizationViewHolder(inflater.inflate(R.layout.item_hospitalization, parent, false));
+            case TYPE_SURGERY:
+                return new HospitalizationViewHolder(inflater.inflate(R.layout.item_hospitalization, parent, false));
             case TYPE_MEDICATION:
                 return new MedicationViewHolder(inflater.inflate(R.layout.item_medication, parent, false));
             case TYPE_PATHOLOGY:
@@ -101,13 +103,19 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
                         }
                     });
                 }
+                allergyViewHolder.remove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onRemoveItem(TYPE_ALLERGY, allergy);
+                    }
+                });
                 break;
             case TYPE_HOSPITALIZATION:
                 final HospitalizationDTO hospitalizationDTO = (HospitalizationDTO) items.get(position);
                 HospitalizationViewHolder hospitalizationViewHolder = (HospitalizationViewHolder) holder;
                 hospitalizationViewHolder.actions.setVisibility(editable ? View.VISIBLE : View.GONE);
                 hospitalizationViewHolder.institution.setValue(hospitalizationDTO.getInstitution());
-                hospitalizationViewHolder.type.setValue(String.valueOf(hospitalizationDTO.getType()));
+                hospitalizationViewHolder.type = hospitalizationDTO.getType();
                 if (hospitalizationDTO.getDate() != null)
                     hospitalizationViewHolder.date.setValue(hospitalizationDTO.getDate().format(DATE_FORMATTER));
                 hospitalizationViewHolder.reason.setValue(hospitalizationDTO.getReason());
@@ -121,6 +129,28 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
                     @Override
                     public void onClick(View v) {
                         listener.onRemoveItem(TYPE_HOSPITALIZATION, hospitalizationDTO);
+                    }
+                });
+                break;
+            case TYPE_SURGERY:
+                final HospitalizationDTO surgery = (HospitalizationDTO) items.get(position);
+                HospitalizationViewHolder surgeryViewHolder = (HospitalizationViewHolder) holder;
+                surgeryViewHolder.actions.setVisibility(editable ? View.VISIBLE : View.GONE);
+                surgeryViewHolder.institution.setValue(surgery.getInstitution());
+                surgeryViewHolder.type = surgery.getType();
+                if (surgery.getDate() != null)
+                    surgeryViewHolder.date.setValue(surgery.getDate().format(DATE_FORMATTER));
+                surgeryViewHolder.reason.setValue(surgery.getReason());
+                surgeryViewHolder.edit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onEditItem(TYPE_SURGERY, surgery);
+                    }
+                });
+                surgeryViewHolder.remove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onRemoveItem(TYPE_SURGERY, surgery);
                     }
                 });
                 break;
@@ -201,7 +231,12 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
             return TYPE_ALLERGY;
         }
         if (item instanceof HospitalizationDTO) {
-            return TYPE_HOSPITALIZATION;
+            switch (((HospitalizationDTO) item).getType()) {
+                case CIRUGIA:
+                    return TYPE_SURGERY;
+                case ADMISION:
+                    return TYPE_HOSPITALIZATION;
+            }
         }
         if (item instanceof MedicationDTO) {
             return TYPE_MEDICATION;
@@ -260,6 +295,9 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
         @BindView(R.id.value)
         public TextView value;
 
+        @BindView(R.id.btn_delete)
+        public ImageButton remove;
+
         public AllergyViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -272,8 +310,7 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
         @BindView(R.id.institution)
         public DetailValueView institution;
 
-        @BindView(R.id.type)
-        public DetailValueView type;
+        public HospitalizationDTO.TypeEnum type;
 
         @BindView(R.id.date)
         public DetailValueView date;
@@ -384,7 +421,9 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
     public interface Listener {
 
         void onAddItem(int type);
+
         void onEditItem(int type, Object item);
+
         void onRemoveItem(int type, Object item);
 
     }

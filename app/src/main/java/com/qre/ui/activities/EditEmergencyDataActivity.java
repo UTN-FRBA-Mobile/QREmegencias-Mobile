@@ -13,13 +13,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.qre.R;
 import com.qre.injection.Injector;
 import com.qre.models.EmergencyDataDTO;
@@ -32,12 +33,11 @@ import com.qre.services.networking.NetworkException;
 import com.qre.services.networking.NetworkService;
 import com.qre.ui.adapters.EmergencyDataAdapter;
 import com.qre.ui.components.DetailValueView;
-import com.qre.utils.CryptoUtils;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.format.DateTimeParseException;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +48,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.qre.utils.Constants.INTENT_EXTRA_USER;
-import static com.qre.utils.Constants.INTENT_EXTRA_UUID;
 
 public class EditEmergencyDataActivity extends AppCompatActivity implements EmergencyDataAdapter.Listener {
 
@@ -155,34 +154,34 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
             vBloodType.setValue(data.getGeneral().getBloodType());
             vOrganDonor.setValue(data.getGeneral().isOrganDonor() ? getString(R.string.yes) : getString(R.string.no));
 
+            collection.add(EmergencyDataAdapter.TYPE_ALLERGY);
             if (!data.getGeneral().getAllergies().isEmpty()) {
-                collection.add(EmergencyDataAdapter.TYPE_ALLERGY);
                 collection.addAll(data.getGeneral().getAllergies());
             }
         }
 
+        collection.add(EmergencyDataAdapter.TYPE_SURGERY);
         if (data.getSurgeries() != null && !data.getSurgeries().isEmpty()) {
-            collection.add(EmergencyDataAdapter.TYPE_SURGERY);
             collection.addAll(data.getSurgeries());
         }
 
+        collection.add(EmergencyDataAdapter.TYPE_HOSPITALIZATION);
         if (data.getHospitalizations() != null && !data.getHospitalizations().isEmpty()) {
-            collection.add(EmergencyDataAdapter.TYPE_HOSPITALIZATION);
             collection.addAll(data.getHospitalizations());
         }
 
+        collection.add(EmergencyDataAdapter.TYPE_PATHOLOGY);
         if (data.getPathologies() != null && !data.getPathologies().isEmpty()) {
-            collection.add(EmergencyDataAdapter.TYPE_PATHOLOGY);
             collection.addAll(data.getPathologies());
         }
 
+        collection.add(EmergencyDataAdapter.TYPE_MEDICATION);
         if (data.getMedications() != null && !data.getMedications().isEmpty()) {
-            collection.add(EmergencyDataAdapter.TYPE_MEDICATION);
             collection.addAll(data.getMedications());
         }
 
+        collection.add(EmergencyDataAdapter.TYPE_CONTACT);
         if (data.getContacts() != null && !data.getContacts().isEmpty()) {
-            collection.add(EmergencyDataAdapter.TYPE_CONTACT);
             collection.addAll(data.getContacts());
         }
 
@@ -199,6 +198,7 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
             public void onSuccess(Void response) {
                 Toast.makeText(EditEmergencyDataActivity.this, getString(R.string.save_data_success), Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onFailure(Throwable e) {
                 Log.e(TAG, "Unable to update emergency data", e);
@@ -356,10 +356,11 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
         final View dialogView = inflater.inflate(R.layout.dialog_hospitalization, null);
         dialogBuilder.setView(dialogView);
 
-        final Spinner vType = (Spinner) dialogView.findViewById(R.id.input_type);
+        final EditText vInstitution = (EditText) dialogView.findViewById(R.id.input_institution);
         final EditText vDate = (EditText) dialogView.findViewById(R.id.input_date);
-        final EditText vDescription = (EditText) dialogView.findViewById(R.id.input_description);
+        final EditText vDescription = (EditText) dialogView.findViewById(R.id.input_reason);
 
+        vInstitution.setText(hospitalization.getInstitution());
         vDate.setText(hospitalization.getDate() == null ? LocalDate.now().format(DATE_FORMATTER) : hospitalization.getDate().format(DATE_FORMATTER));
         vDescription.setText(hospitalization.getReason());
 
@@ -381,9 +382,21 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
 
                         boolean ok = true;
 
+                        if (vInstitution.getText().toString().isEmpty()) {
+                            ok = false;
+                            vInstitution.setError(getString(R.string.required_field));
+                        }
+
                         if (vDate.getText().toString().isEmpty()) {
                             ok = false;
                             vDate.setError(getString(R.string.required_field));
+                        }
+
+                        try {
+                            DATE_FORMATTER.parse(vDate.getText().toString());
+                        } catch (DateTimeParseException exc) {
+                            ok = false;
+                            vDate.setError(getString(R.string.required_valid_date));
                         }
 
                         if (vDescription.getText().toString().isEmpty()) {
@@ -394,11 +407,13 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
                         if (ok) {
 
                             if (!existent) {
-                                data.addHospitalizationsItem(hospitalization);
+                                data.addSurgeriesItem(hospitalization);
                             }
 
-                            hospitalization.setType(HospitalizationDTO.TypeEnum.valueOf(vType.getSelectedItem().toString()));
+                            hospitalization.setInstitution(vInstitution.getText().toString());
+                            hospitalization.setType(HospitalizationDTO.TypeEnum.CIRUGIA);
                             hospitalization.setReason(vDescription.getText().toString());
+                            hospitalization.setDate(LocalDate.from(DATE_FORMATTER.parse(vDate.getText().toString())));
 
                             dialog.dismiss();
 
@@ -420,7 +435,6 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
         dialogBuilder.setView(dialogView);
 
         final EditText vInstitution = (EditText) dialogView.findViewById(R.id.input_institution);
-        final Spinner vType = (Spinner) dialogView.findViewById(R.id.input_type);
         final EditText vDate = (EditText) dialogView.findViewById(R.id.input_date);
         final EditText vReason = (EditText) dialogView.findViewById(R.id.input_reason);
 
@@ -456,6 +470,13 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
                             vDate.setError(getString(R.string.required_field));
                         }
 
+                        try {
+                            DATE_FORMATTER.parse(vDate.getText().toString());
+                        } catch (DateTimeParseException exc) {
+                            ok = false;
+                            vDate.setError(getString(R.string.required_valid_date));
+                        }
+
                         if (vReason.getText().toString().isEmpty()) {
                             ok = false;
                             vReason.setError(getString(R.string.required_field));
@@ -468,8 +489,9 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
                             }
 
                             hospitalization.setInstitution(vInstitution.getText().toString());
-                            hospitalization.setType(HospitalizationDTO.TypeEnum.valueOf(vType.getSelectedItem().toString()));
+                            hospitalization.setType(HospitalizationDTO.TypeEnum.ADMISION);
                             hospitalization.setReason(vReason.getText().toString());
+                            hospitalization.setDate(LocalDate.from(DATE_FORMATTER.parse(vDate.getText().toString())));
 
                             dialog.dismiss();
 
@@ -493,12 +515,32 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
         final EditText vName = (EditText) dialogView.findViewById(R.id.input_name);
         final EditText vDescription = (EditText) dialogView.findViewById(R.id.input_description);
         final EditText vAmount = (EditText) dialogView.findViewById(R.id.input_amount);
-        final EditText vPeriod = (EditText) dialogView.findViewById(R.id.input_period);
+        final Spinner vPeriod = (Spinner) dialogView.findViewById(R.id.input_period);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.periods, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        vPeriod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                final Object itemAtPosition = parent.getItemAtPosition(position);
+                medication.setPeriod(MedicationDTO.PeriodEnum.valueOf(itemAtPosition.toString()));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                medication.setPeriod(null);
+            }
+        });
+        vPeriod.setAdapter(adapter);
 
         vName.setText(medication.getName());
         vDescription.setText(medication.getDescription());
-        vAmount.setText(medication.getAmount());
-        vPeriod.setText(String.valueOf(medication.getPeriod()));
+        vAmount.setText(medication.getAmount() != null ? String.valueOf(medication.getAmount()) : null);
+
+        if (medication.getPeriod() != null) {
+            vPeriod.setSelection(medication.getPeriod().ordinal());
+        }
 
         dialogBuilder.setTitle(getString(R.string.medication));
         dialogBuilder.setPositiveButton(getString(R.string.accept), null);
@@ -533,9 +575,9 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
                             vAmount.setError(getString(R.string.required_field));
                         }
 
-                        if (vPeriod.getText().toString().isEmpty()) {
+                        if (medication.getPeriod() == null) {
                             ok = false;
-                            vPeriod.setError(getString(R.string.required_field));
+                            Toast.makeText(getApplicationContext(), "Debe seleccionar periodo", Toast.LENGTH_SHORT).show();
                         }
 
                         if (ok) {
@@ -547,7 +589,6 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
                             medication.setName(vName.getText().toString());
                             medication.setDescription(vDescription.getText().toString());
                             medication.setAmount(Integer.valueOf(vAmount.getText().toString()));
-                            medication.setPeriod(MedicationDTO.PeriodEnum.valueOf(vPeriod.getText().toString()));
 
                             dialog.dismiss();
 
@@ -571,6 +612,27 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
         final Spinner vType = (Spinner) dialogView.findViewById(R.id.input_type);
         final EditText vDescription = (EditText) dialogView.findViewById(R.id.input_description);
         final EditText vDate = (EditText) dialogView.findViewById(R.id.input_date);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.pathology_type, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        vType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                final Object itemAtPosition = parent.getItemAtPosition(position);
+                pathology.setType(PathologyDTO.TypeEnum.valueOf(itemAtPosition.toString()));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                pathology.setType(null);
+            }
+        });
+        vType.setAdapter(adapter);
+
+        if (pathology.getType() != null) {
+            vType.setSelection(pathology.getType().ordinal());
+        }
 
         vDescription.setText(pathology.getDescription());
         vDate.setText(pathology.getDate() == null ? LocalDate.now().format(DATE_FORMATTER) : pathology.getDate().format(DATE_FORMATTER));
@@ -603,6 +665,18 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
                             vDate.setError(getString(R.string.required_field));
                         }
 
+                        try {
+                            DATE_FORMATTER.parse(vDate.getText().toString());
+                        } catch (DateTimeParseException exc) {
+                            ok = false;
+                            vDate.setError(getString(R.string.required_valid_date));
+                        }
+
+                        if (pathology.getType() == null) {
+                            ok = false;
+                            Toast.makeText(getApplicationContext(), "Debe seleccionar tipo", Toast.LENGTH_SHORT).show();
+                        }
+
                         if (ok) {
 
                             if (!existent) {
@@ -611,6 +685,7 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
 
                             pathology.setType(PathologyDTO.TypeEnum.valueOf(vType.getSelectedItem().toString()));
                             pathology.setDescription(vDescription.getText().toString());
+                            pathology.setDate(LocalDate.from(DATE_FORMATTER.parse(vDate.getText().toString())));
 
                             dialog.dismiss();
 

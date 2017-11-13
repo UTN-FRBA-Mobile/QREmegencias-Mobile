@@ -55,6 +55,7 @@
     <string name="load_image_from_gallery">Elegir imagen de la galería</string>
     <string name="required_field">Debe completar este campo</string>
     <string name="required_mail">Debe ingresar un e-mail válido</string>
+    <string name="required_valid_date">Debe ingresar una fecha válida</string>
 
     <string name="menu_medical_profile">Perfil</string>
     <string name="menu_medical_emergency_data">Leer Datos de Emergencia</string>
@@ -115,5 +116,10 @@
         <item>OTRO</item>
     </string-array>
 
+    <string-array name="periods">
+        <item>DIARIAMENTE</item>
+        <item>SEMANALMENTE</item>
+        <item>MENSUALMENTE</item>
+    </string-array>
 
 </resources>
