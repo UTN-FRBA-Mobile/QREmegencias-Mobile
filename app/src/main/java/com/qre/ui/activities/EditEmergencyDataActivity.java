@@ -45,6 +45,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.qre.utils.Constants.INTENT_EXTRA_USER;
 import static com.qre.utils.Constants.INTENT_EXTRA_UUID;
 
 public class EditEmergencyDataActivity extends AppCompatActivity implements EmergencyDataAdapter.Listener {
@@ -59,9 +60,6 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
 
     @Inject
     NetworkService networkService;
-
-    @Inject
-    Gson gson;
 
     @BindView(R.id.loader_seemore)
     View vLoader;
@@ -104,15 +102,12 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
 
         vLoader.setVisibility(View.VISIBLE);
 
-        networkService.getPublicEmergencyData(getIntent().getStringExtra(INTENT_EXTRA_UUID), new NetCallback<String>() {
+        networkService.getEmergencyData(getIntent().getStringExtra(INTENT_EXTRA_USER), new NetCallback<EmergencyDataDTO>() {
 
             @Override
-            public void onSuccess(final String response) {
+            public void onSuccess(final EmergencyDataDTO emergencyDataDTO) {
                 vLoader.setVisibility(View.GONE);
-                final InputStream key = getResources().openRawResource(R.raw.privatekey);
                 try {
-                    String decrypted = new String(CryptoUtils.decryptText(response, key), "ISO-8859-1");
-                    EmergencyDataDTO emergencyDataDTO = gson.fromJson(decrypted, EmergencyDataDTO.class);
                     data = emergencyDataDTO;
                     initialize();
                 } catch (final Exception e) {

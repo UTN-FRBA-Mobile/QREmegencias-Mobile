@@ -78,6 +78,12 @@ public class RetrofitNetworkService implements NetworkService {
     }
 
     @Override
+    public void getEmergencyData(String userId, NetCallback<EmergencyDataDTO> callback) {
+        final Call<EmergencyDataDTO> call = api.getUserEmergencyDataUsingGET(userId);
+        enqueue(call, callback);
+    }
+
+    @Override
     public void getQR(final String username, final NetCallback<ResponseBody> callback) {
         final Call<ResponseBody> call = api.getQRUsingGET(username);
         enqueue(call, callback);

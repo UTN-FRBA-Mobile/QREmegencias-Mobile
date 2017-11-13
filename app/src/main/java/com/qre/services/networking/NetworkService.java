@@ -36,6 +36,8 @@ public interface NetworkService {
 
     void getEmergencyData(final NetCallback<EmergencyDataDTO> callback);
 
+    void getEmergencyData(final String userId, final NetCallback<EmergencyDataDTO> callback);
+
     void getQR(final String username, final NetCallback<ResponseBody> callback);
 
     void createQR(final NetCallback<Void> callback);
