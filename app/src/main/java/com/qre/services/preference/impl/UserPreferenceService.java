@@ -36,6 +36,14 @@ public class UserPreferenceService extends PreferencesService {
         return getString(Key.USER_USERNAME, null);
     }
 
+    public void putNameAndLastname(String username) {
+        putString(Key.USER_FULLNAME, username);
+    }
+
+    public String getNameAndLastname() {
+        return getString(Key.USER_FULLNAME, null);
+    }
+
     public void putRole(String role) {
         putString(Key.USER_ROLE, role);
     }
@@ -91,7 +99,7 @@ public class UserPreferenceService extends PreferencesService {
         private static final String USER_ACCESS_TOKEN = "user.accessToken";
         private static final String USER_PRIVATE_KEY = "user.privateKey";
         private static final String USER_QR_LOCATION = "user.qrLocation";
-
+        private static final String USER_FULLNAME = "user.fullname";
     }
 
 }

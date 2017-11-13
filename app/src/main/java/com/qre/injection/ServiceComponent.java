@@ -16,6 +16,7 @@ import com.qre.ui.activities.SeeMoreActivity;
 import com.qre.ui.activities.TemporalCodeActivity;
 import com.qre.ui.fragments.ProfileFragment;
 import com.qre.ui.fragments.medical.MedicalEmergencyDataFragment;
+import com.qre.ui.fragments.WelcomeFragment;
 import com.qre.ui.fragments.user.UserClinicalHistoryFragment;
 import com.qre.ui.fragments.user.UserEmergencyDataFragment;
 import com.qre.ui.fragments.user.UserManageQRFragment;
@@ -62,5 +63,7 @@ public interface ServiceComponent {
     void inject(final MedicalClinicalHistoryViewActivity medicalClinicalHistoryViewActivity);
 
     void inject(final EditEmergencyDataActivity editEmergencyDataActivity);
+
+    void inject(final WelcomeFragment welcomeFragment);
 
 }

@@ -100,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
                 public void onSuccess(LoginUserDTO response) {
                     Log.i(TAG, "User " + response.getName() + " " + response.getLastName() + " logged successfully");
                     preferencesService.putUsername(username);
+                    preferencesService.putNameAndLastname(response.getName() + " " + response.getLastName());
                     final String role = response.getRoles().iterator().next();
                     preferencesService.putRole(role);
 
