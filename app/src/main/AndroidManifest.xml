@@ -65,6 +65,13 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.activities.EditEmergencyDataActivity"
+            android:label="@string/emergency_data_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.qre.ui.activities.HomeActivity" />
         <activity android:name="com.qre.ui.activities.ScanEmergencyDataActivity" />
         <activity android:name="com.qre.ui.activities.ScanForCodeActivity" />

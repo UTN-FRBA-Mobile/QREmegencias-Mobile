@@ -89,6 +89,13 @@ public class EditPatientActivity extends AppCompatActivity {
 
     }
 
+    @OnClick(R.id.btn_edit_emergency_data)
+    public void editEmergencyData() {
+        final Intent intent = EditEmergencyDataActivity.getIntent(this);
+        intent.putExtra(INTENT_EXTRA_USER, user);
+        startActivity(intent);
+    }
+
     @OnClick(R.id.btn_load_clinical_history)
     public void loadClinicalHistory() {
         final Intent intent = MedicalClinicalHistoryActivity.getIntent(this);
