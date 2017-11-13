@@ -93,12 +93,14 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
                 final String allergy = (String) items.get(position);
                 AllergyViewHolder allergyViewHolder = (AllergyViewHolder) holder;
                 allergyViewHolder.value.setText(allergy);
-                allergyViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listener.onEditItem(TYPE_ALLERGY, allergy);
-                    }
-                });
+                if (editable) {
+                    allergyViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            listener.onEditItem(TYPE_ALLERGY, allergy);
+                        }
+                    });
+                }
                 break;
             case TYPE_HOSPITALIZATION:
                 final HospitalizationDTO hospitalizationDTO = (HospitalizationDTO) items.get(position);
