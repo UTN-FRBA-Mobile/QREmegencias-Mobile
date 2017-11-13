@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.qre.R;
@@ -44,6 +45,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.qre.utils.Constants.INTENT_EXTRA_USER;
 import static com.qre.utils.Constants.INTENT_EXTRA_UUID;
@@ -85,6 +87,10 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
     @BindView(R.id.collection)
     RecyclerView vCollection;
 
+    @BindView(R.id.btn_save)
+    Button vSave;
+
+    private String user;
     private EmergencyDataDTO data;
 
     @Override
@@ -100,9 +106,12 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
 
         Injector.getServiceComponent().inject(this);
 
+        user = getIntent().getStringExtra(INTENT_EXTRA_USER);
+
+        vSave.setVisibility(View.VISIBLE);
         vLoader.setVisibility(View.VISIBLE);
 
-        networkService.getEmergencyData(getIntent().getStringExtra(INTENT_EXTRA_USER), new NetCallback<EmergencyDataDTO>() {
+        networkService.getEmergencyData(user, new NetCallback<EmergencyDataDTO>() {
 
             @Override
             public void onSuccess(final EmergencyDataDTO emergencyDataDTO) {
@@ -181,6 +190,21 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
         adapter.setListener(this);
         vCollection.setLayoutManager(new LinearLayoutManager(this));
         vCollection.setAdapter(adapter);
+    }
+
+    @OnClick(R.id.btn_save)
+    public void save() {
+        networkService.updateEmergencyData(data, user, false, new NetCallback<Void>() {
+            @Override
+            public void onSuccess(Void response) {
+                Toast.makeText(EditEmergencyDataActivity.this, getString(R.string.save_data_success), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onFailure(Throwable e) {
+                Log.e(TAG, "Unable to update emergency data", e);
+                Toast.makeText(EditEmergencyDataActivity.this, getString(R.string.save_data_error), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
