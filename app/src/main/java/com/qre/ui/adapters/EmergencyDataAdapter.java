@@ -102,13 +102,13 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
                             listener.onEditItem(TYPE_ALLERGY, allergy);
                         }
                     });
+                    allergyViewHolder.remove.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            listener.onRemoveItem(TYPE_ALLERGY, allergy);
+                        }
+                    });
                 }
-                allergyViewHolder.remove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listener.onRemoveItem(TYPE_ALLERGY, allergy);
-                    }
-                });
                 break;
             case TYPE_HOSPITALIZATION:
                 final HospitalizationDTO hospitalizationDTO = (HospitalizationDTO) items.get(position);
@@ -301,6 +301,10 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
         public AllergyViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            if(!editable) {
+                remove.setVisibility(View.GONE);
+            }
         }
 
     }
