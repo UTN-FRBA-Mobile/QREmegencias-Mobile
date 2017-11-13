@@ -130,7 +130,7 @@ public class HomeActivity extends AppCompatActivity {
                                 fragmentTransaction = true;
                                 break;
                             case R.id.menu_logout:
-                                QRUtils.deleteQR(userPreferenceService);
+                                QRUtils.deleteQR(userPreferenceService, HomeActivity.this);
                                 userPreferenceService.delete();
                                 networkService.logout();
                                 startActivity(LoginActivity.getIntent(HomeActivity.this));
