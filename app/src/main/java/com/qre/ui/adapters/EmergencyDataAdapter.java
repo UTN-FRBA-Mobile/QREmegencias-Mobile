@@ -82,7 +82,9 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
             case TYPE_HEADER:
                 final int type = (Integer) items.get(position);
                 HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
-                headerViewHolder.add.setVisibility(editable ? View.VISIBLE : View.GONE);
+                headerViewHolder.add.setVisibility(editable
+                        && type != EmergencyDataAdapter.TYPE_CONTACT
+                        ? View.VISIBLE : View.GONE);
                 headerViewHolder.value.setText(context.getString(getHeaderTitle(type)));
                 headerViewHolder.add.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -199,22 +201,9 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
             case TYPE_CONTACT:
                 final UserContactDTO userContactDTO = (UserContactDTO) items.get(position);
                 ContactViewHolder contactViewHolder = (ContactViewHolder) holder;
-                contactViewHolder.actions.setVisibility(editable ? View.VISIBLE : View.GONE);
                 contactViewHolder.name.setValue(userContactDTO.getFirstName());
                 contactViewHolder.surname.setValue(userContactDTO.getLastName());
                 contactViewHolder.phone.setValue(userContactDTO.getPhoneNumber());
-                contactViewHolder.edit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listener.onEditItem(TYPE_CONTACT, userContactDTO);
-                    }
-                });
-                contactViewHolder.remove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listener.onRemoveItem(TYPE_CONTACT, userContactDTO);
-                    }
-                });
                 break;
         }
     }
@@ -302,7 +291,7 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            if(!editable) {
+            if (!editable) {
                 remove.setVisibility(View.GONE);
             }
         }
@@ -405,15 +394,6 @@ public class EmergencyDataAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         @BindView(R.id.contact_phone)
         public DetailValueView phone;
-
-        @BindView(R.id.btn_edit)
-        public Button edit;
-
-        @BindView(R.id.btn_delete)
-        public Button remove;
-
-        @BindView(R.id.actions)
-        public View actions;
 
         public ContactViewHolder(View itemView) {
             super(itemView);

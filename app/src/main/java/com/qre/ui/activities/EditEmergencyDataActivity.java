@@ -180,8 +180,8 @@ public class EditEmergencyDataActivity extends AppCompatActivity implements Emer
             collection.addAll(data.getMedications());
         }
 
-        collection.add(EmergencyDataAdapter.TYPE_CONTACT);
         if (data.getContacts() != null && !data.getContacts().isEmpty()) {
+            collection.add(EmergencyDataAdapter.TYPE_CONTACT);
             collection.addAll(data.getContacts());
         }
 
