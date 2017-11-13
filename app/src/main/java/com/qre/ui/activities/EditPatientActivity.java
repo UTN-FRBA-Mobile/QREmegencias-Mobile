@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.qre.R;
@@ -48,6 +49,9 @@ public class EditPatientActivity extends AppCompatActivity {
     @BindView(R.id.btn_edit_emergency_data)
     Button vButtonEditEmergencyData;
 
+    @BindView(R.id.loader_seemore)
+    View vLoader;
+
     public static Intent getIntent(final Context context) {
         return new Intent(context, EditPatientActivity.class);
     }
@@ -66,27 +70,38 @@ public class EditPatientActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         final String qrContent = intent.getStringExtra(INTENT_EXTRA_TEMP_CODE);
 
+        vLoader.setVisibility(View.VISIBLE);
         networkService.verifySignature(qrContent, new NetCallback<VerificationDTO>() {
 
             @Override
             public void onSuccess(VerificationDTO response) {
                 if (response.getUser() != null) {
                     user = response.getUser();
+                    vLoader.setVisibility(View.GONE);
                     vButtonEditEmergencyData.setVisibility(View.VISIBLE);
                     vButtonLoadClinicalHistory.setVisibility(View.VISIBLE);
                     vButtonViewClinicalHistory.setVisibility(View.VISIBLE);
                     vVerifySign.setVisibility(View.GONE);
                 } else {
+                    vLoader.setVisibility(View.GONE);
                     vVerifySign.setText(response.getErrorMessage());
                 }
             }
 
             @Override
             public void onFailure(Throwable exception) {
+                vLoader.setVisibility(View.GONE);
                 vVerifySign.setText(exception.getMessage());
             }
         });
 
+    }
+
+    @OnClick(R.id.btn_edit_emergency_data)
+    public void editEmergencyData() {
+        final Intent intent = EditEmergencyDataActivity.getIntent(this);
+        intent.putExtra(INTENT_EXTRA_USER, user);
+        startActivity(intent);
     }
 
     @OnClick(R.id.btn_load_clinical_history)

@@ -5,6 +5,7 @@ import com.qre.injection.modules.NetModule;
 import com.qre.injection.modules.PreferencesModule;
 import com.qre.services.firebase.QREInstanceIdService;
 import com.qre.services.networking.RetrofitNetworkService;
+import com.qre.ui.activities.EditEmergencyDataActivity;
 import com.qre.ui.activities.EditPatientActivity;
 import com.qre.ui.activities.ForgotPasswordActivity;
 import com.qre.ui.activities.HomeActivity;
@@ -14,6 +15,7 @@ import com.qre.ui.activities.MedicalClinicalHistoryViewActivity;
 import com.qre.ui.activities.SeeMoreActivity;
 import com.qre.ui.activities.TemporalCodeActivity;
 import com.qre.ui.fragments.ProfileFragment;
+import com.qre.ui.fragments.medical.MedicalEmergencyDataFragment;
 import com.qre.ui.fragments.WelcomeFragment;
 import com.qre.ui.fragments.user.UserClinicalHistoryFragment;
 import com.qre.ui.fragments.user.UserEmergencyDataFragment;
@@ -44,6 +46,8 @@ public interface ServiceComponent {
 
     void inject(final UserEmergencyDataFragment userEmergencyDataFragment);
 
+    void inject(final MedicalEmergencyDataFragment medicalEmergencyDataFragment);
+
     void inject(final UserSignedQRFragment userSignedQRFragment);
 
     void inject(final ProfileFragment profileFragment);
@@ -57,6 +61,8 @@ public interface ServiceComponent {
     void inject(final ForgotPasswordActivity forgotPasswordActivity);
 
     void inject(final MedicalClinicalHistoryViewActivity medicalClinicalHistoryViewActivity);
+
+    void inject(final EditEmergencyDataActivity editEmergencyDataActivity);
 
     void inject(final WelcomeFragment welcomeFragment);
 

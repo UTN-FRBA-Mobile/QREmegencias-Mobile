@@ -17,11 +17,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/name"
-            android:inputType="textPersonName" />
+            android:inputType="textCapSentences" />
 
     </android.support.design.widget.TextInputLayout>
 
-    <!--  Surname Label -->
+    <!--  Description Label -->
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -30,15 +30,15 @@
         android:layout_marginTop="8dp">
 
         <EditText
-            android:id="@+id/input_surname"
+            android:id="@+id/input_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/surname"
-            android:inputType="textPersonName" />
+            android:hint="@string/description"
+            android:inputType="textCapSentences" />
 
     </android.support.design.widget.TextInputLayout>
 
-    <!--  Phone Label -->
+    <!--  Amount Label -->
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -47,36 +47,32 @@
         android:layout_marginTop="8dp">
 
         <EditText
-            android:id="@+id/input_phone"
+            android:id="@+id/input_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/phone"
-            android:inputType="phone" />
+            android:hint="@string/amount"
+            android:inputType="number" />
 
     </android.support.design.widget.TextInputLayout>
 
-    <!--  Primary -->
-    <LinearLayout
+    <!--  Period Label -->
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal" >
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <Spinner
+            android:id="@+id/input_period"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Contacto Primario"
-            android:textSize="14sp" />
+            android:spinnerMode="dropdown"
+            android:entries="@array/periods"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+        </Spinner>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/checkbox_primary" />
-
-    </LinearLayout>
-
-
-
+    </android.support.design.widget.TextInputLayout>
 
 </LinearLayout>

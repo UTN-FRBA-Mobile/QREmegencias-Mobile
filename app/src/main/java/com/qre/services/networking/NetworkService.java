@@ -26,6 +26,8 @@ public interface NetworkService {
 
     void updateProfile(final UserProfileDTO profile, final boolean qrUpdateRequired, final NetCallback<Void> callback);
 
+    void updateEmergencyData(final EmergencyDataDTO data, final String userId, final boolean qrUpdateRequired, final NetCallback<Void> callback);
+
     void verifySignature(final String user, final NetCallback<VerificationDTO> callback);
 
     void uploadPublicKey(final PublicKey pk, final NetCallback<Void> callback);
@@ -33,6 +35,8 @@ public interface NetworkService {
     void logout();
 
     void getEmergencyData(final NetCallback<EmergencyDataDTO> callback);
+
+    void getEmergencyData(final String userId, final NetCallback<EmergencyDataDTO> callback);
 
     void getQR(final String username, final NetCallback<ResponseBody> callback);
 

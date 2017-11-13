@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.qre.R;
 import com.qre.injection.Injector;
+import com.qre.models.EmergencyData;
 import com.qre.models.EmergencyDataDTO;
 import com.qre.services.networking.NetCallback;
 import com.qre.services.networking.NetworkException;
@@ -94,40 +95,38 @@ public class UserEmergencyDataFragment extends BaseFragment {
                         vOrganDonor.setValue(emergencyDataDTO.getGeneral().isOrganDonor() ? getString(R.string.yes) : getString(R.string.no));
 
                         if (!emergencyDataDTO.getGeneral().getAllergies().isEmpty()) {
-                            collection.add(R.string.allergies);
+                            collection.add(EmergencyDataAdapter.TYPE_ALLERGY);
                             collection.addAll(emergencyDataDTO.getGeneral().getAllergies());
                         }
                     }
 
                     if (emergencyDataDTO.getSurgeries() != null && !emergencyDataDTO.getSurgeries().isEmpty()) {
-                        collection.add(R.string.surgeries);
+                        collection.add(EmergencyDataAdapter.TYPE_SURGERY);
                         collection.addAll(emergencyDataDTO.getSurgeries());
                     }
 
                     if (emergencyDataDTO.getHospitalizations() != null && !emergencyDataDTO.getHospitalizations().isEmpty()) {
-                        collection.add(R.string.hospitalizations);
+                        collection.add(EmergencyDataAdapter.TYPE_HOSPITALIZATION);
                         collection.addAll(emergencyDataDTO.getHospitalizations());
                     }
 
                     if (emergencyDataDTO.getPathologies() != null && !emergencyDataDTO.getPathologies().isEmpty()) {
-                        collection.add(R.string.pathologies);
+                        collection.add(EmergencyDataAdapter.TYPE_PATHOLOGY);
                         collection.addAll(emergencyDataDTO.getPathologies());
                     }
 
                     if (emergencyDataDTO.getMedications() != null && !emergencyDataDTO.getMedications().isEmpty()) {
-                        collection.add(R.string.medications);
+                        collection.add(EmergencyDataAdapter.TYPE_MEDICATION);
                         collection.addAll(emergencyDataDTO.getMedications());
                     }
 
                     if (emergencyDataDTO.getContacts() != null && !emergencyDataDTO.getContacts().isEmpty()) {
-                        collection.add(R.string.contacts);
+                        collection.add(EmergencyDataAdapter.TYPE_CONTACT);
                         collection.addAll(emergencyDataDTO.getContacts());
                     }
 
                     vCollection.setLayoutManager(new LinearLayoutManager(getContext()));
                     vCollection.setAdapter(new EmergencyDataAdapter(getContext(), collection));
-                    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(vCollection.getContext(), DividerItemDecoration.VERTICAL);
-                    vCollection.addItemDecoration(dividerItemDecoration);
                 } catch (final Exception e) {
                     Log.e(TAG, "ERROR:  Error al obtener contenido web", e);
                     tException.setText("No se pudo cargar la información.\nAsegurate que el QR sea el actual.");

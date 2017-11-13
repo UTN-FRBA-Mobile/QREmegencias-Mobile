@@ -3,7 +3,6 @@ package com.qre.ui.fragments.medical;
 import com.qre.R;
 import com.qre.ui.activities.ScanEmergencyDataActivity;
 import com.qre.ui.fragments.BaseFragment;
-
 import butterknife.OnClick;
 
 public class MedicalEmergencyDataFragment extends BaseFragment {
@@ -19,4 +18,5 @@ public class MedicalEmergencyDataFragment extends BaseFragment {
     public void scanForCode() {
         startActivity(ScanEmergencyDataActivity.getIntent(this.getContext()));
     }
+
 }
