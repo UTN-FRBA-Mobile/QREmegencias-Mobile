@@ -72,13 +72,19 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.qre.ui.activities.MedicalClinicalHistoryViewActivity"
+            android:label="@string/menu_user_clinical_history">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.qre.ui.activities.HomeActivity" />
         <activity android:name="com.qre.ui.activities.ScanEmergencyDataActivity" />
         <activity android:name="com.qre.ui.activities.ScanForCodeActivity" />
         <activity android:name="com.qre.ui.activities.TemporalCodeActivity" />
         <activity android:name="com.qre.ui.activities.ForgotPasswordActivity" />
         <activity android:name="com.qre.ui.activities.EditPatientActivity" />
-        <activity android:name="com.qre.ui.activities.MedicalClinicalHistoryViewActivity" />
 
         <receiver android:name="com.qre.ui.widget.QREmergenciasWidgetProvider">
             <intent-filter>
