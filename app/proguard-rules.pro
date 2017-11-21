@@ -15,3 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-keepclassmembers class me.dm7.barcodescanner.zxing.ZXingScannerView {
+    private com.google.zxing.MultiFormatReader mMultiFormatReader;
+}
