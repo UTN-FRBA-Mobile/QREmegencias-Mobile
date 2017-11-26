@@ -13,39 +13,57 @@ La aplicación permite a los usuarios ver y administrar sus datos de emergencia 
 
 ## Médico
 
+<p>
+Como médico se pueden realizar las siguientes operaciones:
+</p>
+
+* Ver y editar datos de emergencia de un paciente
+* Ver y cargar historias clínicas de un paciente
+* Ver y editar el perfil
+
 <p align="center">
-  <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/login.png" alt="QueCocino" width="200">
-    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/medico-home.png" alt="QueCocino" width="200">
-    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/medico-menu.png" alt="QueCocino" width="200">
+  <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/login.png" alt="QR Emergencias" width="200">
+    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/medico-home.png" alt="QR Emergencias" width="200">
+    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/medico-menu.png" alt="QR Emergencias" width="200">
 </p>
 
 <p align="center">
-  <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/medico-data1.png" alt="QueCocino" width="200">
-    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/medico-data2.png" alt="QueCocino" width="200">
-    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/medico-editar.png" alt="QueCocino" width="200">
+  <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/medico-data1.png" alt="QR Emergencias" width="200">
+    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/medico-data2.png" alt="QR Emergencias" width="200">
+    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/medico-editar.png" alt="QR Emergencias" width="200">
 </p>
 
 <p align="center">
-  <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/medico-historia.png" alt="QueCocino" width="200">
-    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/medico-perfil.png" alt="QueCocino" width="200">
+  <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/medico-historia.png" alt="QR Emergencias" width="200">
+    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/medico-perfil.png" alt="QR Emergencias" width="200">
 </p>
 
 
 ## Paciente
 
+<p>
+Como paciente se pueden realizar las siguientes operaciones:
+</p>
+
+* Ver datos de emergencia propios
+* Ver historias clínicas propias
+* Ver y editar el perfil
+* Gestionar el QR que permite visualizar los datos de emergencia
+* Gestionar el QR que habilita al médico a ver y editar los datos de emergencia e historias clínicas
+
 <p align="center">
-  <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/login.png" alt="QueCocino" width="200">
-    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/paciente-home.png" alt="QueCocino" width="200">
-    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/paciente-menu.png" alt="QueCocino" width="200">
+  <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/login.png" alt="QR Emergencias" width="200">
+    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/paciente-home.png" alt="QR Emergencias" width="200">
+    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/paciente-menu.png" alt="QR Emergencias" width="200">
 </p>
 
 <p align="center">
-  <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/paciente-data.png" alt="QueCocino" width="200">
-    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/paciente-historia.png" alt="QueCocino" width="200">
-    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/paciente-perfil.png" alt="QueCocino" width="200">
+  <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/paciente-data.png" alt="QR Emergencias" width="200">
+    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/paciente-historia.png" alt="QR Emergencias" width="200">
+    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/paciente-perfil.png" alt="QR Emergencias" width="200">
 </p>
 
 <p align="center">
-  <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/paciente-qr1.png" alt="QueCocino" width="200">
-    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/paciente-qr2.png" alt="QueCocino" width="200">
+  <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/paciente-qr1.png" alt="QR Emergencias" width="200">
+    <img src="https://github.com/UTN-FRBA-Mobile/QREmegencias-Mobile/blob/master/img/paciente-qr2.png" alt="QR Emergencias" width="200">
 </p>
